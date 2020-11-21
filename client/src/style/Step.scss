@@ -1,0 +1,59 @@
+@import './variables.scss';
+
+.circle {
+  position: absolute;
+  // left: 5;
+  // height: 50vh;
+  width: $outer-circle-size;
+  height: $outer-circle-size;
+  transform-origin: center top;
+
+  // transform: translate(50%, 50%);
+  // border: 10px solid rgba(0, 0, 0, 0.5);
+  
+  &.one {
+    background-color: rgba(127, 255, 212, 0.329);
+
+
+  }
+
+  .rot-cont {
+    position: absolute;
+    transform-origin: 0% 100%;
+
+    border: 1px solid red;
+    left: 50%;
+    height: 50%;
+    width: 50px;
+  }
+
+  input {
+    position: absolute;
+    border: transparent;
+    background-color: rgba(0, 0, 0, 0.288);
+    border-radius: 50%;
+    width: 20px;
+    height: 20px;
+    // left: 50%;
+    transform: translateX(-50%);
+
+    &:focus {
+      outline: none;
+    }
+
+    &:active {
+      background-color: rgba(0, 0, 0, 0.5);
+    }
+  }
+
+
+
+  &#center-marker {
+    width: 5px;
+    height: 5px;
+    background-color: rgba(0, 0, 0, 0.521);
+  }
+
+
+  border-radius: 50%;
+}

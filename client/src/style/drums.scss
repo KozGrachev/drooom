@@ -1,0 +1,11 @@
+@import './variables.scss';
+
+.drums-container {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: $outer-circle-size;
+  // border: 3px solid red;
+}
