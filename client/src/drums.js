@@ -7,11 +7,26 @@ import * as Tone from 'tone';
 import { Sampler } from 'tone';
 import { v4 } from 'uuid'
 import kick from './assets/kick.mp3'
+import snare from './assets/snare.mp3'
+import hho from './assets/hho.mp3'
+import hhc from './assets/hhc.mp3'
+import rim from './assets/rim.mp3'
 // import { Tone } from 'tone/build/esm/core/Tone';
 
 export function Drums () {
   const [step, setStep] = useState(0);
   const steps = [1, 0, 0, 1, 0, 0, 1, 0, 1, 0, 0, 1, 0, 0, 1, 0];
+
+  const [sampler, setSampler] = useState(new Tone.Sampler({
+    urls: {
+      A1: kick,
+      B1: snare,
+      C1: hhc,
+      D1: hho,
+      E1: rim,
+    },
+    onload: () => console.log('DRUMS LOADED')
+  }).toDestination());
 
   // Consider creating the sequencer here and receiving active/inactive
   // events from Notes
@@ -23,12 +38,6 @@ export function Drums () {
 
   function createDrumMachine () {
     console.log('CLICKED DRUM MACHINE');
-
-    const kick = new Tone.Player('../assets/kick.wav').toDestination();
-    // const snare = new Tone.Player('../assets/snare.wav').toDestination();
-    // const hhc = new Tone.Player('../assets/hhc.wav').toDestination();
-    // const hho = new Tone.Player('../assets/hho.wav').toDestination();
-    // const rim = new Tone.Player('../assets/rim.wav').toDestination();
 
     Tone.Transport.scheduleRepeat(playStep, '16n');
     Tone.Transport.start();
@@ -57,23 +66,12 @@ export function Drums () {
   }
   return (
     <>
-      {/* { renderButtons()} */}
-      {/* <div className="drums-container" >
-      </div> */}
       {renderSteps()}
-      <div onClick={() => {
-        console.log('CLICKED');
-        const sampler = new Tone.Sampler({
-          urls: {
-            A1: kick,
-          },
-          onload: () => {
-            sampler.triggerAttackRelease("A1", 0.5);
-          }
-        }).toDestination();
-      }}>START</div>
-
-
+      <button onClick={() => sampler.triggerAttack('A1')}>KICK</button>
+      <button onClick={() => sampler.triggerAttack('B1')}>SNARE</button>
+      <button onClick={() => sampler.triggerAttack('C1')}>HHO</button>
+      <button onClick={() => sampler.triggerAttack('D1')}>HHC</button>
+      <button onClick={() => sampler.triggerAttack('E1')}>RIM</button>
     </>
   )
 }
