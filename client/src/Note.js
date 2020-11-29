@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 
 export function Note (props) {
 
-  const [active, setActive] = useState(false);
+  const [active, setActive] = useState(false, () => false);
 
   //?? COULD POSSIBLY USE AS A STATE OBJECT??
   // const [noteState, setNoteState] = useState({
@@ -13,11 +13,11 @@ export function Note (props) {
   // });
 
   function handleClick () {
-    console.log(active);
-    setActive((act) => !act);
+    const newActive = !active
+    setActive(newActive);
     const state = {
       name: props.name,
-      active: active,
+      active: newActive,
       stepNum: props.stepNum
     }
     props.handleNoteClick(state)

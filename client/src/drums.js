@@ -14,10 +14,24 @@ import rim from './assets/rim.mp3'
 // import { Tone } from 'tone/build/esm/core/Tone';
 
 export function Drums () {
-  const [step, setStep] = useState(0);
-  const steps = [1, 0, 0, 1, 0, 0, 1, 0, 1, 0, 0, 1, 0, 0, 1, 0];
+  const [kickPattern, setKickPattern] = useState(Array(16).fill(false));
+  const [snarePattern, setSnarePattern] = useState(() => Array(16).fill(false));
+  const [chhPattern, setChhPattern] = useState(() => Array(16).fill(false));
+  const [ohhPattern, setOhhPattern] = useState(() => Array(16).fill(false));
+  const [percPattern, setPercPattern] = useState(() => Array(16).fill(false));
 
-  const [sampler, setSampler] = useState(new Tone.Sampler({
+  const [pattern, setPattern] = useState({
+    kick: Array(16).fill(false),
+    snare: Array(16).fill(false),
+    chh: Array(16).fill(false),
+    ohh: Array(16).fill(false),
+    perc: Array(16).fill(false),
+  });
+  // const steps = [1, 0, 0, 1, 0, 0, 1, 0, 1, 0, 0, 1, 0, 0, 1, 0];
+
+  const [playing, setPlaying] = useState(false);
+
+  const [sampler, setSampler] = useState(() => new Tone.Sampler({
     urls: {
       A1: kick,
       B1: snare,
@@ -33,25 +47,51 @@ export function Drums () {
   // Pass the handleClick function down to notes
 
   function handleNoteClick (note) {
-    console.log('Clicked: ', note.name, note.stepNum, note.active);
+    const newPattern = kickPattern;
+    if (note.name === 'kick') {
+      newPattern[note.stepNum] = note.active
+      setKickPattern(newPattern);
+      console.log(newPattern);
+    }
+
+    // const newPat = pattern;
+    // newPat[note.name][note.stepNum] = note.active;
+    // setPattern(newPat);
+    // console.log(newPat);
+    // console.log('Clicked: ', note.name, note.stepNum, note.active);
   }
 
-  function createDrumMachine () {
-    console.log('CLICKED DRUM MACHINE');
+  function playPause () {
+    console.log('PLAYING: ', playing);
 
     Tone.Transport.scheduleRepeat(playStep, '16n');
-    Tone.Transport.start();
+    Tone.start();
+    const newPlaying = !playing;
+    // setPlaying((pl) => !pl);
+    // newPlaying ? Tone.Transport.start() : Tone.Transport.stop();
+
+    Tone.Transport.start()
 
     let stp = 0;
 
+    function prepNextStep (stepNum) {
+
+      return
+    }
 
     function playStep () {
 
-      kick.start(0);
+      let thisStep = []
+      // .start(0);
+
       // console.log('KICK');
-      // let thsstp = stp % 16;
-      // if (steps[thsstp]) kick.start(0);
-      // stp++;
+      let thsstp = stp % 16;
+      if (kickPattern[thsstp]) {
+        sampler.triggerAttack('A1');
+      }
+
+      if (pattern)
+        stp++;
 
     }
   }
@@ -67,6 +107,8 @@ export function Drums () {
   return (
     <>
       {renderSteps()}
+
+      <button onClick={() => playPause()}>PLAY PATTERN</button>
       <button onClick={() => sampler.triggerAttack('A1')}>KICK</button>
       <button onClick={() => sampler.triggerAttack('B1')}>SNARE</button>
       <button onClick={() => sampler.triggerAttack('C1')}>HHO</button>

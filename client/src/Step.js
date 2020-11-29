@@ -8,7 +8,7 @@ import { Note } from './Note.js';
 export function Step (props) {
 
   function renderButtons () {
-    const names = ['Kick', 'Snare', 'O-Hh', 'C-Hh', 'Perc']
+    const names = ['kick', 'snare', 'ohh', 'chh', 'perc']
 
     return names.map((name, i) => {
 
