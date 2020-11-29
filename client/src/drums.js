@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 // import { Circle } from './Circle'
 // import './style/Step.scss'
 import { Step } from './Step'
@@ -8,9 +8,9 @@ import { Sampler } from 'tone';
 import { v4 } from 'uuid'
 import kick from './assets/kick.mp3'
 import snare from './assets/snare.mp3'
-import hho from './assets/hho.mp3'
-import hhc from './assets/hhc.mp3'
-import rim from './assets/rim.mp3'
+import ohh from './assets/hho.mp3'
+import chh from './assets/hhc.mp3'
+import perc from './assets/rim.mp3'
 // import { Tone } from 'tone/build/esm/core/Tone';
 
 export function Drums () {
@@ -31,13 +31,24 @@ export function Drums () {
 
   const [playing, setPlaying] = useState(false);
 
+  const drumMap = new Map();
+
+  useEffect(() => {
+
+    drumMap.set('kick', 'A1');
+    drumMap.set('snare', 'B1');
+    drumMap.set('chh', 'C1');
+    drumMap.set('ohh', 'D1');
+    drumMap.set('perc', 'E1');
+  })
+
   const [sampler, setSampler] = useState(() => new Tone.Sampler({
     urls: {
       A1: kick,
       B1: snare,
-      C1: hhc,
-      D1: hho,
-      E1: rim,
+      C1: chh,
+      D1: ohh,
+      E1: perc,
     },
     onload: () => console.log('DRUMS LOADED')
   }).toDestination());
@@ -54,47 +65,50 @@ export function Drums () {
       console.log(newPattern);
     }
 
-    // const newPat = pattern;
-    // newPat[note.name][note.stepNum] = note.active;
-    // setPattern(newPat);
-    // console.log(newPat);
-    // console.log('Clicked: ', note.name, note.stepNum, note.active);
+    const newPat = pattern;
+    newPat[note.name][note.stepNum] = note.active;
+    setPattern(newPat);
+    console.log(newPat);
+    console.log('Clicked: ', note.name, note.stepNum, note.active);
   }
 
   function playPause () {
     console.log('PLAYING: ', playing);
-
+    Tone.Transport.bpm.value = 120;
     Tone.Transport.scheduleRepeat(playStep, '16n');
     Tone.start();
     const newPlaying = !playing;
     // setPlaying((pl) => !pl);
     // newPlaying ? Tone.Transport.start() : Tone.Transport.stop();
-
+    let nextStep = prepNextStep(0);
     Tone.Transport.start()
 
     let stp = 0;
-
-    function prepNextStep (stepNum) {
-
-      return
-    }
-
     function playStep () {
-
-      let thisStep = []
-      // .start(0);
-
-      // console.log('KICK');
       let thsstp = stp % 16;
-      if (kickPattern[thsstp]) {
-        sampler.triggerAttack('A1');
-      }
 
-      if (pattern)
-        stp++;
 
+      sampler.triggerAttack(nextStep);
+      // for (const drum in nextStep) {
+      //   sampler.triggerAttack(drumMap.get(drum))
+      // }
+      stp++;
+      thsstp = stp % 16;
+      nextStep = prepNextStep(thsstp);
     }
   }
+
+  function prepNextStep (stepNum) {
+    const toPlay = [];
+
+    for (const el in pattern) {
+      if (pattern[el][stepNum]) toPlay.push(drumMap.get(el));
+    }
+
+    console.log(toPlay);
+    return toPlay;
+  }
+
 
 
   function renderSteps () {
