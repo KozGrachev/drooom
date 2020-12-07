@@ -10,15 +10,17 @@ import kick from './assets/kick.mp3'
 import snare from './assets/snare.mp3'
 import ohh from './assets/hho.mp3'
 import chh from './assets/hhc.mp3'
-import perc from './assets/rim.mp3'
+import perc from './assets/clap.mp3'
 // import { Tone } from 'tone/build/esm/core/Tone';
+const notes = { 'A1': kick, 'B1': snare, 'C1': perc, 'D1': chh, 'E1': ohh };
+const noteNames = { 'A1': 'kick', 'B1': 'snare', 'C1': 'perc', 'D1': 'chh', 'E1': 'ohh' };
+// create an array to cycle iterate through
+const notesEntries = Object.entries(noteNames);
+// Create a Sampler with the notes object
+const sampler = new Tone.Sampler(notes).toDestination();
+Tone.Transport.bpm.value = 120;
 
 export function Drums () {
-  const [kickPattern, setKickPattern] = useState(Array(16).fill(false));
-  const [snarePattern, setSnarePattern] = useState(() => Array(16).fill(false));
-  const [chhPattern, setChhPattern] = useState(() => Array(16).fill(false));
-  const [ohhPattern, setOhhPattern] = useState(() => Array(16).fill(false));
-  const [percPattern, setPercPattern] = useState(() => Array(16).fill(false));
 
   const [pattern, setPattern] = useState({
     kick: Array(16).fill(false),
@@ -30,88 +32,52 @@ export function Drums () {
   // const steps = [1, 0, 0, 1, 0, 0, 1, 0, 1, 0, 0, 1, 0, 0, 1, 0];
 
   const [playing, setPlaying] = useState(false);
+  let count = 0;
+  // const [sampler, setSampler] = useState(() => new Tone.Sampler(notes).toDestination());
 
-  const drumMap = new Map();
-
-  useEffect(() => {
-
-    drumMap.set('kick', 'A1');
-    drumMap.set('snare', 'B1');
-    drumMap.set('chh', 'C1');
-    drumMap.set('ohh', 'D1');
-    drumMap.set('perc', 'E1');
-  })
-
-  const [sampler, setSampler] = useState(() => new Tone.Sampler({
-    urls: {
-      A1: kick,
-      B1: snare,
-      C1: chh,
-      D1: ohh,
-      E1: perc,
-    },
-    onload: () => console.log('DRUMS LOADED')
-  }).toDestination());
-
-  // Consider creating the sequencer here and receiving active/inactive
-  // events from Notes
-  // Pass the handleClick function down to notes
 
   function handleNoteClick (note) {
-    const newPattern = kickPattern;
-    if (note.name === 'kick') {
-      newPattern[note.stepNum] = note.active
-      setKickPattern(newPattern);
-      console.log(newPattern);
-    }
-
-    const newPat = pattern;
-    newPat[note.name][note.stepNum] = note.active;
-    setPattern(newPat);
-    console.log(newPat);
-    console.log('Clicked: ', note.name, note.stepNum, note.active);
+    console.log(note.name, note.stepNum, 'playing?', playing);
+    setPattern((pat) => {
+      pat[note.name][note.stepNum] = !pat[note.name][note.stepNum];
+      return pat;
+    })
+    console.log(pattern[note.name][note.stepNum]);
   }
 
   function playPause () {
-    console.log('PLAYING: ', playing);
-    Tone.Transport.bpm.value = 120;
-    Tone.Transport.scheduleRepeat(playStep, '16n');
-    Tone.start();
-    const newPlaying = !playing;
-    // setPlaying((pl) => !pl);
-    // newPlaying ? Tone.Transport.start() : Tone.Transport.stop();
-    let nextStep = prepNextStep(0);
-    Tone.Transport.start()
-
-    let stp = 0;
-    function playStep () {
-      let thsstp = stp % 16;
-
-
-      sampler.triggerAttack(nextStep);
-      // for (const drum in nextStep) {
-      //   sampler.triggerAttack(drumMap.get(drum))
-      // }
-      stp++;
-      thsstp = stp % 16;
-      nextStep = prepNextStep(thsstp);
+    console.log('playing? ', playing)
+    if (!playing) {
+      console.log('PLAYING?');
+      Tone.Transport.start();
+      Tone.Transport.scheduleRepeat(repeat, '16n');
+      Tone.start();
+    } else {
+      console.log('Stopped');
+      // setCount(0);
+      Tone.Transport.cancel();
     }
+    setPlaying((prevPlaying) => !prevPlaying);
   }
 
-  function prepNextStep (stepNum) {
-    const toPlay = [];
-
-    for (const el in pattern) {
-      if (pattern[el][stepNum]) toPlay.push(drumMap.get(el));
+  function repeat (time) {
+    // count 0-15
+    let step = count % 16;
+    // console.log('kick', pattern['kick'][step], 'snare', pattern['snare'][step], 'chh', pattern['chh'][step], 'ohh', pattern['ohh'][step], 'perc', pattern['perc'][step]);
+    for (const [note, drum] of notesEntries) {
+      // check each checkbox in each row by selecting the number corresponding to the step count
+      // const drumName = '.' + drum.match(/[a-z]+/);
+      if (pattern[drum][step]) {
+        //if checked, play
+        sampler.triggerAttackRelease(note, '16n', time);
+      }
     }
-
-    console.log(toPlay);
-    return toPlay;
+    count++;
   }
-
 
 
   function renderSteps () {
+    console.log('RENDERING STEPS');
     const arr = [];
     for (let i = 0; i < 16; i++) {
       arr.push(<Step handleNoteClick={handleNoteClick} stepNum={i} key={v4()} >  </Step>);
