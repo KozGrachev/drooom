@@ -1,11 +1,31 @@
 @import './variables.scss';
 
 .drums-container {
-  position: relative;
+  position: absolute;
   display: flex;
   justify-content: center;
   align-items: center;
   width: 100%;
   height: $outer-circle-size;
   // border: 3px solid red;
+  transform: translateY(-50%);
+  background-color: lightgray;
+  z-index: -1;
 }
+
+#playPause{
+  position: absolute;
+  width: 90px;
+  height: 90px;
+  border-radius: 50%;
+  background-color: rgba(155, 155, 155, 0.288);
+  color: rgba(0, 0, 0, 0.473);
+  left:50%;
+  transform: translate(-50%,-50%);
+
+  border: none;
+  &:focus{
+    outline: none;
+  }
+}
+
