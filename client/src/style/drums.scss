@@ -13,19 +13,5 @@
   z-index: -1;
 }
 
-#playPause{
-  position: absolute;
-  width: 90px;
-  height: 90px;
-  border-radius: 50%;
-  background-color: rgba(155, 155, 155, 0.288);
-  color: rgba(0, 0, 0, 0.473);
-  left:50%;
-  transform: translate(-50%,-50%);
 
-  border: none;
-  &:focus{
-    outline: none;
-  }
-}
 
