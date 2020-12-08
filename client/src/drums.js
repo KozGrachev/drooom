@@ -19,6 +19,7 @@ const notesEntries = Object.entries(noteNames);
 // Create a Sampler with the notes object
 const sampler = new Tone.Sampler(notes).toDestination();
 Tone.Transport.bpm.value = 120;
+Tone.Transport.swing = 0.08;
 
 export function Drums () {
 
@@ -31,13 +32,12 @@ export function Drums () {
   });
   // const steps = [1, 0, 0, 1, 0, 0, 1, 0, 1, 0, 0, 1, 0, 0, 1, 0];
 
-  const [playing, setPlaying] = useState(false);
   let count = 0;
   // const [sampler, setSampler] = useState(() => new Tone.Sampler(notes).toDestination());
 
 
   function handleNoteClick (note) {
-    console.log(note.name, note.stepNum, 'playing?', playing);
+    // console.log(note.name, note.stepNum, 'playing?', playing);
     setPattern((pat) => {
       pat[note.name][note.stepNum] = !pat[note.name][note.stepNum];
       return pat;
@@ -46,21 +46,24 @@ export function Drums () {
   }
 
   function playPause () {
-    console.log('playing? ', playing)
-    if (!playing) {
+    console.log('playing? ', Tone.Transport.state)
+    if (Tone.Transport.state === 'stopped') {
       console.log('PLAYING?');
-      Tone.Transport.start();
+      Tone.Transport.toggle();
       Tone.Transport.scheduleRepeat(repeat, '16n');
       Tone.start();
     } else {
-      console.log('Stopped');
+      // console.log('Stopped');
       // setCount(0);
+      Tone.Transport.stop();
       Tone.Transport.cancel();
+      count = 0;
+      console.log('playing? ', Tone.Transport.state)
     }
-    setPlaying((prevPlaying) => !prevPlaying);
   }
 
   function repeat (time) {
+    console.log(count);
     // count 0-15
     let step = count % 16;
     // console.log('kick', pattern['kick'][step], 'snare', pattern['snare'][step], 'chh', pattern['chh'][step], 'ohh', pattern['ohh'][step], 'perc', pattern['perc'][step]);
@@ -75,6 +78,9 @@ export function Drums () {
     count++;
   }
 
+  function checkRerender () {
+    console.log('RERENDERED');
+  }
 
   function renderSteps () {
     console.log('RENDERING STEPS');
@@ -94,6 +100,7 @@ export function Drums () {
       <button onClick={() => sampler.triggerAttack('C1')}>HHO</button>
       <button onClick={() => sampler.triggerAttack('D1')}>HHC</button>
       <button onClick={() => sampler.triggerAttack('E1')}>RIM</button>
+      {checkRerender()}
     </>
   )
 }
