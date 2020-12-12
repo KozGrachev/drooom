@@ -12,4 +12,5 @@
   "dependencies": {
     "@tonaljs/tonal": "^4.5.1"
   }
+  "homepage": "/droom/"
 }
