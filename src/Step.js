@@ -22,7 +22,7 @@ export function Step (props) {
 
   return (
     <div >
-      <div className={`rot-cont `} style={{ transform: `rotate(${props.stepNum * 22.5 + 180}deg)` }} >
+      <div className={`step ${props.stepNum}`} style={{ transform: `rotate(${props.stepNum * 22.5 + 180}deg)` }} >
         {renderButtons()}
       </div>
     </div>

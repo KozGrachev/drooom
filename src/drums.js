@@ -10,6 +10,7 @@ import chh from './assets/hhc.mp3';
 import perc from './assets/clap.mp3';
 const notes = { 'A1': kick, 'B1': snare, 'C1': perc, 'D1': chh, 'E1': ohh };
 const noteNames = { 'A1': 'kick', 'B1': 'snare', 'C1': 'perc', 'D1': 'chh', 'E1': 'ohh' };
+const numberString = ['zero', 'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine', 'ten', 'eleven', 'twelve', 'thirteen', 'fourteen', 'fifteen'];
 const notesEntries = Object.entries(noteNames);
 const sampler = new Tone.Sampler(notes).toDestination();
 
@@ -49,6 +50,26 @@ export function Drums (props) {
         sampler.triggerAttackRelease(note, '16n', time);
       }
     }
+
+    //   triggered.classList.add('triggered');
+    // }
+    // console.log("triggered", numberString[count], triggered)
+
+    for (let i = 0; i < notesEntries.length; i++) {
+      let prevStep = count === 0 ? 15 : count - 1;
+      let current = document.querySelector(`.${notesEntries[i][1]}.${numberString[count]}.active`);
+      let previous = document.querySelector(`.${notesEntries[i][1]}.${numberString[prevStep]}.active`);
+
+      if (current) current.classList.add('triggered');
+      if (previous) previous.classList.remove('triggered');
+      console.log(notesEntries[i][1]);
+      console.log(previous);
+      console.log(current);
+      // document.querySelector(`.kick:nth-of-type(${count===0?16:count-1})`).classList.remove('triggered');
+
+    }
+
+
   }
 
   console.log('RERENDERED');
