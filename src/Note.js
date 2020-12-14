@@ -18,13 +18,15 @@ export function Note (props) {
   }
 
   return (
-    <div className="button-wrapper"  >
+    <div className="button-wrapper" style={{
+      width:(props.numOfInstruments - props.position) * (360 / 16),
+      }} >
       {/* <p>{arr[i]} </p> */}
-      <input className={`${props.name} ${numberString[props.stepNum]} ${active ? 'active' : 'inactive'} btn`} type="button" onClick={handleClick} style={{
-        transform: `translate(-50%, ${props.position * -60}px) `,
-        width: (props.numOfInstruments - props.position) * (360 / 16),
+      <input className={`${props.name} ${numberString[props.stepNum]} ${active ? 'active' : 'inactive'} btn`} type="button" value={props.name} onClick={handleClick} style={{
+        // transform: `translate(-50%, ${props.position * -60}px) `,
+        // width: (props.numOfInstruments - props.position) * (360 / 16),
         // background: `rgb(${(200 - colmult * props.position)} ${200 - colmult * props.position} ${200 - colmult * props.position})`,
-        height: 50
+        // height: 50
       }} />
     </div>
   )

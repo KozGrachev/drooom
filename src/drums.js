@@ -81,7 +81,7 @@ export function Drums (props) {
   function renderSteps () {
     console.log('RENDERING STEPS');
     const arr = [];
-    for (let i = 0; i < 16; i++) {
+    for (let i = 0; i < 1; i++) {
       arr.push(<Step handleNoteClick={handleNoteClick} stepNum={i} key={v4()} >  </Step>);
     }
     return arr;
