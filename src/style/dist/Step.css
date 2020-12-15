@@ -1,0 +1,48 @@
+.step {
+  display: flex;
+  position: absolute;
+  flex-direction: column-reverse;
+  transform-origin: 0% -50px;
+  left: 50%;
+  width: 0px;
+}
+
+input {
+  border: transparent;
+  background-color: #56cfe1;
+  color: rgba(0, 0, 0, 0.473);
+  border-radius: 50%;
+  top: 100%;
+  width: 100%;
+  height: 85%;
+  z-index: 1;
+  transition: transform 100ms;
+}
+input:focus {
+  outline: none;
+}
+input:active {
+  background-color: #5390d9;
+}
+input.triggered {
+  transform: scale(1.1);
+  background-color: #6930c3;
+}
+
+.active {
+  background: #5e60ce;
+}
+
+.button-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 60px;
+  transform: translateX(-50%);
+}
+
+#center-marker {
+  width: 5px;
+  height: 5px;
+  background-color: rgba(0, 0, 0, 0.521);
+}

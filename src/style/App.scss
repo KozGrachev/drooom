@@ -1,4 +1,3 @@
-
 #playPause {
   position: absolute;
   width: 90px;
@@ -11,18 +10,24 @@
 
   border: none;
 
+  &.active {
+    background-color: #5390d9;
+  }
 
+  &.inatctive {}
 
 }
 
-button{
+button {
   &:focus {
     outline: none;
     background-color: #5390d9;
   }
 
-  &:active{
-    background-color: #5390d9;
-  }
+
   // background-color: black;
+}
+
+button:active {
+  translate: scale(1.2);
 }
