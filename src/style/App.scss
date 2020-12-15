@@ -4,14 +4,25 @@
   width: 90px;
   height: 90px;
   border-radius: 50%;
-  background-color: rgba(155, 155, 155, 0.288);
+  background-color: #56cfe1;
   color: rgba(0, 0, 0, 0.473);
   left: 50%;
   transform: translate(-50%, -50%);
 
   border: none;
 
+
+
+}
+
+button{
   &:focus {
     outline: none;
+    background-color: #5390d9;
   }
+
+  &:active{
+    background-color: #5390d9;
+  }
+  // background-color: black;
 }

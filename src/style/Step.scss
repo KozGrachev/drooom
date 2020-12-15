@@ -16,23 +16,23 @@
 .step {
   display:flex;
   position: absolute;
-  flex-direction: column;
-  transform-origin: 0% 100%;
-  transform: rotate(180deg);
-  border: 1px solid red;
+  flex-direction: column-reverse;
+  transform-origin: 0% -50px;
+  // transform: rotate(180deg) translateY(0, 50px);
+  // border: 1px solid red;
   left: 50%;
   // height: 100%;
-  // width: 5px;
+  width: 0px;
 }
 
 input {
   border: transparent;
-  background-color: rgba(44, 168, 131, 0.527);
+  background-color: #56cfe1;
   color: rgba(0, 0, 0, 0.473);
   border-radius: 50%;
   top: 100%;
   width: 100%;
-  height: 90%;
+  height: 85%;
   // left: 50%;
   // transform: translateX(-50%);
   // transform: scale(2);
@@ -43,29 +43,32 @@ input {
   }
 
   &:active {
-    background-color: rgba(120, 137, 141, 0.664);
+    background-color: #5390d9;
   }
 
   // &.triggered {
   //   transform: scale(1.1);
   // }
+
+  transition: transform 100ms;
+
+  &.triggered {
+    transform: scale(1.1);
+    background-color: #6930c3;
+  }
 }
 
-.triggered {
-  transform: scale(2.1);
-  background-color: red;
-}
 
-// .active {
-//   background: rgb(120, 137, 141);
-// }
+.active {
+  background: #5e60ce;
+}
 
 .button-wrapper {
   display:flex;
   justify-content: center;
   align-items: center;
   // height: 66px;
-  border: 1px solid rgba(0, 0, 255, 0.514);
+  // border: 1px solid rgba(0, 0, 255, 0.514);
   height: $outer-circle-size/5;
   // margin: 10px 0;
   transform: translateX(-50%);
