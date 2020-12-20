@@ -1,5 +1,5 @@
 import './style/App.scss';
-import { Drums } from './drums'
+import { Drums } from './components/drums'
 import * as Tone from 'tone';
 import { useState } from 'react';
 Tone.Transport.bpm.value = 120;
@@ -37,8 +37,8 @@ function App () {
 
   return (
     <div>
-      <button id="playPause" onClick={() => playPause()}>PLAY PATTERN</button>
-      <Drums passUpLoop={setDrumLoop} />
+      {/* <button id="playPause" onClick={() => playPause()}>PLAY PATTERN</button> */}
+      <Drums playPause={playPause} passUpLoop={setDrumLoop} />
     </div>
   );
 }
