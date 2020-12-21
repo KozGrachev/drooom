@@ -1,0 +1,27 @@
+{
+  "files": {
+    "main.css": "/droom/static/css/main.4a25322e.chunk.css",
+    "main.js": "/droom/static/js/main.05d9b65b.chunk.js",
+    "main.js.map": "/droom/static/js/main.05d9b65b.chunk.js.map",
+    "runtime-main.js": "/droom/static/js/runtime-main.5dc97301.js",
+    "runtime-main.js.map": "/droom/static/js/runtime-main.5dc97301.js.map",
+    "static/js/2.9e7cc12e.chunk.js": "/droom/static/js/2.9e7cc12e.chunk.js",
+    "static/js/2.9e7cc12e.chunk.js.map": "/droom/static/js/2.9e7cc12e.chunk.js.map",
+    "static/js/3.53810d8b.chunk.js": "/droom/static/js/3.53810d8b.chunk.js",
+    "static/js/3.53810d8b.chunk.js.map": "/droom/static/js/3.53810d8b.chunk.js.map",
+    "index.html": "/droom/index.html",
+    "static/css/main.4a25322e.chunk.css.map": "/droom/static/css/main.4a25322e.chunk.css.map",
+    "static/js/2.9e7cc12e.chunk.js.LICENSE.txt": "/droom/static/js/2.9e7cc12e.chunk.js.LICENSE.txt",
+    "static/media/clap.6d430d98.mp3": "/droom/static/media/clap.6d430d98.mp3",
+    "static/media/hhc.8b9af951.mp3": "/droom/static/media/hhc.8b9af951.mp3",
+    "static/media/hho.b5c105d9.mp3": "/droom/static/media/hho.b5c105d9.mp3",
+    "static/media/kick.2ba1fda8.mp3": "/droom/static/media/kick.2ba1fda8.mp3",
+    "static/media/snare.7128e61a.mp3": "/droom/static/media/snare.7128e61a.mp3"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.5dc97301.js",
+    "static/js/2.9e7cc12e.chunk.js",
+    "static/css/main.4a25322e.chunk.css",
+    "static/js/main.05d9b65b.chunk.js"
+  ]
+}
