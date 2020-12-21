@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 const numberString = ['zero', 'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine', 'ten', 'eleven', 'twelve', 'thirteen', 'fourteen', 'fifteen'];
 
 
@@ -6,8 +6,9 @@ export function Note (props) {
 
   const [active, setActive] = useState(false, () => false);
 
+
   function handleClick () {
-    const newActive = !active
+    const newActive = !active;
     setActive(newActive);
     const state = {
       name: props.name,

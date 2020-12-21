@@ -31,11 +31,11 @@ export function Drums ({ playPause, passUpLoop }) {
   useEffect(() => {
     //* send the repeat function to the transport
     passUpLoop(repeat);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
     socket.on('pattern-change', (note) => {
       console.log('RECEIVED NOTE FROM OTHER CLIENT');
       changePattern(note)
     })
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
 
@@ -46,6 +46,7 @@ export function Drums ({ playPause, passUpLoop }) {
 
   function changePattern (note) {
     setPattern((pat) => {
+      //! Do not mutate state -- rewrite
       pat[note.name][note.stepNum] = !pat[note.name][note.stepNum];
       return pat;
     })
@@ -58,6 +59,11 @@ export function Drums ({ playPause, passUpLoop }) {
         sampler.triggerAttackRelease(note, '16n', time);
       }
     }
+
+    
+
+    //* Adds the triggered class to all active buttons in the current step
+    //* and removes it from those in the previous step
 
     for (let i = 0; i < notesEntries.length; i++) {
       let prevStep = count === 0 ? 15 : count - 1;
