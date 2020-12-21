@@ -32,12 +32,13 @@ export function Drums ({ playPause, passUpLoop }) {
     //* send the repeat function to the transport
     passUpLoop(repeat);
     socket.on('pattern-change', (note) => {
-      console.log('RECEIVED NOTE FROM OTHER CLIENT');
       changePattern(note);
       const thisNote = document.querySelector(`.${numberString[note.stepNum]}.${note.name}`);
       thisNote.classList.toggle('active');
       thisNote.classList.toggle('inactive');
-      console.log(thisNote.classList);
+      console.log('RECEIVED NOTE FROM OTHER CLIENT');
+      console.log('note::', note);
+      console.log('thisNote::', thisNote);
     })
 
     return () => socket.disconnect();
@@ -46,6 +47,9 @@ export function Drums ({ playPause, passUpLoop }) {
 
   function handleNoteClick (note) {
     socket.emit('pattern-change', note);
+    const thisNote = document.querySelector(`.${numberString[note.stepNum]}.${note.name}`);
+    thisNote.classList.toggle('active');
+    thisNote.classList.toggle('inactive');
     changePattern(note);
   }
 
@@ -62,7 +66,6 @@ export function Drums ({ playPause, passUpLoop }) {
     //   newPat[note.name][note.stepNum] = !newPat[note.name][note.stepNum];
     //   return newPat;
     // })
-    console.log(pattern[note.name][note.stepNum]);
   }
 
   function repeat (time, count) {
