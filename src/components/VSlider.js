@@ -1,4 +1,3 @@
-import '../style/slider.scss';
 import {
   Slider,
   SliderTrack,

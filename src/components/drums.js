@@ -76,17 +76,19 @@ export function Drums (props) {
     return arr;
   }
   return (
-    <div>
-      <div className="drums-container">
-        <div className="drums-controls">
-          <VSlider setBpm={props.setBpm} className="slider" />
-        </div>
-        <div className="drums-wrapper">
+    <div className="drums-container">
+      <div className="drumpad-container">
+        <div className="drumpad-wrapper">
           {renderSteps()}
         </div>
         <input type="button" id="playPause" onClick={() => props.playPause()} value="droom"></input>
-
+      <div className="drums-controls">
+        <div class="slider-wrapper">
+          <VSlider setBpm={props.setBpm} className="slider" />
+        </div>
       </div>
+      </div>
+
 
       {checkRerender()}
     </div>
