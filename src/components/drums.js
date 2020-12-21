@@ -16,7 +16,7 @@ const notesEntries = Object.entries(noteNames);
 const sampler = new Tone.Sampler(notes).toDestination();
 
 
-export function Drums (props) {
+export function Drums ({ playPause, passUpLoop }) {
 
   const [pattern, setPattern] = useState({
     kick: Array(16).fill(false),
@@ -28,7 +28,8 @@ export function Drums (props) {
 
   useEffect(() => {
     //* send the repeat function to the transport
-    props.passUpLoop(repeat);
+    passUpLoop(repeat);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   function handleNoteClick (note) {
@@ -54,11 +55,12 @@ export function Drums (props) {
 
       if (current) current.classList.add('triggered');
       if (previous) previous.classList.remove('triggered');
-      console.log(notesEntries[i][1]);
-      console.log(previous);
-      console.log(current);
       // document.querySelector(`.kick:nth-of-type(${count===0?16:count-1})`).classList.remove('triggered');
     }
+  }
+
+  function setBpm (val) {
+    Tone.Transport.bpm.value = val;
   }
 
   console.log('RERENDERED');
@@ -75,18 +77,21 @@ export function Drums (props) {
     }
     return arr;
   }
+
+
+
   return (
     <div className="drums-container">
       <div className="drumpad-container">
         <div className="drumpad-wrapper">
           {renderSteps()}
         </div>
-        <input type="button" id="playPause" onClick={() => props.playPause()} value="droom"></input>
-      <div className="drums-controls">
-        <div className="slider-wrapper">
-          <VSlider setBpm={props.setBpm} className="slider" />
+        <input type="button" id="playPause" onClick={() => playPause()} value="droom"></input>
+        <div className="drums-controls">
+          <div className="slider-wrapper">
+            <VSlider handleChange={setBpm} className="slider" />
+          </div>
         </div>
-      </div>
       </div>
 
 

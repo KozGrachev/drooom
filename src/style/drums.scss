@@ -16,6 +16,7 @@
 }
 
 .drumpad-wrapper {
+  z-index: 1;
   transform: translateY(-50px) rotate(180deg);
 }
 
@@ -43,6 +44,8 @@
   left: 50%;
   top: 50%;
   transform: translate(-50%, -50%);
+  font-size: x-large;
+  font-weight: 600;
 
   &.active {
     background-color: #5390d9;

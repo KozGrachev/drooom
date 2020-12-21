@@ -15,7 +15,7 @@ export const VSlider = (props) => {
         max={170}
         defaultValue={120}
         orientation="vertical"
-        onChange={(val) => props.setBpm(val)}>
+        onChange={(val) => props.handleChange(val)}>
         <SliderTrack bg="red.100">
           <SliderFilledTrack bg="tomato" />
         </SliderTrack>
