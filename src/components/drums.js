@@ -83,7 +83,7 @@ export function Drums (props) {
         </div>
         <input type="button" id="playPause" onClick={() => props.playPause()} value="droom"></input>
       <div className="drums-controls">
-        <div class="slider-wrapper">
+        <div className="slider-wrapper">
           <VSlider setBpm={props.setBpm} className="slider" />
         </div>
       </div>
