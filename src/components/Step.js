@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import '../style/variables.scss';
 import '../style/Step.scss';
 import { v4 } from 'uuid'

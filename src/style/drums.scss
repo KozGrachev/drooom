@@ -1,20 +1,56 @@
 @import './variables.scss';
 
 .drums-container {
-  position: absolute;
+  position: relative;
+  // border: 3px solid blue;
+}
+
+.drumpad-container {
+  position: relative;
   display: flex;
   justify-content: center;
   align-items: center;
   width: 100%;
   height: $outer-circle-size;
   // border: 3px solid red;
-  // transform: translateY(-50%);
-  // background-color: rgba(211, 211, 211, 0.137);
-  z-index: -1;
 }
 
-.drums-wrapper{
+.drumpad-wrapper {
+  z-index: 1;
   transform: translateY(-50px) rotate(180deg);
 }
 
+.drums-controls {
+  display: flex;
+  flex-direction: row-reverse;
+  // border: 3px solid orange;
+  position: absolute;
+  height: 500px;
+  width: 100%;
+}
 
+.slider-wrapper {
+  width: 100px;
+  // border: 3px solid green;
+}
+
+#playPause {
+  position: absolute;
+  width: 90px;
+  height: 90px;
+  border-radius: 50%;
+  background-color: #56cfe1;
+  color: rgba(0, 0, 0, 0.473);
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  font-size: x-large;
+  font-weight: 600;
+
+  &.active {
+    background-color: #5390d9;
+  }
+
+  &.inatctive {}
+
+}
