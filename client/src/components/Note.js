@@ -6,7 +6,6 @@ export function Note (props) {
 
   const [active, setActive] = useState(false, () => false);
 
-
   function handleClick () {
     const newActive = !active;
     setActive(newActive);

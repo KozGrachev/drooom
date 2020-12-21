@@ -33,11 +33,16 @@ export function Drums ({ playPause, passUpLoop }) {
     passUpLoop(repeat);
     socket.on('pattern-change', (note) => {
       console.log('RECEIVED NOTE FROM OTHER CLIENT');
-      changePattern(note)
+      changePattern(note);
+      const thisNote = document.querySelector(`.${numberString[note.stepNum]}.${note.name}`);
+      thisNote.classList.toggle('active');
+      thisNote.classList.toggle('inactive');
+      console.log(thisNote.classList);
     })
+
+    return () => socket.disconnect();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-
 
   function handleNoteClick (note) {
     socket.emit('pattern-change', note);
@@ -50,6 +55,13 @@ export function Drums ({ playPause, passUpLoop }) {
       pat[note.name][note.stepNum] = !pat[note.name][note.stepNum];
       return pat;
     })
+
+    // setPattern((pat) => {
+    //   //? creating new state, triggering re-render
+    //   const newPat = { ...pat };
+    //   newPat[note.name][note.stepNum] = !newPat[note.name][note.stepNum];
+    //   return newPat;
+    // })
     console.log(pattern[note.name][note.stepNum]);
   }
 
@@ -60,7 +72,7 @@ export function Drums ({ playPause, passUpLoop }) {
       }
     }
 
-    
+
 
     //* Adds the triggered class to all active buttons in the current step
     //* and removes it from those in the previous step
@@ -72,7 +84,6 @@ export function Drums ({ playPause, passUpLoop }) {
 
       if (current) current.classList.add('triggered');
       if (previous) previous.classList.remove('triggered');
-      // document.querySelector(`.kick:nth-of-type(${count===0?16:count-1})`).classList.remove('triggered');
     }
   }
 

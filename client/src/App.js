@@ -23,7 +23,6 @@ function App () {
   function nextStep (time) {
     drumLoop(time, count);
     count = (count + 1) % 16;
-    console.log('count', count);
   }
 
   function setDrumLoop (cb) {
