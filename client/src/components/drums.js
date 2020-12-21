@@ -33,23 +33,22 @@ export function Drums ({ playPause, passUpLoop }) {
     passUpLoop(repeat);
     socket.on('pattern-change', (note) => {
       changePattern(note);
-      const thisNote = document.querySelector(`.${numberString[note.stepNum]}.${note.name}`);
-      thisNote.classList.toggle('active');
-      thisNote.classList.toggle('inactive');
-      console.log('RECEIVED NOTE FROM OTHER CLIENT');
-      console.log('note::', note);
-      console.log('thisNote::', thisNote);
+      buttonToggleActive(note);
     })
 
     return () => socket.disconnect();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  function handleNoteClick (note) {
-    socket.emit('pattern-change', note);
+  function buttonToggleActive (note) {
     const thisNote = document.querySelector(`.${numberString[note.stepNum]}.${note.name}`);
     thisNote.classList.toggle('active');
     thisNote.classList.toggle('inactive');
+  }
+
+  function handleNoteClick (note) {
+    socket.emit('pattern-change', note);
+    buttonToggleActive(note);
     changePattern(note);
   }
 

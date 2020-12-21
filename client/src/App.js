@@ -2,7 +2,8 @@ import './style/App.scss';
 import { Drums } from './components/drums'
 import * as Tone from 'tone';
 Tone.Transport.bpm.value = 120;
-Tone.Transport.swing = 0.08;
+Tone.Transport.swing = 0.15;
+Tone.Transport.swingSubdivision = '16n';
 let count = 0;
 let drumLoop;
 
