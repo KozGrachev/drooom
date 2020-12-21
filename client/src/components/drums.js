@@ -9,6 +9,8 @@ import snare from '../assets/snare.mp3';
 import ohh from '../assets/hho.mp3';
 import chh from '../assets/hhc.mp3';
 import perc from '../assets/clap.mp3';
+import openSocket from 'socket.io-client';
+const socket = openSocket('http://localhost:3101');
 const notes = { 'A1': kick, 'B1': snare, 'C1': perc, 'D1': chh, 'E1': ohh };
 const noteNames = { 'A1': 'kick', 'B1': 'snare', 'C1': 'perc', 'D1': 'chh', 'E1': 'ohh' };
 const numberString = ['zero', 'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine', 'ten', 'eleven', 'twelve', 'thirteen', 'fourteen', 'fifteen'];
@@ -30,9 +32,19 @@ export function Drums ({ playPause, passUpLoop }) {
     //* send the repeat function to the transport
     passUpLoop(repeat);
     // eslint-disable-next-line react-hooks/exhaustive-deps
+    socket.on('pattern-change', (note) => {
+      console.log('RECEIVED NOTE FROM OTHER CLIENT');
+      changePattern(note)
+    })
   }, []);
 
+
   function handleNoteClick (note) {
+    socket.emit('pattern-change', note);
+    changePattern(note);
+  }
+
+  function changePattern (note) {
     setPattern((pat) => {
       pat[note.name][note.stepNum] = !pat[note.name][note.stepNum];
       return pat;
@@ -43,7 +55,6 @@ export function Drums ({ playPause, passUpLoop }) {
   function repeat (time, count) {
     for (const [note, drum] of notesEntries) {
       if (pattern[drum][count]) {
-        //if checked, play
         sampler.triggerAttackRelease(note, '16n', time);
       }
     }
@@ -77,8 +88,6 @@ export function Drums ({ playPause, passUpLoop }) {
     }
     return arr;
   }
-
-
 
   return (
     <div className="drums-container">
