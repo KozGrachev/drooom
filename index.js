@@ -18,25 +18,25 @@ app.get('*', (req, res) => res.sendFile(path.join(buildPath, 'index.html')));
 
 
 
-app.listen(PORT, () => {
-  console.log('Server listening on port', PORT);
-});
-
-// const server = app.listen(PORT, () => {
+// app.listen(PORT, () => {
 //   console.log('Server listening on port', PORT);
-// })
+// });
 
-// const io = socketIo(server,{ cors: true});
+const server = app.listen(PORT, () => {
+  console.log('Server listening on port', PORT);
+})
 
-// io.on('connection', (socket) => {
-//   console.log('A user has connected');
-//   socket.on('disconnect', () => console.log('User has disconnected'));
+const io = socketIo(server,{ cors: true});
 
-//   socket.on('pattern-change', (note) => {
-//     console.log('event received!!', note);
-//     socket.broadcast.emit('pattern-change', (note));
-//   })
-// })
+io.on('connection', (socket) => {
+  console.log('A user has connected');
+  socket.on('disconnect', () => console.log('User has disconnected'));
+
+  socket.on('pattern-change', (note) => {
+    console.log('event received!!', note);
+    socket.broadcast.emit('pattern-change', (note));
+  })
+})
 
 
 // const path = require('path');
