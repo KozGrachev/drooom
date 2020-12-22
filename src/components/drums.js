@@ -10,7 +10,7 @@ import ohh from '../assets/hho.mp3';
 import chh from '../assets/hhc.mp3';
 import perc from '../assets/clap.mp3';
 import openSocket from 'socket.io-client';
-const socket = openSocket('http://localhost:3101');
+const socket = openSocket('http://localhost:3100');
 const notes = { 'A1': kick, 'B1': snare, 'C1': perc, 'D1': chh, 'E1': ohh };
 const noteNames = { 'A1': 'kick', 'B1': 'snare', 'C1': 'perc', 'D1': 'chh', 'E1': 'ohh' };
 const numberString = ['zero', 'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine', 'ten', 'eleven', 'twelve', 'thirteen', 'fourteen', 'fifteen'];
