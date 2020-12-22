@@ -4,30 +4,39 @@ const app = express();
 // const PORT = 3000; //! socket.io port
 const PORT = process.env.PORT || 3100;
 
-// const path = require('path');
-// const buildPath = path.join(__dirname, '..', 'build')
-// app.use(express.static(buildPath));
-// app.get('*', (req, res) => res.sendFile(path.join(buildPath, 'index.html')));
+const path = require('path');
+const buildPath = path.resolve('client/build')
+app.use(express.static(buildPath));
+app.get('*', (req, res) => res.sendFile(path.join(buildPath, 'index.html')));
 
-if (process.env.NODE_ENV === 'production') {
-  app.use(express.static('client/build'))
-}
+// if (process.env.NODE_ENV === 'production') {
+//   console.log(`We're on Heroku baby!`);
+// app.use(express.static('client/build'));
+// app.use(express.static(path.resolve('test')));
+// app.get('*', (req, res) => res.sendFile(path.resolve('test/something.html')));
+// }
 
-const server = app.listen(PORT, () => {
+
+
+app.listen(PORT, () => {
   console.log('Server listening on port', PORT);
-})
+});
 
-const io = socketIo(server,{ cors: true});
+// const server = app.listen(PORT, () => {
+//   console.log('Server listening on port', PORT);
+// })
 
-io.on('connection', (socket) => {
-  console.log('A user has connected');
-  socket.on('disconnect', () => console.log('User has disconnected'));
+// const io = socketIo(server,{ cors: true});
 
-  socket.on('pattern-change', (note) => {
-    console.log('event received!!', note);
-    socket.broadcast.emit('pattern-change', (note));
-  })
-})
+// io.on('connection', (socket) => {
+//   console.log('A user has connected');
+//   socket.on('disconnect', () => console.log('User has disconnected'));
+
+//   socket.on('pattern-change', (note) => {
+//     console.log('event received!!', note);
+//     socket.broadcast.emit('pattern-change', (note));
+//   })
+// })
 
 
 // const path = require('path');

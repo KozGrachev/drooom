@@ -47,7 +47,6 @@
   "devDependencies": {
     "execa": "latest"
   },
-  "homepage": "/droom/",
   "engines": {
     "npm": "6.14.5",
     "node": "12.18.2"
