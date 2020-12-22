@@ -18,7 +18,7 @@ const notesEntries = Object.entries(noteNames);
 const sampler = new Tone.Sampler(notes).toDestination();
 
 
-export function Drums ({ playPause, passUpLoop }) {
+export function Drums ({ playPause, passUpLoop }) { 
 
   const [pattern, setPattern] = useState({
     kick: Array(16).fill(false),
