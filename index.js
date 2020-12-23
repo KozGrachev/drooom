@@ -29,5 +29,5 @@ io.on('connection', (socket) => {
   socket.on('pattern-change', (note) => {
     console.log('event received!!', note);
     socket.broadcast.emit('pattern-change', (note));
-  })
+  }) 
 })
