@@ -6,16 +6,10 @@ const PORT = process.env.PORT || 3100;
 
 const path = require('path');
 const buildPath = path.resolve('client/build')
-app.use(express.static(buildPath));
-app.get('*', (req, res) => res.sendFile(path.join(buildPath, 'index.html')));
-
-// if (process.env.NODE_ENV === 'production') {
-//   console.log(`We're on Heroku baby!`);
-// app.use(express.static('client/build'));
-// app.use(express.static(path.resolve('test')));
-// app.get('*', (req, res) => res.sendFile(path.resolve('test/something.html')));
-// }
-
+if (process.env.NODE_ENV === 'production') {
+  app.use(express.static(buildPath));
+  app.get('*', (req, res) => res.sendFile(path.join(buildPath, 'index.html')));
+}
 
 
 // app.listen(PORT, () => {
@@ -26,7 +20,7 @@ const server = app.listen(PORT, () => {
   console.log('Server listening on port', PORT);
 })
 
-const io = socketIo(server,{ cors: true});
+const io = socketIo(server, { cors: true });
 
 io.on('connection', (socket) => {
   console.log('A user has connected');
@@ -37,17 +31,3 @@ io.on('connection', (socket) => {
     socket.broadcast.emit('pattern-change', (note));
   })
 })
-
-
-// const path = require('path');
-// const express = require('express');
-// const app = express();
-// const publicPath = path.join(__dirname, '../build');
-// const port = process.env.PORT || 3000;
-// app.use(express.static(publicPath));
-// app.get('*', (req, res) => {
-//   res.sendFile(path.join(publicPath, 'index.html'));
-// });
-// app.listen(port, () => {
-//   console.log('Server is up!');
-// });
