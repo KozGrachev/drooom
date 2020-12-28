@@ -1,18 +1,21 @@
-.circular {
-  display: flex;
-  position: absolute;
-  flex-direction: column-reverse;
-  transform-origin: 0% -50px;
-  // transform: rotate(180deg) translateY(0, 50px);
-  // border: 1px solid red;
-  left: 50%;
-  // height: 100%;
-  width: 0px;
-}
+.step {
 
-.grid {
-  display: grid;
-  grid-template-rows: repeat(32, 25px);
-  width: 50px;
-  border: 1px solid rgba(0, 0, 255, 0.322);
+  &.circle {
+    display: flex;
+    position: absolute;
+    flex-direction: column-reverse;
+    transform-origin: 0% -50px;
+    // transform: rotate(180deg) translateY(0, 50px);
+    // border: 1px solid red;
+    left: 50%;
+    // height: 100%;
+    width: 0px;
+  }
+
+  &.grid {
+    display: grid;
+    grid-template-rows: repeat(32, 25px);
+    width: 50px;
+    border: 1px solid rgba(0, 0, 255, 0.322);
+  }
 }

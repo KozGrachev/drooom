@@ -27,7 +27,7 @@ export function Step ({ noteNames, stepNum, handleNoteClick, shape }) {
   return (
     <div >
       <div
-        className={`step ${stepNum} ${shape === 'circle' ? 'circular' : 'grid'}`}
+        className={`step ${stepNum} ${shape}`}
         style={shape === 'circle'
           ? { transform: `rotate(${stepNum * 22.5}deg)` }
           : {}

@@ -33,8 +33,8 @@ function App () {
 
   return (
     <div>
-      {/* <Keys playPause={playPause}/> */}
-      <Drums playPause={playPause} passUpLoop={setDrumLoop} />
+      <Keys playPause={playPause}/>
+      {/* <Drums playPause={playPause} passUpLoop={setDrumLoop} /> */}
     </div>
   );
 }
