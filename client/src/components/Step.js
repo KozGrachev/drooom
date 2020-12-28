@@ -1,32 +1,39 @@
 import React from 'react';
 import '../style/variables.scss';
-import '../style/Step.scss';
+import '../style/step.scss';
 import { v4 } from 'uuid'
-import { Note } from './Note.js';
+import { Note } from './note.js';
 
 
-export function Step (props) {
+export function Step ({ noteNames, stepNum, handleNoteClick, shape }) {
 
   function renderButtons () {
+    console.log(noteNames);
     const buttons = [];
-    const names = ['kick', 'snare', 'ohh', 'chh', 'perc']
-    for (let i=0; i<names.length; i++) {
-      buttons.push(<Note name={names[i]} stepNum={props.stepNum} position={i} numOfInstruments={names.length} handleNoteClick={props.handleNoteClick} key={v4()} />);
+    for (let i = 0; i < noteNames.length; i++) {
+      buttons.push(<Note
+        name={noteNames[i]}
+        shape={shape}
+        stepNum={stepNum}
+        position={i}
+        numOfNotes={noteNames.length}
+        handleNoteClick={handleNoteClick}
+        key={v4()}
+      />);
     }
     return buttons
-    // return names.map((name, i) => {
-    //   return (
-    //     <Note name={name} stepNum={props.stepNum} position={i} numOfInstruments={names.length} handleNoteClick={props.handleNoteClick} key={v4()} />
-    //   )
-    // })
-
-
   }
 
   return (
     <div >
-      <div className={`step ${props.stepNum}`} style={{ transform: `rotate(${props.stepNum * 22.5}deg)` }} >
-        {/* <p>{props.stepNum}</p> */}
+      <div
+        className={`step ${stepNum} ${shape === 'circle' ? 'circular' : 'grid'}`}
+        style={shape === 'circle'
+          ? { transform: `rotate(${stepNum * 22.5}deg)` }
+          : {}
+        }
+      >
+        {/* <p>{stepNum}</p> */}
         {renderButtons()}
       </div>
     </div>

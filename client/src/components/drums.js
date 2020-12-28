@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { Step } from './Step';
-import { VSlider } from "./VSlider";
+import { Step } from './step';
+import { VSlider } from "./vslider";
 import '../style/drums.scss';
 import * as Tone from 'tone';
 import { v4 } from 'uuid';
@@ -10,10 +10,11 @@ import ohh from '../assets/hho.mp3';
 import chh from '../assets/hhc.mp3';
 import perc from '../assets/clap.mp3';
 import openSocket from 'socket.io-client';
-const socket = openSocket();
+const socket = process.env.NODE_ENV === 'production' ? openSocket() : openSocket('localhost:3100');
 const notes = { 'A1': kick, 'B1': snare, 'C1': perc, 'D1': chh, 'E1': ohh };
 const noteNames = { 'A1': 'kick', 'B1': 'snare', 'C1': 'perc', 'D1': 'chh', 'E1': 'ohh' };
 const numberString = ['zero', 'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine', 'ten', 'eleven', 'twelve', 'thirteen', 'fourteen', 'fifteen'];
+const names = Object.values(noteNames);
 const notesEntries = Object.entries(noteNames);
 const sampler = new Tone.Sampler(notes).toDestination();
 
@@ -73,20 +74,18 @@ export function Drums ({ playPause, passUpLoop }) {
         sampler.triggerAttackRelease(note, '16n', time);
       }
     }
-
-
-
     //* Adds the triggered class to all active buttons in the current step
     //* and removes it from those in the previous step
+    Tone.Draw.schedule(() => {
+      for (let i = 0; i < notesEntries.length; i++) {
+        let prevStep = count === 0 ? 15 : count - 1;
+        let current = document.querySelector(`.${notesEntries[i][1]}.${numberString[count]}.active`);
+        let previous = document.querySelector(`.${notesEntries[i][1]}.${numberString[prevStep]}.active`);
 
-    for (let i = 0; i < notesEntries.length; i++) {
-      let prevStep = count === 0 ? 15 : count - 1;
-      let current = document.querySelector(`.${notesEntries[i][1]}.${numberString[count]}.active`);
-      let previous = document.querySelector(`.${notesEntries[i][1]}.${numberString[prevStep]}.active`);
-
-      if (current) current.classList.add('triggered');
-      if (previous) previous.classList.remove('triggered');
-    }
+        if (current) current.classList.add('triggered');
+        if (previous) previous.classList.remove('triggered');
+      }
+    }, time)
   }
 
   function setBpm (val) {
@@ -103,7 +102,7 @@ export function Drums ({ playPause, passUpLoop }) {
     console.log('RENDERING STEPS');
     const arr = [];
     for (let i = 0; i < 16; i++) {
-      arr.push(<Step handleNoteClick={handleNoteClick} stepNum={i} key={v4()} >  </Step>);
+      arr.push(<Step handleNoteClick={handleNoteClick} stepNum={i} shape="circle" noteNames={names} key={v4()} />);
     }
     return arr;
   }

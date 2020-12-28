@@ -1,6 +1,7 @@
 import './style/App.scss';
 import { Drums } from './components/drums'
 import * as Tone from 'tone';
+import { Keys } from './components/keys';
 Tone.Transport.bpm.value = 120;
 Tone.Transport.swing = 0.15;
 Tone.Transport.swingSubdivision = '16n';
@@ -32,6 +33,7 @@ function App () {
 
   return (
     <div>
+      {/* <Keys playPause={playPause}/> */}
       <Drums playPause={playPause} passUpLoop={setDrumLoop} />
     </div>
   );

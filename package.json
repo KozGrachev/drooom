@@ -21,6 +21,7 @@
     "url": "https://github.com/Bobik808/droom/issues"
   },
   "dependencies": {
+    "@tonaljs/tonal": "^4.6.0",
     "express": "^4.17.1",
     "socket.io": "^3.0.4"
   }
