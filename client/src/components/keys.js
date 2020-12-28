@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Step } from './step';
 import { Scale } from '@tonaljs/tonal';
 import { v4 } from 'uuid';
@@ -6,6 +6,9 @@ import '../style/keys.scss'
 const cMaj = Scale.get('C major').notes;
 
 export function Keys () {
+
+  const [numSteps, setNumSteps] = useState(32);
+
   function handleNoteClick (note) {
     console.log(note);
   }
@@ -13,7 +16,7 @@ export function Keys () {
   function renderSteps () {
     console.log(cMaj);
     const arr = [];
-    for (let i = 0; i < 32; i++) {
+    for (let i = 0; i < numSteps; i++) {
       arr.push(<Step
         handleNoteClick={handleNoteClick}
         stepNum={i}
@@ -37,7 +40,11 @@ export function Keys () {
       </div>
       <div className="piano-roll">
         <div className="piano"></div>
-        <div className="sequencer">
+        <div className="sequencer"
+          // style={{
+          //   grid
+        // }}
+        >
           {renderSteps()}
         </div>
       </div>

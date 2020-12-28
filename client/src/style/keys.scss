@@ -57,6 +57,8 @@ $note-width: 100vw/ $n-cols;
 
 .piano-roll {
   height: 100%;
+  border: 3px solid rgba(0, 255, 34, 0.623);
+
 }
 
 .piano {
@@ -67,18 +69,8 @@ $note-width: 100vw/ $n-cols;
   border: 3px solid blue;
   height: 100%;
   width: 100%;
-  display: flex;
+  display: grid;
+  grid-template-columns: repeat(32, minmax(40px, auto));
+  // grid-auto-columns: 60px;
   // flex-direction: column;
-}
-
-.piano-step {
-  width: $note-width;
-  height: $note-height;
-  border: 1px solid rgba(0, 0, 0, 0.295);
-  display: flex;
-  flex-direction: column;
-}
-
-.note {
-  height: $note-height;
 }

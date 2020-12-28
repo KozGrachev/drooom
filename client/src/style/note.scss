@@ -4,12 +4,17 @@ input {
   background-color: #56cfe1;
   color: rgba(0, 0, 0, 0.473);
 
-  top: 100%;
   width: 100%;
-  height: 85%;
   z-index: 1;
 
-  &.circle{
+  &.grid {
+    height: 100%;
+    border: 1px solid rgba(255, 255, 255, 0.466);
+  }
+
+  &.circle {
+    top: 100%;
+    height: 85%;
     border-radius: 50%;
   }
 
@@ -35,20 +40,16 @@ input {
 }
 
 .button-wrapper {
+  // background-color: red;
+  // height: 66px;
+  // border: 1px solid rgba(0, 0, 255, 0.514);
   display: flex;
   justify-content: center;
   align-items: center;
-  // height: 66px;
-  // border: 1px solid rgba(0, 0, 255, 0.514);
-  height: $outer-circle-size/5;
+  background: red;
 
   &.circle {
+    height: $outer-circle-size/5;
     transform: translateX(-50%);
   }
-}
-
-#center-marker {
-  width: 5px;
-  height: 5px;
-  background-color: rgba(0, 0, 0, 0.521);
 }
