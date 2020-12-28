@@ -10,7 +10,7 @@ export function Step ({ noteNames, stepNum, handleNoteClick, shape }) {
   function renderButtons () {
     console.log(noteNames);
     const buttons = [];
-    for (let i = 0; i < noteNames.length; i++) {
+    for (let i = noteNames.length-1; i >= 0; i--) {
       buttons.push(<Note
         name={noteNames[i]}
         shape={shape}

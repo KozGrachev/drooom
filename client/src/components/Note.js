@@ -36,7 +36,7 @@ export function Note ({ name, stepNum, handleNoteClick, numOfNotes, position, sh
         type="button"
         onClick={(e) => handleClick(e)}
         onKeyDown={(e) => e.preventDefault()}
-        value={name}
+        value={`${shape==='grid' ? name : ''}`}
       />
     </div>
   )

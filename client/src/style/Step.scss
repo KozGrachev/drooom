@@ -3,7 +3,7 @@
   &.circle {
     display: flex;
     position: absolute;
-    flex-direction: column-reverse;
+    flex-direction: column;
     transform-origin: 0% -50px;
     // transform: rotate(180deg) translateY(0, 50px);
     // border: 1px solid red;
