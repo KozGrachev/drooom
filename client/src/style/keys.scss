@@ -84,20 +84,31 @@ svg {
 .piano {
   width: 50px;
   height: max-content;
-  border-right: 3px solid rgba(255, 255, 255, 0.349);
-  color: #979090;
+  border-right: 2px solid rgba(255, 255, 255, 0.349);
+  color: #C8C8C8;
 }
 
 .sequencer {
   // border: 3px solid blue;
-  height: 100%;
+  height: max-content;
   width: 100%;
   display: grid;
   grid-template-columns: repeat(32, minmax(40px, auto));
   // grid-auto-columns: 60px;
   // flex-direction: column;
 
-  
+  // >:nth-of-type(4n) {
+  //   border-right: 1px solid #C8C8C8;
+  //   // position: absolute;
+  // }
+  >:nth-of-type(8n) {
+    border-right: 1px solid #C8C8C8;
+    // position: absolute;
+  }
+  >:nth-of-type(16n) {
+    border-right: 2px solid #C8C8C8;
+    // position: absolute;
+  }
   * {
     color: rgba(255, 255, 255, 0); //! TRANSPARENT FONT COLOR!!
   }

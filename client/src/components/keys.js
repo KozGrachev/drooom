@@ -1,18 +1,31 @@
 import React, { useState } from 'react';
 import { Step } from './step';
 import { Scale } from '@tonaljs/tonal';
+import * as Tone from 'tone';
 import { v4 } from 'uuid';
 import '../style/keys.scss';
 import '../assets/svg/play.svg';
 const cMaj = Scale.get('C major').notes;
 const cMaj4Oct = Scale.rangeOf('C major')('C2', 'C6');
+const synth = new Tone.PolySynth().toDestination();
+synth.volume.value = -5;
+
 
 export function Keys () {
 
   const [numSteps, setNumSteps] = useState(32);
+  const [pattern, setPattern] = useState(Array(numSteps).fill(null));
+
+  function buttonToggleActive (note) {
+    // const thisNote = document.querySelector(`.${numberString[note.stepNum]}.${note.name}`);
+    // thisNote.classList.toggle('active');
+    // thisNote.classList.toggle('inactive');
+  }
 
   function handleNoteClick (note) {
     console.log(note);
+
+    synth.triggerAttackRelease(note.name, 0.3);
   }
 
   function renderSteps (num) {
