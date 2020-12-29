@@ -7,6 +7,7 @@ Tone.Transport.swing = 0.15;
 Tone.Transport.swingSubdivision = '16n';
 let count = 0;
 let drumLoop;
+let keysLoop;
 
 function App () {
 
@@ -24,16 +25,20 @@ function App () {
 
   function nextStep (time) {
     drumLoop(time, count);
+    keysLoop(time, count);
     count = (count + 1) % 16;
   }
 
   function setDrumLoop (cb) {
     drumLoop = cb;
   }
+  function setKeysLoop (cb) {
+    keysLoop = cb;
+  }
 
   return (
     <div>
-      <Keys playPause={playPause}/>
+      <Keys playPause={playPause} passUpLoop={setKeysLoop}/>
       <Drums playPause={playPause} passUpLoop={setDrumLoop} />
     </div>
   );

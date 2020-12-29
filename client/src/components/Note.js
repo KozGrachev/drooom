@@ -9,7 +9,6 @@ export function Note ({ name, stepNum, handleNoteClick, numOfNotes, position, sh
 
   function handleClick (e) {
     const newActive = !active;
-    console.log(e.target);
     setActive(newActive);
     const state = {
       name: name,
@@ -31,7 +30,7 @@ export function Note ({ name, stepNum, handleNoteClick, numOfNotes, position, sh
       <input className={
         `btn
         ${name}
-        ${numberString[stepNum]}
+        step${stepNum}
         ${shape}`}
         type="button"
         onClick={(e) => handleClick(e)}

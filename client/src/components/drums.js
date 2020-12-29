@@ -42,7 +42,7 @@ export function Drums ({ playPause, passUpLoop }) {
   }, []);
 
   function buttonToggleActive (note) {
-    const thisNote = document.querySelector(`.${numberString[note.stepNum]}.${note.name}`);
+    const thisNote = document.querySelector(`.step${note.stepNum}.${note.name}`);
     thisNote.classList.toggle('active');
     thisNote.classList.toggle('inactive');
   }
@@ -79,8 +79,8 @@ export function Drums ({ playPause, passUpLoop }) {
     Tone.Draw.schedule(() => {
       for (let i = 0; i < notesEntries.length; i++) {
         let prevStep = count === 0 ? 15 : count - 1;
-        let current = document.querySelector(`.${notesEntries[i][1]}.${numberString[count]}.active`);
-        let previous = document.querySelector(`.${notesEntries[i][1]}.${numberString[prevStep]}.active`);
+        let current = document.querySelector(`.${notesEntries[i][1]}.step${count}.active`);
+        let previous = document.querySelector(`.${notesEntries[i][1]}.step${prevStep}.active`);
 
         if (current) current.classList.add('triggered');
         if (previous) previous.classList.remove('triggered');
@@ -121,7 +121,7 @@ export function Drums ({ playPause, passUpLoop }) {
         </div>
       </div>
 
-      
+
       {checkRerender()}
     </div>
   )
