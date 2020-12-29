@@ -1,11 +1,13 @@
 import './style/App.scss';
 import { Drums } from './components/drums'
 import * as Tone from 'tone';
+import { Keys } from './components/keys';
 Tone.Transport.bpm.value = 120;
 Tone.Transport.swing = 0.15;
 Tone.Transport.swingSubdivision = '16n';
 let count = 0;
 let drumLoop;
+let keysLoop;
 
 function App () {
 
@@ -23,15 +25,20 @@ function App () {
 
   function nextStep (time) {
     drumLoop(time, count);
-    count = (count + 1) % 16;
+    keysLoop(time, count);
+    count++;
   }
 
   function setDrumLoop (cb) {
     drumLoop = cb;
   }
+  function setKeysLoop (cb) {
+    keysLoop = cb;
+  }
 
   return (
-    <div>
+    <div className="app-container">
+      <Keys playPause={playPause} passUpLoop={setKeysLoop}/>
       <Drums playPause={playPause} passUpLoop={setDrumLoop} />
     </div>
   );
