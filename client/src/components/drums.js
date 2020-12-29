@@ -13,7 +13,6 @@ import openSocket from 'socket.io-client';
 const socket = process.env.NODE_ENV === 'production' ? openSocket() : openSocket('localhost:3100');
 const notes = { 'A1': kick, 'B1': snare, 'C1': perc, 'D1': chh, 'E1': ohh };
 const noteNames = { 'A1': 'kick', 'B1': 'snare', 'C1': 'perc', 'D1': 'chh', 'E1': 'ohh' };
-const numberString = ['zero', 'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine', 'ten', 'eleven', 'twelve', 'thirteen', 'fourteen', 'fifteen'];
 const names = Object.values(noteNames);
 const notesEntries = Object.entries(noteNames);
 const sampler = new Tone.Sampler(notes).toDestination();
@@ -55,7 +54,7 @@ export function Drums ({ playPause, passUpLoop }) {
 
   function changePattern (note) {
     setPattern((pat) => {
-      //! Do not mutate state -- rewrite
+      //! Mutates the state but avoids re-render
       pat[note.name][note.stepNum] = !pat[note.name][note.stepNum];
       return pat;
     })
@@ -68,7 +67,8 @@ export function Drums ({ playPause, passUpLoop }) {
     // })
   }
 
-  function repeat (time, count) {
+  function repeat (time, c) {
+    const count = c % 16;
     for (const [note, drum] of notesEntries) {
       if (pattern[drum][count]) {
         sampler.triggerAttackRelease(note, '16n', time);
@@ -85,7 +85,7 @@ export function Drums ({ playPause, passUpLoop }) {
         if (current) current.classList.add('triggered');
         if (previous) previous.classList.remove('triggered');
       }
-    }, time)
+    }, '+0.02') //! Delay for synching animations (default: time)
   }
 
   function setBpm (val) {

@@ -5,13 +5,12 @@ import * as Tone from 'tone';
 import { v4 } from 'uuid';
 import '../style/keys.scss';
 import '../assets/svg/play.svg';
-const cMaj = Scale.get('C major').notes;
 const cMaj4Oct = Scale.rangeOf('C major')('C2', 'C6');
 const synth = new Tone.PolySynth().toDestination();
 synth.volume.value = -5;
 
 
-export function Keys ({passUpLoop}) {
+export function Keys ({ passUpLoop, playPause }) {
 
   const [numSteps, setNumSteps] = useState(32);
   const [pattern, setPattern] = useState(Array.from({ length: numSteps }, Object));
@@ -29,9 +28,11 @@ export function Keys ({passUpLoop}) {
 
   function handleNoteClick (note) {
     // console.log(note);
-    buttonToggleActive(note)
-    changePattern(note);
-    synth.triggerAttackRelease(note.name, 0.3);
+    if (note.stepNum >= 0) {
+      buttonToggleActive(note)
+      changePattern(note);
+    }
+    // synth.triggerAttackRelease(note.name, 0.3); //! toggle on/off for note feedback
   }
 
   function changePattern (note) {
@@ -51,22 +52,23 @@ export function Keys ({passUpLoop}) {
     })
   }
 
-  function repeat (time, count) {
+  function repeat (time, c) {
+    const count = c % numSteps;
     for (let key in pattern[count]) {
       synth.triggerAttackRelease(key, '16n', time);
     }
     //* Adds the triggered class to all active buttons in the current step
     //* and removes it from those in the previous step
-    // Tone.Draw.schedule(() => {
-    //   for (let i = 0; i < notesEntries.length; i++) {
-    //     let prevStep = count === 0 ? 15 : count - 1;
-    //     let current = document.querySelector(`.${notesEntries[i][1]}.step${count}.active`);
-    //     let previous = document.querySelector(`.${notesEntries[i][1]}.step${prevStep}.active`);
+    Tone.Draw.schedule(() => {
+      for (let i = 0; i < cMaj4Oct.length; i++) {
+        let prevStep = count === 0 ? 15 : count - 1;
+        let current = document.querySelector(`.${cMaj4Oct[i]}.step${count}.active`);
+        let previous = document.querySelector(`.${cMaj4Oct[i]}.step${prevStep}.active`);
 
-    //     if (current) current.classList.add('triggered');
-    //     if (previous) previous.classList.remove('triggered');
-    //   }
-    // }, time)
+        if (current) current.classList.add('triggered');
+        if (previous) previous.classList.remove('triggered');
+      }
+    }, time);
   }
 
   function renderSteps (num, noSequence) {
@@ -85,7 +87,7 @@ export function Keys ({passUpLoop}) {
   return (
     <div className="container">
       <div className="top-panel">
-        <div className="play-button">
+        <div className="play-button" onClick={() => playPause()}>
           <svg className="play-icon" xmlns="http://www.w3.org/2000/svg" fillRule="evenodd" clipRule="evenodd"><path className="play-icon-path" d="M23 12l-22 12v-24l22 12zm-21 10.315l18.912-10.315-18.912-10.315v20.63z" /></svg>
         </div>
         <div className="controls">

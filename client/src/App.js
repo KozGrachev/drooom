@@ -26,7 +26,7 @@ function App () {
   function nextStep (time) {
     drumLoop(time, count);
     keysLoop(time, count);
-    count = (count + 1) % 16;
+    count++;
   }
 
   function setDrumLoop (cb) {
@@ -37,7 +37,7 @@ function App () {
   }
 
   return (
-    <div>
+    <div className="app-container">
       <Keys playPause={playPause} passUpLoop={setKeysLoop}/>
       <Drums playPause={playPause} passUpLoop={setDrumLoop} />
     </div>

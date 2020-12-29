@@ -11,7 +11,10 @@ input {
     // background-color: #30292f;
     height: 100%;
     border: 1px solid #C8C8C8;
-
+    &.triggered {
+      transform: scale(1.1);
+      background-color: #abcaf0;
+    }
   }
 
 
@@ -20,6 +23,10 @@ input {
     top: 100%;
     height: 85%;
     border-radius: 50%;
+    &.triggered {
+      transform: scale(1.1);
+      background-color: #6930c3;
+    }
   }
 
   &:focus {
@@ -30,12 +37,9 @@ input {
     background-color: #5390d9;
   }
 
-  transition: transform 100ms;
+  transition: transform 100ms linear,
+  background-color 50ms linear;
 
-  &.triggered {
-    transform: scale(1.1);
-    background-color: #6930c3;
-  }
   &.active {
     background: #5e60ce;
   }
