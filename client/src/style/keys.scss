@@ -1,3 +1,5 @@
+@import "./variables.scss";
+
 $size-ratio: 100vw / 100vh * 1px;
 $panel-height: 150px;
 
@@ -10,23 +12,24 @@ $note-width: 100vw/ $n-cols;
 .container {
   // position: relative;
   // flex-basis: 100%;
+  background: #979090;
   height: 100vh;
   display: flex;
   flex-direction: column;
+  width: 100%;
 
-  border: 3px solid rgba(255, 0, 0, 0.39);
+  // border: 3px solid rgba(255, 0, 0, 0.39);
 
   * {
     // border: 1px solid rgba(0, 0, 0, 0.295);
   }
 }
 
-
 .top-panel {
   display: flex;
   // flex-basis: 50%;
   height: $panel-height;
-  background-color: rgba(0, 128, 0, 0.397);
+  // background-color: nth($color-scheme3, 4);
 }
 
 .controls {
@@ -36,14 +39,29 @@ $note-width: 100vw/ $n-cols;
 }
 
 .play-button {
-  color: red;
+  // color: red;
   height: $panel-height;
   width: $panel-height;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+svg {
+  width: 100px;
+  height: 100px;
+  // border:3px solid yellow;
+  overflow: visible;
+
+  path {
+    transform: scale(4);
+    stroke: #C8C8C8;
+  }
 }
 
 .third-height {
   height: $panel-height /3;
-  border: 1px solid yellow;
+  border: 1px solid rgba(255, 255, 255, 0.418);
 
 }
 
@@ -57,20 +75,30 @@ $note-width: 100vw/ $n-cols;
 
 .piano-roll {
   height: 100%;
-  border: 3px solid rgba(0, 255, 34, 0.623);
-
+  // border: 3px solid rgba(0, 255, 34, 0.623);
+  display: flex;
+  overflow-y: scroll;
+  width: 1fr;
 }
 
 .piano {
-  // height: 500px;
+  width: 50px;
+  height: max-content;
+  border-right: 3px solid rgba(255, 255, 255, 0.349);
+  color: #979090;
 }
 
 .sequencer {
-  border: 3px solid blue;
+  // border: 3px solid blue;
   height: 100%;
   width: 100%;
   display: grid;
   grid-template-columns: repeat(32, minmax(40px, auto));
   // grid-auto-columns: 60px;
   // flex-direction: column;
+
+  
+  * {
+    color: rgba(255, 255, 255, 0); //! TRANSPARENT FONT COLOR!!
+  }
 }

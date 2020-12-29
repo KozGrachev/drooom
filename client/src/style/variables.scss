@@ -1,3 +1,5 @@
+// @use "sass:list";
+
 $outer-circle-size: 300px;
 $circle-gap: $outer-circle-size/6;
 
@@ -12,3 +14,5 @@ $color-scheme2: #0C090D,
 #F15946,
 #F9C22E,
 #53B3CB;
+
+$color-scheme3: (#54478c,#2c699a,#048ba8,#0db39e,#16db93,#83e377,#b9e769,#efea5a,#f1c453,#f29e4c);

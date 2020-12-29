@@ -4,11 +4,11 @@ import { VSlider } from "./vslider";
 import '../style/drums.scss';
 import * as Tone from 'tone';
 import { v4 } from 'uuid';
-import kick from '../assets/kick.mp3';
-import snare from '../assets/snare.mp3';
-import ohh from '../assets/hho.mp3';
-import chh from '../assets/hhc.mp3';
-import perc from '../assets/clap.mp3';
+import kick from '../assets/audio/kick.mp3';
+import snare from '../assets/audio/snare.mp3';
+import ohh from '../assets/audio/hho.mp3';
+import chh from '../assets/audio/hhc.mp3';
+import perc from '../assets/audio/clap.mp3';
 import openSocket from 'socket.io-client';
 const socket = process.env.NODE_ENV === 'production' ? openSocket() : openSocket('localhost:3100');
 const notes = { 'A1': kick, 'B1': snare, 'C1': perc, 'D1': chh, 'E1': ohh };
@@ -121,7 +121,7 @@ export function Drums ({ playPause, passUpLoop }) {
         </div>
       </div>
 
-
+      
       {checkRerender()}
     </div>
   )
