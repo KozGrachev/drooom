@@ -16,6 +16,7 @@ const noteNames = { 'A1': 'kick', 'B1': 'snare', 'C1': 'perc', 'D1': 'chh', 'E1'
 const names = Object.values(noteNames);
 const notesEntries = Object.entries(noteNames);
 const sampler = new Tone.Sampler(notes).toDestination();
+let count = 0;
 
 
 export function Drums ({ playPause, passUpLoop }) {
@@ -30,7 +31,10 @@ export function Drums ({ playPause, passUpLoop }) {
 
   useEffect(() => {
     //* send the repeat function to the transport
-    passUpLoop(repeat);
+    // passUpLoop(Tone.Transport.scheduleRepeat(repeat, '16n'), 'drums');
+    passUpLoop(new Tone.Loop(time => {
+      Tone.Transport.scheduleRepeat(repeat, '1n', time, '16n');
+    }, '16n'), 'drums');
     socket.on('pattern-change', (note) => {
       changePattern(note);
       buttonToggleActive(note);
@@ -67,8 +71,9 @@ export function Drums ({ playPause, passUpLoop }) {
     // })
   }
 
-  function repeat (time, c) {
-    const count = c % 16;
+  function repeat (time) {
+    count = count % 16;
+    console.log('count:', count);
     for (const [note, drum] of notesEntries) {
       if (pattern[drum][count]) {
         sampler.triggerAttackRelease(note, '16n', time);
@@ -86,6 +91,7 @@ export function Drums ({ playPause, passUpLoop }) {
         if (previous) previous.classList.remove('triggered');
       }
     }, '+0.02') //! Delay for synching animations (default: time)
+    count++;
   }
 
   function setBpm (val) {
@@ -113,7 +119,10 @@ export function Drums ({ playPause, passUpLoop }) {
         <div className="drumpad-wrapper">
           {renderSteps()}
         </div>
-        <input type="button" id="playPause" onClick={() => playPause()} value="droom"></input>
+        <input type="button" id="playPause" onClick={() => {
+          playPause('drums');
+          count = 0;
+        }} value="droom"></input>
         <div className="drums-controls">
           <div className="slider-wrapper">
             <VSlider handleChange={setBpm} className="slider" />
