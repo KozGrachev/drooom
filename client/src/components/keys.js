@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Step } from './step';
+import { Step } from './Step';
 import { Scale } from '@tonaljs/tonal';
 import * as Tone from 'tone';
 import { v4 } from 'uuid';

@@ -2,7 +2,7 @@ import React from 'react';
 import '../style/variables.scss';
 import '../style/step.scss';
 import { v4 } from 'uuid'
-import { Note } from './note.js';
+import { Note } from './Note.js';
 
 
 export function Step ({ noteNames, stepNum, handleNoteClick, shape }) {

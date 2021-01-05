@@ -1,7 +1,7 @@
 import './style/App.scss';
-import { Drums } from './components/drums'
+import { Drums } from './components/Drums'
 import * as Tone from 'tone';
-import { Keys } from './components/keys';
+import { Keys } from './components/Keys';
 import { useState } from 'react';
 Tone.Transport.bpm.value = 120;
 Tone.Transport.swing = 0.15;
