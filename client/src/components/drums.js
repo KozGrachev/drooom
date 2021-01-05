@@ -16,7 +16,7 @@ const noteNames = { 'A1': 'kick', 'B1': 'snare', 'C1': 'perc', 'D1': 'chh', 'E1'
 const names = Object.values(noteNames);
 const notesEntries = Object.entries(noteNames);
 const sampler = new Tone.Sampler(notes).toDestination();
-let count = 0;
+// let count = 0;
 
 
 export function Drums ({ playPause, passUpLoop }) {
@@ -32,16 +32,17 @@ export function Drums ({ playPause, passUpLoop }) {
   useEffect(() => {
     //* send the repeat function to the transport
     // passUpLoop(Tone.Transport.scheduleRepeat(repeat, '16n'), 'drums');
-    passUpLoop(new Tone.Loop(time => {
-      console.log('Loop started. Scheduling repeat for DRUMS');
-      Tone.Transport.scheduleRepeat(repeat, '16n', time, '1m');
-    }, '1m'), 'drums');
+    const repEvent = new Tone.ToneEvent((time) => repeat(time));
+    repEvent.loop = true;
+    repEvent.loopEnd = '16n';
+    passUpLoop(repEvent, 'drums');
+
     socket.on('pattern-change', (note) => {
       changePattern(note);
       buttonToggleActive(note);
-    })
+    });
 
-    return () => socket.disconnect();
+    return () => socket.disconnect()
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -73,8 +74,7 @@ export function Drums ({ playPause, passUpLoop }) {
   }
 
   function repeat (time) {
-    count = count % 16;
-    console.log('count:', count);
+    const count = getSixteenths();
     for (const [note, drum] of notesEntries) {
       if (pattern[drum][count]) {
         sampler.triggerAttackRelease(note, '16n', time);
@@ -84,15 +84,18 @@ export function Drums ({ playPause, passUpLoop }) {
     //* and removes it from those in the previous step
     Tone.Draw.schedule(() => {
       for (let i = 0; i < notesEntries.length; i++) {
-        let prevStep = count === 0 ? 15 : count - 1;
         let current = document.querySelector(`.${notesEntries[i][1]}.step${count}.active`);
-        let previous = document.querySelector(`.${notesEntries[i][1]}.step${prevStep}.active`);
-
-        if (current) current.classList.add('triggered');
-        if (previous) previous.classList.remove('triggered');
+        if (current) {
+          current.classList.add('triggered');
+          if (current) {
+            current.classList.add('triggered');
+            setTimeout(() => {
+              current.classList.remove('triggered');
+            }, 100)
+          }
+        }
       }
     }, '+0.02') //! Delay for synching animations (default: time)
-    count++;
   }
 
   function setBpm (val) {
@@ -114,6 +117,15 @@ export function Drums ({ playPause, passUpLoop }) {
     return arr;
   }
 
+  //! PUT INTO HELPER FUNCTIONS!!
+  function getSixteenths () {
+    const pos = Tone.Transport.position;
+    const sixteenths = parseInt(pos.split(':')[2], 10);
+    const quarters = parseFloat(pos.split(':')[1], 10);
+
+    return sixteenths + quarters * 4;
+  }
+
   return (
     <div className="drums-container">
       <div className="drumpad-container">
@@ -122,7 +134,6 @@ export function Drums ({ playPause, passUpLoop }) {
         </div>
         <input type="button" id="playPause" onClick={() => {
           playPause('drums');
-          count = 0;
         }} value="droom"></input>
         <div className="drums-controls">
           <div className="slider-wrapper">

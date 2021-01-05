@@ -16,8 +16,10 @@ export function Keys ({ passUpLoop, playPause }) {
   const [pattern, setPattern] = useState(Array.from({ length: numSteps }, Object));
 
   useEffect(() => {
-    passUpLoop(repeat);
-    console.log(pattern);
+    const repEvent = new Tone.ToneEvent((time) => repeat(time));
+    repEvent.loop = true;
+    repEvent.loopEnd = '16n';
+    passUpLoop(repEvent, 'keys');
   }, [])
 
   function buttonToggleActive (note) {
@@ -52,8 +54,8 @@ export function Keys ({ passUpLoop, playPause }) {
     })
   }
 
-  function repeat (time, c) {
-    const count = c % numSteps;
+  function repeat (time) {
+    const count = getSixteenths(numSteps);
     for (let key in pattern[count]) {
       synth.triggerAttackRelease(key, '16n', time);
     }
@@ -61,12 +63,13 @@ export function Keys ({ passUpLoop, playPause }) {
     //* and removes it from those in the previous step
     Tone.Draw.schedule(() => {
       for (let i = 0; i < cMaj4Oct.length; i++) {
-        let prevStep = count === 0 ? 15 : count - 1;
         let current = document.querySelector(`.${cMaj4Oct[i]}.step${count}.active`);
-        let previous = document.querySelector(`.${cMaj4Oct[i]}.step${prevStep}.active`);
-
-        if (current) current.classList.add('triggered');
-        if (previous) previous.classList.remove('triggered');
+        if (current) {
+          current.classList.add('triggered');
+          setTimeout(() => {
+            current.classList.remove('triggered');
+          },100)
+        }
       }
     }, time);
   }
@@ -84,10 +87,20 @@ export function Keys ({ passUpLoop, playPause }) {
     return arr;
   }
 
+  //! PUT INTO HELPER FUNCTIONS!!
+  function getSixteenths (num) {
+    const pos = Tone.Transport.position;
+    const sixteenths = parseInt(pos.split(':')[2], 10);
+    const quarters = parseFloat(pos.split(':')[1], 10);
+    const bars = parseFloat(pos.split(':')[0], 10);
+    console.log(pos);
+    return (sixteenths + quarters * 4 + bars * 16) % num;
+  }
+
   return (
     <div className="container">
       <div className="top-panel">
-        <div className="play-button" onClick={() => playPause()}>
+        <div className="play-button" onClick={() => playPause('keys')}>
           <svg className="play-icon" xmlns="http://www.w3.org/2000/svg" fillRule="evenodd" clipRule="evenodd"><path className="play-icon-path" d="M23 12l-22 12v-24l22 12zm-21 10.315l18.912-10.315-18.912-10.315v20.63z" /></svg>
         </div>
         <div className="controls">
