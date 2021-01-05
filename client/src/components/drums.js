@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Step } from './step';
+import { Step } from './step.js';
 import { VSlider } from "./vslider";
 import '../style/drums.scss';
 import * as Tone from 'tone';
