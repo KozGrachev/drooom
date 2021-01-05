@@ -15,26 +15,35 @@ function App () {
   const [loops, setLoops] = useState({});
 
   async function playPause (name) {
-    await Tone.start();
 
+    console.log('\n Play/Pause');
     //* when starting::
     if (loops[name].state === 'stopped') {
+      console.log(`Loop ${name} was 'stopped'.`);
+      Tone.start();
       //* if transport is playing, start this loop at the next bar
-      if (Tone.Transport.state === 'started') loops[name].start('1m');
+      if (Tone.Transport.state === 'started') {
+        console.log(`Transport was 'started', starting loop ${name} (1m)`);
+        loops[name].start('+1m');
+      }
       //* if not, start transport and start this loop at (0)
       else {
+        console.log(`Transport was 'stopped'. Starting transport and loop ${name} (0)`);
         Tone.Transport.start();
         loops[name].start(0);
       }
     } else { //* when stopping::
+      console.log(`Loop ${name} was stopped. Checking if other loops are 'started'`);
       //* check if any other loops are playing
       for (const loop in loops) {
-        if (loop.state === 'started') { //! maybe check the state of the transport too?
+        if (loops[loop].state === 'started') { //! maybe check the state of the transport too?
+          console.log(`Loop ${loop} state is ${loops[loop].state}. Stopping only loop ${name}`);
           //* if yes, stop this loop at next bar and shortcircuit
-          loops[name].stop('1m');
+          loops[name].stop('+1m');
           return;
         }
       }
+      console.log(`No other loops were 'started'. Stopping loop ${name} and transport.`);
       //* if not, stop and cancel the transport immediately and stop this loop
       loops[name].stop();
       Tone.Transport.stop();

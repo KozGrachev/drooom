@@ -33,8 +33,9 @@ export function Drums ({ playPause, passUpLoop }) {
     //* send the repeat function to the transport
     // passUpLoop(Tone.Transport.scheduleRepeat(repeat, '16n'), 'drums');
     passUpLoop(new Tone.Loop(time => {
-      Tone.Transport.scheduleRepeat(repeat, '1n', time, '16n');
-    }, '16n'), 'drums');
+      console.log('Loop started. Scheduling repeat for DRUMS');
+      Tone.Transport.scheduleRepeat(repeat, '16n', time, '1m');
+    }, '1m'), 'drums');
     socket.on('pattern-change', (note) => {
       changePattern(note);
       buttonToggleActive(note);
