@@ -93,7 +93,6 @@ export function Keys ({ passUpLoop, playPause }) {
     const sixteenths = parseInt(pos.split(':')[2], 10);
     const quarters = parseFloat(pos.split(':')[1], 10);
     const bars = parseFloat(pos.split(':')[0], 10);
-    console.log(pos);
     return (sixteenths + quarters * 4 + bars * 16) % num;
   }
 
