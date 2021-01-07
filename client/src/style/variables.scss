@@ -16,3 +16,21 @@ $color-scheme2: #0C090D,
 #53B3CB;
 
 $color-scheme3: (#54478c,#2c699a,#048ba8,#0db39e,#16db93,#83e377,#b9e769,#efea5a,#f1c453,#f29e4c);
+
+
+
+//* KEYS - Grid ------------------------- //
+
+$size-ratio: 100vw / 100vh * 1px;
+$panel-height: 150px;
+
+$n-rows: 22;
+$n-cols: 33;
+
+$note-height: 100vh / $n-rows;
+$note-width: 100vw/ $n-cols;
+
+$grid-color: #C8C8C8;
+$grid-color-dark: #979090;
+
+//* ------------------------------------ //

@@ -1,0 +1,53 @@
+@import './variables.scss';
+
+.scales-container {
+  display: flex;
+  // flex-direction: column;
+  height: 100%;
+  position: absolute; // relative;
+  background: $grid-color;
+  // right: 0; // Slide in
+  left: 0;
+  z-index: 2;
+}
+
+.scales-modes-container {
+  display: flex;
+  flex-flow: column;
+  position: relative;
+  width: 150px;
+  // border: 3px solid green;
+}
+
+.list-item {
+  color: $grid-color-dark;
+}
+
+.scales-tab {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 50px;
+  writing-mode: vertical-lr;
+  // transform: rotate(180deg);
+  background: rgb(71, 63, 63);
+  color: $grid-color;
+  padding: 25px 0;
+  font-weight: 500;
+  border: 1px solid $grid-color;
+}
+
+.scales {
+  // height: 100%;
+  display: grid;
+  grid-template-columns: repeat(3, auto);
+  grid-auto-rows: 50px;
+}
+
+
+.modes {
+  height: auto;
+  display: grid;
+  align-content: stretch;
+  flex-grow: 1;
+}

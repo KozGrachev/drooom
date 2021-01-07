@@ -1,17 +1,20 @@
 import React, { useEffect, useState } from 'react';
 import { Step } from './Step';
+import { ScalesList } from './ScalesList'
 import { Scale } from '@tonaljs/tonal';
 import * as Tone from 'tone';
 import { v4 } from 'uuid';
 import '../style/keys.scss';
 import '../assets/svg/play.svg';
-const cMaj4Oct = Scale.rangeOf('C major')('C2', 'C6');
+// const cMaj4Oct = Scale.rangeOf('C major')('C2', 'C6');
+const allNotes = Scale.scaleNotes(Scale.rangeOf('C chromatic')('C1', 'B1'));
 const synth = new Tone.PolySynth().toDestination();
 synth.volume.value = -5;
 
 
 export function Keys ({ passUpLoop, playPause }) {
 
+  const [scale, setScale] = useState(Scale.rangeOf('C major')('C2', 'C6'));
   const [numSteps, setNumSteps] = useState(32);
   const [pattern, setPattern] = useState(Array.from({ length: numSteps }, Object));
 
@@ -62,13 +65,13 @@ export function Keys ({ passUpLoop, playPause }) {
     //* Adds the triggered class to all active buttons in the current step
     //* and removes it from those in the previous step
     Tone.Draw.schedule(() => {
-      for (let i = 0; i < cMaj4Oct.length; i++) {
-        let current = document.querySelector(`.${cMaj4Oct[i]}.step${count}.active`);
+      for (let i = 0; i < scale.length; i++) {
+        let current = document.querySelector(`.${scale[i]}.step${count}.active`);
         if (current) {
           current.classList.add('triggered');
           setTimeout(() => {
             current.classList.remove('triggered');
-          },100)
+          }, 100)
         }
       }
     }, time);
@@ -81,7 +84,7 @@ export function Keys ({ passUpLoop, playPause }) {
         handleNoteClick={handleNoteClick}
         stepNum={noSequence ? -1 : i}
         shape="grid"
-        noteNames={cMaj4Oct}
+        noteNames={scale}
         key={v4()} />);
     }
     return arr;
@@ -96,29 +99,42 @@ export function Keys ({ passUpLoop, playPause }) {
     return (sixteenths + quarters * 4 + bars * 16) % num;
   }
 
+
+  function setNewScale (newScale) {
+    console.log(newScale);
+    // setScale(newScale);
+  }
+
   return (
-    <div className="container">
-      <div className="top-panel">
-        <div className="play-button" onClick={() => playPause('keys')}>
-          <svg className="play-icon" xmlns="http://www.w3.org/2000/svg" fillRule="evenodd" clipRule="evenodd"><path className="play-icon-path" d="M23 12l-22 12v-24l22 12zm-21 10.315l18.912-10.315-18.912-10.315v20.63z" /></svg>
+    <div>
+      <div className="container">
+        <div className="top-panel">
+          <div className="play-button" onClick={() => playPause('keys')}>
+            <svg className="play-icon" xmlns="http://www.w3.org/2000/svg" fillRule="evenodd" clipRule="evenodd"><path className="play-icon-path" d="M23 12l-22 12v-24l22 12zm-21 10.315l18.912-10.315-18.912-10.315v20.63z" /></svg>
+          </div>
+          <div className="controls">
+            <div className="third-height tempo"></div>
+            <div className="third-height tempo-nudge"></div>
+            <div className="third-height swing"></div>
+          </div>
         </div>
-        <div className="controls">
-          <div className="third-height tempo"></div>
-          <div className="third-height tempo-nudge"></div>
-          <div className="third-height swing"></div>
-        </div>
-        <div className="scales"></div>
-      </div>
-      <div className="piano-roll">
-        <div className="piano">
-          {renderSteps(1, true)}
-        </div>
-        <div className="sequencer"
-        // style={{
-        //   grid
-        // }}
-        >
-          {renderSteps(numSteps)}
+        <div className="main-panel" >
+          <div className="side-panel_left">
+            <ScalesList setNewScale={setNewScale} />
+          </div>
+          <div className="piano-roll">
+            <div className="piano">
+              {renderSteps(1, true)}
+            </div>
+            <div className="sequencer"
+            // style={{
+            //   grid
+            // }}
+            >
+              {renderSteps(numSteps)}
+            </div>
+          </div>
+
         </div>
       </div>
     </div>

@@ -1,18 +1,11 @@
 @import "./variables.scss";
 
-$size-ratio: 100vw / 100vh * 1px;
-$panel-height: 150px;
 
-$n-rows: 22;
-$n-cols: 33;
-
-$note-height: 100vh / $n-rows;
-$note-width: 100vw/ $n-cols;
 
 .container {
   // position: relative;
   // flex-basis: 100%;
-  background: #979090;
+  background: $grid-color-dark;
   height: 100vh;
   display: flex;
   flex-direction: column;
@@ -45,6 +38,7 @@ $note-width: 100vw/ $n-cols;
   display: flex;
   justify-content: center;
   align-items: center;
+  border: 1px solid $grid-color;
 }
 
 svg {
@@ -61,8 +55,7 @@ svg {
 
 .third-height {
   height: $panel-height /3;
-  border: 1px solid rgba(255, 255, 255, 0.418);
-
+  border: 1px solid $grid-color;
 }
 
 .tempo {
@@ -73,19 +66,31 @@ svg {
   width: $panel-height;
 }
 
+.side-panel_left {
+  position: relative;
+  width: 50px;
+  // border: 3px solid rgba(0, 255, 34, 0.623);
+}
+
+.main-panel {
+  display: flex;
+  overflow: hidden;
+
+}
+
 .piano-roll {
   height: 100%;
   // border: 3px solid rgba(0, 255, 34, 0.623);
   display: flex;
   overflow-y: scroll;
-  width: 1fr;
+  width: 100%;
 }
 
 .piano {
   width: 50px;
   height: max-content;
   border-right: 2px solid rgba(255, 255, 255, 0.349);
-  color: #C8C8C8;
+  color: $grid-color;
 }
 
 .sequencer {
@@ -98,17 +103,19 @@ svg {
   // flex-direction: column;
 
   // >:nth-of-type(4n) {
-  //   border-right: 1px solid #C8C8C8;
+  //   border-right: 1px solid $grid-color;
   //   // position: absolute;
   // }
   >:nth-of-type(8n) {
-    border-right: 1px solid #C8C8C8;
+    border-right: 1px solid $grid-color;
     // position: absolute;
   }
+
   >:nth-of-type(16n) {
-    border-right: 2px solid #C8C8C8;
+    border-right: 2px solid $grid-color;
     // position: absolute;
   }
+
   * {
     color: rgba(255, 255, 255, 0); //! TRANSPARENT FONT COLOR!!
   }
