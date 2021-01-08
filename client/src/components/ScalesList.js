@@ -10,7 +10,7 @@ export function ScalesList ({ setNewScale }) {
 
   useEffect(() => {
     // console.log('scale: ', scale, '   mode: ', mode)
-    // setNewScale(Scale.rangeOf(`${scale} ${mode}`)(`${scale[0]}2`, `${scale[0]}6`));
+    setNewScale(Scale.rangeOf(`${scale} ${mode}`)(`${scale[0]}2`, `${scale[0]}6`));
   }, [scale, mode]);
 
   function renderScales (arr) {
@@ -18,10 +18,7 @@ export function ScalesList ({ setNewScale }) {
       return <input
         className={`list-item grid ${note === scale ? 'active' : ''}`}
         type="button" value={note}
-        onClick={() => {
-          setScale(note);
-          setNewScale(Scale.rangeOf(`${scale} ${mode}`)(`${scale[0]}2`, `${scale[0]}6`));
-        }}
+        onClick={()=>setScale(note)}
         key={v4()} />
     })
   }
@@ -31,10 +28,7 @@ export function ScalesList ({ setNewScale }) {
       return <input
         className={`list-item grid ${note === mode ? 'active' : ''}`}
         type="button" value={note}
-        onClick={() => {
-          setMode(note);
-          setNewScale(Scale.rangeOf(`${scale} ${mode}`)(`${scale[0]}2`, `${scale[0]}6`));
-        }}
+        onClick={()=>setMode(note)}
         key={v4()} />
     })
   };

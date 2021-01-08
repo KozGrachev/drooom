@@ -22,14 +22,10 @@ export function Keys ({ passUpLoop, playPause }) {
     repEvent.loop = true;
     repEvent.loopEnd = '16n';
     passUpLoop(repEvent, 'keys');
-  }, [scale])
-
-  // useEffect(() => {
-  //   console.log('NEW SCALE!!', scale)
-  // }, [scale])
+  }, [])
 
   function buttonToggleActive (note) {
-    const thisNote = document.querySelector(`.step${note.stepNum}.${note.relativeName.replace('#', '\\#')}`);
+    const thisNote = document.querySelector(`.step${note.stepNum}.${note.name.replace('#', '\\#')}`);
     thisNote.classList.toggle('active');
     thisNote.classList.toggle('inactive');
   }
@@ -46,10 +42,10 @@ export function Keys ({ passUpLoop, playPause }) {
   function changePattern (note) {
     setPattern(pat => {
       // const newPat = [...pat];
-      if (note.active && !pat[note.stepNum].hasOwnProperty(note.relativeName)) {
-        pat[note.stepNum][note.relativeName] = note;
-      } else if (!note.active && pat[note.stepNum].hasOwnProperty(note.relativeName)) {
-        delete pat[note.stepNum][note.relativeName];
+      if (note.active && !pat[note.stepNum].hasOwnProperty(note.name)) {
+        pat[note.stepNum][note.name] = note;
+      } else if (!note.active && pat[note.stepNum].hasOwnProperty(note.name)) {
+        delete pat[note.stepNum][note.name];
       } else {
         // throw new Error(`Note active status is ${note.active} but property ${pat[note.stepNum].hasOwnProperty(note.name) ? 'already exists' : 'does not exist'} in this step object`)
       }
@@ -59,17 +55,10 @@ export function Keys ({ passUpLoop, playPause }) {
     })
   }
 
-  function setNewScale (newScale) {
-    console.log(newScale);
-    setScale(()=>newScale);
-  }
-
   function repeat (time) {
-    console.log('FROM REPEAT() ===> Scale:',scale);
     const count = getSixteenths(numSteps);
-    for (let note in pattern[count]) {
-      console.log(scale[pattern[count][note].position]);//scale[note.position]);
-      synth.triggerAttackRelease(scale[pattern[count][note].position], '16n', time);
+    for (let key in pattern[count]) {
+      synth.triggerAttackRelease(key, '16n', time);
     }
     //* Adds the triggered class to all active buttons in the current step
     //* and removes it from those in the previous step
@@ -110,9 +99,10 @@ export function Keys ({ passUpLoop, playPause }) {
   }
 
 
-
-
-  console.log('RENDER');
+  function setNewScale (newScale) {
+    console.log(newScale);
+    setScale(newScale);
+  }
 
   return (
     <div>
