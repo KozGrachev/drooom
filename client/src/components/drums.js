@@ -132,7 +132,7 @@ export function Drums ({ playPause, passUpLoop }) {
         <div className="drumpad-wrapper">
           {renderSteps()}
         </div>
-        <input type="button" id="playPause" onClick={() => {
+        <input type="button" id="playPause" onMouseDown={() => {
           playPause('drums');
         }} value="droom"></input>
         <div className="drums-controls">

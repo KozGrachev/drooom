@@ -5,7 +5,7 @@ import { v4 } from 'uuid'
 import { Note } from './Note.js';
 
 
-export function Step ({ noteNames, stepNum, handleNoteClick, shape }) {
+export function Step ({ pattern, noteNames, stepNum, handleNoteClick, shape }) {
 
   function renderButtons () {
     const buttons = [];
@@ -14,6 +14,7 @@ export function Step ({ noteNames, stepNum, handleNoteClick, shape }) {
         name={noteNames[i]}
         shape={shape}
         stepNum={stepNum}
+        pattern={pattern}
         position={i}
         numOfNotes={noteNames.length}
         handleNoteClick={handleNoteClick}

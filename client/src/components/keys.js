@@ -6,8 +6,7 @@ import * as Tone from 'tone';
 import { v4 } from 'uuid';
 import '../style/keys.scss';
 import '../assets/svg/play.svg';
-// const cMaj4Oct = Scale.rangeOf('C major')('C2', 'C6');
-const allNotes = Scale.scaleNotes(Scale.rangeOf('C chromatic')('C1', 'B1'));
+import { Synth } from 'tone';
 const synth = new Tone.PolySynth().toDestination();
 synth.volume.value = -5;
 
@@ -26,30 +25,29 @@ export function Keys ({ passUpLoop, playPause }) {
   }, [])
 
   function buttonToggleActive (note) {
-    const thisNote = document.querySelector(`.step${note.stepNum}.${note.name}`);
+    const thisNote = document.querySelector(`.step${note.stepNum}.${note.name.replace('#', '\\#')}`);
     thisNote.classList.toggle('active');
     thisNote.classList.toggle('inactive');
   }
 
   function handleNoteClick (note) {
-    // console.log(note);
+    console.log(note);
     if (note.stepNum >= 0) {
       buttonToggleActive(note)
       changePattern(note);
-    }
+    } else synth.triggerAttackRelease(note.name, '16n');
     // synth.triggerAttackRelease(note.name, 0.3); //! toggle on/off for note feedback
   }
 
   function changePattern (note) {
     setPattern(pat => {
-
       // const newPat = [...pat];
       if (note.active && !pat[note.stepNum].hasOwnProperty(note.name)) {
         pat[note.stepNum][note.name] = note;
       } else if (!note.active && pat[note.stepNum].hasOwnProperty(note.name)) {
         delete pat[note.stepNum][note.name];
       } else {
-        throw new Error(`Note active status is ${note.active} but property ${pat[note.stepNum].hasOwnProperty(note.name) ? 'already exists' : 'does not exist'} in this step object`)
+        // throw new Error(`Note active status is ${note.active} but property ${pat[note.stepNum].hasOwnProperty(note.name) ? 'already exists' : 'does not exist'} in this step object`)
       }
       console.log(note);
       console.log(pat);
@@ -82,6 +80,7 @@ export function Keys ({ passUpLoop, playPause }) {
     for (let i = 0; i < num; i++) {
       arr.push(<Step
         handleNoteClick={handleNoteClick}
+        pattern={pattern}
         stepNum={noSequence ? -1 : i}
         shape="grid"
         noteNames={scale}
@@ -102,14 +101,14 @@ export function Keys ({ passUpLoop, playPause }) {
 
   function setNewScale (newScale) {
     console.log(newScale);
-    // setScale(newScale);
+    setScale(newScale);
   }
 
   return (
     <div>
       <div className="container">
         <div className="top-panel">
-          <div className="play-button" onClick={() => playPause('keys')}>
+          <div className="play-button" onMouseDown={() => playPause('keys')}>
             <svg className="play-icon" xmlns="http://www.w3.org/2000/svg" fillRule="evenodd" clipRule="evenodd"><path className="play-icon-path" d="M23 12l-22 12v-24l22 12zm-21 10.315l18.912-10.315-18.912-10.315v20.63z" /></svg>
           </div>
           <div className="controls">
