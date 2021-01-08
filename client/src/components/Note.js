@@ -1,17 +1,20 @@
 import React, { useState } from 'react';
+import * as helpers from './helpers';
 import '../style/note.scss';
 
+const noteID = helpers.generateNoteIDs(40);
 
 export function Note ({ pattern, name, stepNum, handleNoteClick, numOfNotes, position, shape }) {
 
   const [active, setActive] = useState(false, () => false);
 
-  function handleClick (e) {
+  function handleClick () {
     console.log('FROM BUTTON: ',pattern[stepNum]);
     const newActive = !active;
     setActive(newActive);
     const state = {
       name: name,
+      noteID: noteID[position],
       active: newActive,
       stepNum: stepNum
     }
@@ -30,14 +33,14 @@ export function Note ({ pattern, name, stepNum, handleNoteClick, numOfNotes, pos
       {/* <input className={`${name} ${numberString[stepNum]} ${active ? 'active' : 'inactive'} btn`} */}
       <input
         className={`
-          ${ stepNum >= 0 && pattern && pattern[stepNum].hasOwnProperty(name) ? 'active' : '' }
+          ${ stepNum >= 0 && pattern && pattern[stepNum].hasOwnProperty(noteID[position]) ? 'active' : '' }
           btn
-          ${name}
+          ${noteID[position]}
           step${stepNum}
           ${shape}`
         }
         type="button"
-        onMouseDown={(e) => handleClick(e)}
+        onMouseDown={() => handleClick()}
         onKeyDown={(e) => e.preventDefault()}
         value={`${shape === 'grid' ? name : ''}`}
       />

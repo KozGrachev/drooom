@@ -9,6 +9,7 @@ import '../assets/svg/play.svg';
 import { Synth } from 'tone';
 const synth = new Tone.PolySynth().toDestination();
 synth.volume.value = -5;
+// const noteID = [];
 
 
 export function Keys ({ passUpLoop, playPause }) {
@@ -16,8 +17,8 @@ export function Keys ({ passUpLoop, playPause }) {
   const [scale, setScale] = useState(Scale.rangeOf('C major')('C2', 'C6'));
   const [numSteps, setNumSteps] = useState(32);
   const [pattern, setPattern] = useState(Array.from({ length: numSteps }, Object));
-
   useEffect(() => {
+    // for (let i = 0; i < 30; i++) noteID.push(`note${i}`);
     const repEvent = new Tone.ToneEvent((time) => repeat(time));
     repEvent.loop = true;
     repEvent.loopEnd = '16n';
@@ -25,13 +26,17 @@ export function Keys ({ passUpLoop, playPause }) {
   }, [])
 
   function buttonToggleActive (note) {
-    const thisNote = document.querySelector(`.step${note.stepNum}.${note.name.replace('#', '\\#')}`);
+    console.log(`note.noteID.replace('#', '\\#')`, note.noteID.replace('#', '\\#'));
+    const thisNote = document.querySelector(`.step${note.stepNum}.${note.noteID.replace('#', '\\#')}`);
     thisNote.classList.toggle('active');
     thisNote.classList.toggle('inactive');
   }
 
   function handleNoteClick (note) {
-    console.log(note);
+    console.log('noteID', note.noteID);
+    console.log('scale', scale);
+    console.log('note', note);
+    console.log('pattern', pattern);
     if (note.stepNum >= 0) {
       buttonToggleActive(note)
       changePattern(note);
@@ -41,36 +46,41 @@ export function Keys ({ passUpLoop, playPause }) {
 
   function changePattern (note) {
     setPattern(pat => {
-      // const newPat = [...pat];
-      if (note.active && !pat[note.stepNum].hasOwnProperty(note.name)) {
-        pat[note.stepNum][note.name] = note;
-      } else if (!note.active && pat[note.stepNum].hasOwnProperty(note.name)) {
-        delete pat[note.stepNum][note.name];
+      if (note.active && !pat[note.stepNum].hasOwnProperty(note.noteID)) {
+        pat[note.stepNum][note.noteID] = note;
+      } else if (!note.active && pat[note.stepNum].hasOwnProperty(note.noteID)) {
+        delete pat[note.stepNum][note.noteID];
       } else {
-        // throw new Error(`Note active status is ${note.active} but property ${pat[note.stepNum].hasOwnProperty(note.name) ? 'already exists' : 'does not exist'} in this step object`)
+        throw new Error(`Note active status is ${note.active} but property ${pat[note.stepNum].hasOwnProperty(note.noteID) ? 'already exists' : 'does not exist yet'} in this step object`)
       }
-      console.log(note);
-      console.log(pat);
+
       return pat
     })
   }
 
   function repeat (time) {
     const count = getSixteenths(numSteps);
-    for (let key in pattern[count]) {
-      synth.triggerAttackRelease(key, '16n', time);
+    for (let note in pattern[count]) {
+      synth.triggerAttackRelease(pattern[count][note].name, '16n', time);
     }
     //* Adds the triggered class to all active buttons in the current step
     //* and removes it from those in the previous step
     Tone.Draw.schedule(() => {
-      for (let i = 0; i < scale.length; i++) {
-        let current = document.querySelector(`.${scale[i]}.step${count}.active`);
-        if (current) {
-          current.classList.add('triggered');
-          setTimeout(() => {
-            current.classList.remove('triggered');
-          }, 100)
-        }
+      for (const note in pattern[count]) {
+        const pianoRollFeedback = document.querySelector(`.${note}.step-1`)
+        const current = document.querySelector(`.${note}.step${count}`)
+        // for (let i = 0; i < scale.length; i++) {
+        // let current = document.querySelector(`.${scale[i]}.step${count}.active`);
+        // let current = document.querySelector(`.${scale[i]}.step${count}.active`);
+        // if (current) {
+
+        current.classList.add('triggered');
+        pianoRollFeedback.classList.add('triggered');
+        setTimeout(() => {
+          current.classList.remove('triggered');
+          pianoRollFeedback.classList.remove('triggered');
+        }, 100)
+        // }
       }
     }, time);
   }
