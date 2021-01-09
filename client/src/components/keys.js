@@ -50,7 +50,7 @@ export function Keys ({ passUpLoop, playPause }) {
       } else if (!note.active && pat[note.stepNum].hasOwnProperty(note.noteID)) {
         delete pat[note.stepNum][note.noteID];
       } else {
-        throw new Error(`Note active status is ${note.active} but property ${pat[note.stepNum].hasOwnProperty(note.noteID) ? 'already exists' : 'does not exist yet'} in this step object`)
+        console.error(`Note active status is ${note.active} but property ${pat[note.stepNum].hasOwnProperty(note.noteID) ? 'already exists' : 'does not exist yet'} in this step object`)
       }
 
       return pat
@@ -67,21 +67,22 @@ export function Keys ({ passUpLoop, playPause }) {
     Tone.Draw.schedule(() => {
       for (const note in pattern[count]) {
         const pianoRollFeedback = document.querySelector(`.${note}.step-1`)
-        const current = document.querySelector(`.${note}.step${count}`)
-        // for (let i = 0; i < scale.length; i++) {
-        // let current = document.querySelector(`.${scale[i]}.step${count}.active`);
-        // let current = document.querySelector(`.${scale[i]}.step${count}.active`);
-        // if (current) {
-
-        current.classList.add('triggered');
-        pianoRollFeedback.classList.add('triggered');
-        setTimeout(() => {
-          current.classList.remove('triggered');
-          pianoRollFeedback.classList.remove('triggered');
-        }, 100)
-        // }
+        const currentPlayingNote = document.querySelector(`.${note}.step${count}`)
+        addTempClass(pianoRollFeedback);
+        addTempClass(currentPlayingNote);
       }
     }, time);
+  }
+
+  function addTempClass (element) {
+    // if (element) {
+      element.classList.add('triggered');
+      setTimeout(() => {
+        element.classList.remove('triggered');
+      }, 100)
+    // } else {
+    //   console.error('ELEMENT DOES NOT EXIST');
+    // }
   }
 
   function renderSteps (num, noSequence) {
