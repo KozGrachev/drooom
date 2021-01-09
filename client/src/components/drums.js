@@ -18,7 +18,6 @@ const notesEntries = Object.entries(noteNames);
 const sampler = new Tone.Sampler(notes).toDestination();
 // let count = 0;
 
-
 export function Drums ({ playPause, passUpLoop }) {
 
   const [pattern, setPattern] = useState({
@@ -47,7 +46,8 @@ export function Drums ({ playPause, passUpLoop }) {
   }, []);
 
   function buttonToggleActive (note) {
-    const thisNote = document.querySelector(`.step${note.stepNum}.${note.name}`);
+    // const thisNote = document.querySelector(`.step${note.stepNum}.${note.name}`);
+    const thisNote = document.querySelector(`.step${note.stepNum}.${note.name}.circle`);
     thisNote.classList.toggle('active');
     thisNote.classList.toggle('inactive');
   }

@@ -6,7 +6,6 @@ import * as Tone from 'tone';
 import { v4 } from 'uuid';
 import '../style/keys.scss';
 import '../assets/svg/play.svg';
-import { Synth } from 'tone';
 const synth = new Tone.PolySynth().toDestination();
 synth.volume.value = -5;
 // const noteID = [];

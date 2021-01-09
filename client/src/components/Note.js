@@ -1,15 +1,16 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import * as helpers from './helpers';
 import '../style/note.scss';
+let noteID = helpers.generateNoteIDs(40);
 
-const noteID = helpers.generateNoteIDs(40);
 
 export function Note ({ pattern, name, stepNum, handleNoteClick, numOfNotes, position, shape }) {
 
   const [active, setActive] = useState(false, () => false);
 
+
   function handleClick () {
-    console.log('FROM BUTTON: ',pattern[stepNum]);
+    if (shape === 'grid') console.log('FROM BUTTON: ',pattern[stepNum]);
     const newActive = !active;
     setActive(newActive);
     const state = {
@@ -35,7 +36,7 @@ export function Note ({ pattern, name, stepNum, handleNoteClick, numOfNotes, pos
         className={`
           ${ stepNum >= 0 && pattern && pattern[stepNum].hasOwnProperty(noteID[position]) ? 'active' : '' }
           btn
-          ${noteID[position]}
+          ${shape === 'circle' ? name : noteID[position]}
           step${stepNum}
           ${shape}`
         }
