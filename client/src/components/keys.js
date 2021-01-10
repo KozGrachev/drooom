@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Step } from './Step';
 import { ScalesList } from './ScalesList'
-import { Scale } from '@tonaljs/tonal';
+import { Scale, Note } from '@tonaljs/tonal';
 import * as Tone from 'tone';
 import { v4 } from 'uuid';
 import '../style/keys.scss';
@@ -69,8 +69,17 @@ export function Keys ({ passUpLoop, playPause }) {
   function repeat (time) {
     const count = getSixteenths(numSteps);
     for (let note in pattern[count]) {
-      synth.triggerAttackRelease(pattern[count][note].name, '16n', time);
-    }
+      let thisNoteName = pattern[count][note].name;
+      console.log('noteID:', note, 'actual note:', Note.pitchClass(pattern[count][note].name));
+      if (Note.pitchClass(thisNoteName) === 'Cb') {
+        thisNoteName = Note.transpose(thisNoteName, '8P');
+      }
+      synth.triggerAttackRelease(`${
+        Scale.scaleNotes([thisNoteName]) === 'Cb'
+          ? Note.transpose(thisNoteName, '8P')
+          : thisNoteName
+        }`, '16n', time);
+    };
     //* Adds the triggered class to all active buttons in the current step
     //* and removes it from those in the previous step
     Tone.Draw.schedule(() => {
