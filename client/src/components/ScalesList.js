@@ -8,9 +8,11 @@ export function ScalesList ({ setNewScale }) {
   const [scale, setScale] = useState('C');
   const [mode, setMode] = useState('ionian');
 
+  console.log('====> Db ionian', Scale.rangeOf('Db ionian')('Db2', 'Db6'))
+
   useEffect(() => {
     // console.log('scale: ', scale, '   mode: ', mode)
-    setNewScale(Scale.rangeOf(`${scale} ${mode}`)(`${scale[0]}2`, `${scale[0]}6`));
+    setNewScale(Scale.rangeOf(`${scale} ${mode}`)(`${scale}2`, `${scale}6`));
   }, [scale, mode]);
 
   function renderScales (arr) {

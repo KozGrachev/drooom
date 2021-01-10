@@ -12,7 +12,7 @@ synth.volume.value = -5;
 
 
 export function Keys ({ passUpLoop, playPause }) {
-
+  console.log('\n\n');
   const [scale, setScale] = useState(Scale.rangeOf('C major')('C2', 'C6'));
   const [numSteps, setNumSteps] = useState(32);
   const [pattern, setPattern] = useState(Array.from({ length: numSteps }, Object));
@@ -25,36 +25,45 @@ export function Keys ({ passUpLoop, playPause }) {
   }, [])
 
   function buttonToggleActive (note) {
-    console.log(`note.noteID.replace('#', '\\#')`, note.noteID.replace('#', '\\#'));
     const thisNote = document.querySelector(`.step${note.stepNum}.${note.noteID.replace('#', '\\#')}`);
     thisNote.classList.toggle('active');
     thisNote.classList.toggle('inactive');
   }
 
   function handleNoteClick (note) {
-    console.log('noteID', note.noteID);
-    console.log('scale', scale);
-    console.log('note', note);
+    // console.log('noteID', note.noteID);
+    // console.log('scale', scale);
+    // console.log('note', note);
     console.log('pattern', pattern);
     if (note.stepNum >= 0) {
-      buttonToggleActive(note)
+      buttonToggleActive(note); //!!!!!!!!
       changePattern(note);
     } else synth.triggerAttackRelease(note.name, '16n');
     // synth.triggerAttackRelease(note.name, 0.3); //! toggle on/off for note feedback
   }
 
   function changePattern (note) {
-    setPattern(pat => {
-      if (note.active && !pat[note.stepNum].hasOwnProperty(note.noteID)) {
-        pat[note.stepNum][note.noteID] = note;
-      } else if (!note.active && pat[note.stepNum].hasOwnProperty(note.noteID)) {
-        delete pat[note.stepNum][note.noteID];
-      } else {
-        console.error(`Note active status is ${note.active} but property ${pat[note.stepNum].hasOwnProperty(note.noteID) ? 'already exists' : 'does not exist yet'} in this step object`)
-      }
+    const newPat = { ...pattern };
+    if (!newPat[note.stepNum].hasOwnProperty(note.noteID)) {
+      console.log('adding note:', note);
+      newPat[note.stepNum][note.noteID] = note;
+    } else if (newPat[note.stepNum].hasOwnProperty(note.noteID) || !note.active ){
+      console.log('DELETING note:', note);
+      delete newPat[note.stepNum][note.noteID];
+    }
+    setPattern(newPat);//!!!!!!!!
+    // setPattern(pat => {
+      // if (note.active && !pat[note.stepNum].hasOwnProperty(note.noteID)) {
+      //   pat[note.stepNum][note.noteID] = note;
+      // } else if (!note.active && pat[note.stepNum].hasOwnProperty(note.noteID)) {
+      //   delete pat[note.stepNum][note.noteID];
+      // } else {
+      //   console.error(`Note active status is ${note.active} but property ${pat[note.stepNum].hasOwnProperty(note.noteID) ? 'already exists' : 'does not exist yet'} in this step object`)
+      // }
 
-      return pat
-    })
+
+      // return pat
+    // })
   }
 
   function repeat (time) {

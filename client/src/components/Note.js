@@ -10,7 +10,7 @@ export function Note ({ pattern, name, stepNum, handleNoteClick, numOfNotes, pos
 
 
   function handleClick () {
-    if (shape === 'grid') console.log('FROM BUTTON: ',pattern[stepNum]);
+    if (shape === 'grid') console.log('FROM BUTTON: ', pattern[stepNum]);
     const newActive = !active;
     setActive(newActive);
     const state = {
@@ -23,7 +23,7 @@ export function Note ({ pattern, name, stepNum, handleNoteClick, numOfNotes, pos
     handleNoteClick(state)
   }
 
-  // ${ pattern[stepNum].hasOwnProperty(name) ? active : '' }
+
   return (
     <div
       className={`button-wrapper ${shape}`}
@@ -34,7 +34,7 @@ export function Note ({ pattern, name, stepNum, handleNoteClick, numOfNotes, pos
       {/* <input className={`${name} ${numberString[stepNum]} ${active ? 'active' : 'inactive'} btn`} */}
       <input
         className={`
-          ${ stepNum >= 0 && pattern && pattern[stepNum].hasOwnProperty(noteID[position]) ? 'active' : '' }
+          ${stepNum >= 0 && pattern && pattern[stepNum].hasOwnProperty(noteID[position]) ? 'active' : ''}
           btn
           ${shape === 'circle' ? name : noteID[position]}
           step${stepNum}
@@ -43,7 +43,7 @@ export function Note ({ pattern, name, stepNum, handleNoteClick, numOfNotes, pos
         type="button"
         onMouseDown={() => handleClick()}
         onKeyDown={(e) => e.preventDefault()}
-        value={`${shape === 'grid' ? name : ''}`}
+        value={`${shape === 'grid' ? name + ' ' + noteID[position].replace('note', '') : ''}`}
       />
     </div>
   )
