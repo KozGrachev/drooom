@@ -55,7 +55,7 @@ export function Note ({ pattern, name, stepNum, handleNoteClick, numOfNotes, pos
         type="button"
         onMouseDown={() => handleClick()}
         onKeyDown={(e) => e.preventDefault()}
-        value={`${shape === 'grid' ? name + ' ' + noteID[position].replace('note', '') : ''}`}
+        value={`${shape === 'grid' ? name : ''}`}
       />
     </div>
   )

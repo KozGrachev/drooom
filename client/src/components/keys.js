@@ -14,7 +14,9 @@ synth.volume.value = -5;
 export function Keys ({ passUpLoop, playPause }) {
   console.log('\n\n');
   const [scale, setScale] = useState(Scale.rangeOf('C major')('C2', 'C6'));
+
   const [numSteps, setNumSteps] = useState(32);
+
   const [pattern, setPattern] = useState(
     localStorage.getItem('droom-keys-pattern')
       ? JSON.parse(localStorage.getItem('droom-keys-pattern'))
@@ -34,27 +36,16 @@ export function Keys ({ passUpLoop, playPause }) {
   }
 
   function handleNoteClick (note) {
-    // console.log('noteID', note.noteID);
-    // console.log('scale', scale);
-    // console.log('note', note);
+
     console.log('pattern', pattern);
     if (note.stepNum >= 0) {
       buttonToggleActive(note); //!!!!!!!!
       changePattern(note);
     } else synth.triggerAttackRelease(note.name, '16n');
-    // synth.triggerAttackRelease(note.name, 0.3); //! toggle on/off for note feedback
   }
 
   function changePattern (note) {
-    // const newPat = { ...pattern };
-    // if (!newPat[note.stepNum].hasOwnProperty(note.noteID)) {
-    //   console.log('adding note:', note);
-    //   newPat[note.stepNum][note.noteID] = note;
-    // } else if (newPat[note.stepNum].hasOwnProperty(note.noteID) || !note.active ){
-    //   console.log('DELETING note:', note);
-    //   delete newPat[note.stepNum][note.noteID];
-    // }
-    // setPattern(newPat);//!!!!!!!!
+
     setPattern(pat => {
       if (!pat[note.stepNum].hasOwnProperty(note.noteID)) {
       console.log('adding note:', note);
@@ -130,7 +121,6 @@ export function Keys ({ passUpLoop, playPause }) {
 
 
   function setNewScale (newScale) {
-    console.log(newScale);
     setScale(newScale);
   }
 

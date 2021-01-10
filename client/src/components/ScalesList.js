@@ -5,8 +5,8 @@ import '../style/scalesList.scss'
 
 export function ScalesList ({ setNewScale }) {
 
-  const [scale, setScale] = useState('C');
-  const [mode, setMode] = useState('ionian');
+  const [scale, setScale] = useState(localStorage.getItem('droom-keys-scale') || 'C');
+  const [mode, setMode] = useState(localStorage.getItem('droom-keys-mode') ||'ionian');
 
   console.log('====> Db ionian', Scale.rangeOf('Db ionian')('Db2', 'Db6'))
 
@@ -20,7 +20,7 @@ export function ScalesList ({ setNewScale }) {
       return <input
         className={`list-item grid ${note === scale ? 'active' : ''}`}
         type="button" value={note}
-        onClick={()=>setScale(note)}
+        onClick={() => handleScaleClick(note)}
         key={v4()} />
     })
   }
@@ -30,10 +30,20 @@ export function ScalesList ({ setNewScale }) {
       return <input
         className={`list-item grid ${note === mode ? 'active' : ''}`}
         type="button" value={note}
-        onClick={()=>setMode(note)}
+        onClick={()=>handleModeClick(note)}
         key={v4()} />
     })
   };
+
+  function handleScaleClick (note) {
+    setScale(note);
+    localStorage.setItem('droom-keys-scale', note);
+  }
+
+  function handleModeClick (note) {
+    setMode(note);
+    localStorage.setItem('droom-keys-mode', note);
+  }
 
   return (
     <div className="scales-container">
