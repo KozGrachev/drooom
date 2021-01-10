@@ -15,7 +15,10 @@ export function Keys ({ passUpLoop, playPause }) {
   console.log('\n\n');
   const [scale, setScale] = useState(Scale.rangeOf('C major')('C2', 'C6'));
   const [numSteps, setNumSteps] = useState(32);
-  const [pattern, setPattern] = useState(Array.from({ length: numSteps }, Object));
+  const [pattern, setPattern] = useState(
+    localStorage.getItem('droom-keys-pattern')
+      ? JSON.parse(localStorage.getItem('droom-keys-pattern'))
+      : Array.from({ length: numSteps }, Object));
   useEffect(() => {
     // for (let i = 0; i < 30; i++) noteID.push(`note${i}`);
     const repEvent = new Tone.ToneEvent((time) => repeat(time));
@@ -43,27 +46,26 @@ export function Keys ({ passUpLoop, playPause }) {
   }
 
   function changePattern (note) {
-    const newPat = { ...pattern };
-    if (!newPat[note.stepNum].hasOwnProperty(note.noteID)) {
+    // const newPat = { ...pattern };
+    // if (!newPat[note.stepNum].hasOwnProperty(note.noteID)) {
+    //   console.log('adding note:', note);
+    //   newPat[note.stepNum][note.noteID] = note;
+    // } else if (newPat[note.stepNum].hasOwnProperty(note.noteID) || !note.active ){
+    //   console.log('DELETING note:', note);
+    //   delete newPat[note.stepNum][note.noteID];
+    // }
+    // setPattern(newPat);//!!!!!!!!
+    setPattern(pat => {
+      if (!pat[note.stepNum].hasOwnProperty(note.noteID)) {
       console.log('adding note:', note);
-      newPat[note.stepNum][note.noteID] = note;
-    } else if (newPat[note.stepNum].hasOwnProperty(note.noteID) || !note.active ){
+      pat[note.stepNum][note.noteID] = note;
+    } else if (pat[note.stepNum].hasOwnProperty(note.noteID) || !note.active ){
       console.log('DELETING note:', note);
-      delete newPat[note.stepNum][note.noteID];
+      delete pat[note.stepNum][note.noteID];
     }
-    setPattern(newPat);//!!!!!!!!
-    // setPattern(pat => {
-      // if (note.active && !pat[note.stepNum].hasOwnProperty(note.noteID)) {
-      //   pat[note.stepNum][note.noteID] = note;
-      // } else if (!note.active && pat[note.stepNum].hasOwnProperty(note.noteID)) {
-      //   delete pat[note.stepNum][note.noteID];
-      // } else {
-      //   console.error(`Note active status is ${note.active} but property ${pat[note.stepNum].hasOwnProperty(note.noteID) ? 'already exists' : 'does not exist yet'} in this step object`)
-      // }
-
-
-      // return pat
-    // })
+      localStorage.setItem('droom-keys-pattern', JSON.stringify(pat));
+      return pat;
+    })
   }
 
   function repeat (time) {

@@ -20,7 +20,10 @@ const sampler = new Tone.Sampler(notes).toDestination();
 
 export function Drums ({ playPause, passUpLoop }) {
 
-  const [pattern, setPattern] = useState({
+  const [pattern, setPattern] = useState(
+    localStorage.getItem('droom-keys-pattern')
+      ? JSON.parse(localStorage.getItem('droom-drums-pattern'))
+      : {
     kick: Array(16).fill(false),
     snare: Array(16).fill(false),
     chh: Array(16).fill(false),
@@ -62,6 +65,9 @@ export function Drums ({ playPause, passUpLoop }) {
     setPattern((pat) => {
       //! Mutates the state but avoids re-render
       pat[note.name][note.stepNum] = !pat[note.name][note.stepNum];
+
+      localStorage.setItem('droom-drums-pattern', JSON.stringify(pat));
+      console.log('Drum pattern:',pattern)
       return pat;
     })
 
@@ -112,7 +118,12 @@ export function Drums ({ playPause, passUpLoop }) {
     console.log('RENDERING STEPS');
     const arr = [];
     for (let i = 0; i < 16; i++) {
-      arr.push(<Step handleNoteClick={handleNoteClick} stepNum={i} shape="circle" noteNames={names} key={v4()} />);
+      arr.push(<Step
+        pattern={pattern}
+        handleNoteClick={handleNoteClick}
+        stepNum={i} shape="circle"
+        noteNames={names}
+        key={v4()} />);
     }
     return arr;
   }
