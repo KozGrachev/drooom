@@ -1,5 +1,5 @@
 import './style/App.scss';
-import { Drums } from './components/Drumsz'
+import { Drums } from './components/Drums'
 import * as Tone from 'tone';
 import { Keys } from './components/Keys';
 import { useState } from 'react';
