@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Step } from './Step.js';
-import { VSlider } from "./vsliderz";
+import { VSlider } from "./VSlider";
 import '../style/drums.scss';
 import * as Tone from 'tone';
 import { v4 } from 'uuid';
