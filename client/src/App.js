@@ -1,7 +1,7 @@
 import './style/App.scss';
 import { Drums } from './components/Drums'
 import * as Tone from 'tone';
-import { Keys } from './components/Keys';
+import { Lead } from './components/Lead';
 import { useState } from 'react';
 Tone.Transport.bpm.value = 120;
 Tone.Transport.swing = 0.15;
@@ -53,7 +53,7 @@ function App () {
 
   return (
     <div className="app-container">
-      <Keys playPause={playPause} passUpLoop={addLoop}/>
+      <Lead playPause={playPause} passUpLoop={addLoop}/>
       <Drums playPause={playPause} passUpLoop={addLoop} />
     </div>
   );

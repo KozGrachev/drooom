@@ -1,17 +1,17 @@
 import React, { useEffect, useState } from 'react';
 import { Step } from './Step';
-import { ScalesList } from './ScalesList'
+import { KeysModesList } from './KeysModesList'
 import { Scale, Note } from '@tonaljs/tonal';
 import * as Tone from 'tone';
 import { v4 } from 'uuid';
-import '../style/keys.scss';
+import '../style/lead.scss';
 import '../assets/svg/play.svg';
 const synth = new Tone.PolySynth().toDestination();
 synth.volume.value = -5;
 // const noteID = [];
 
 
-export function Keys ({ passUpLoop, playPause }) {
+export function Lead ({ passUpLoop, playPause }) {
   console.log('\n\n');
   const [scale, setScale] = useState(Scale.rangeOf('C major')('C2', 'C6'));
 
@@ -118,7 +118,6 @@ export function Keys ({ passUpLoop, playPause }) {
     return (sixteenths + quarters * 4 + bars * 16) % num;
   }
 
-
   function setNewScale (newScale) {
     setScale(newScale);
   }
@@ -138,7 +137,7 @@ export function Keys ({ passUpLoop, playPause }) {
         </div>
         <div className="main-panel" >
           <div className="side-panel_left">
-            <ScalesList setNewScale={setNewScale} />
+            <KeysModesList setNewScale={setNewScale} />
           </div>
           <div className="piano-roll">
             <div className="piano">

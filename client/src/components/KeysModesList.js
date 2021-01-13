@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { Scale, Mode } from '@tonaljs/tonal';
 import { v4 } from 'uuid';
-import '../style/scalesList.scss'
+import '../style/keysModesList.scss'
 
 export function ScalesList ({ setNewScale }) {
 

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import * as helpers from './helpers';
+import * as helpers from '../helpers';
 import '../style/note.scss';
 let noteID = helpers.generateNoteIDs(40);
 
