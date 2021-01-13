@@ -3,7 +3,7 @@ import { Scale, Mode } from '@tonaljs/tonal';
 import { v4 } from 'uuid';
 import '../style/keysModesList.scss'
 
-export function ScalesList ({ setNewScale }) {
+export function KeysModesList ({ setNewScale }) {
 
   const [scale, setScale] = useState(localStorage.getItem('droom-keys-scale') || 'C');
   const [mode, setMode] = useState(localStorage.getItem('droom-keys-mode') ||'ionian');
