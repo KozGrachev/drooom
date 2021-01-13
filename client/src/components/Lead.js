@@ -10,18 +10,13 @@ import '../assets/svg/play.svg';
 const synth = new Tone.PolySynth().toDestination();
 synth.volume.value = -15;
 
+let scale = {}
+Scale.rangeOf('C major')('C2', 'C6').forEach((note, i) => {
+  scale[noteIDs[i]] = note;
+});
 
 export function Lead ({ passUpLoop, playPause }) {
   console.log('\n\n');
-  const [oldScale, setOldScale] = useState(Scale.rangeOf('C major')('C2', 'C6'));
-
-  const [scale, setScale] = useState(() => {
-    const newScale = {}
-    Scale.rangeOf('C major')('C2', 'C6').forEach((note, i) => {
-      newScale[noteIDs[i]] = note;
-    });
-    return newScale;
-  });
 
   const [numSteps, setNumSteps] = useState(32);
 
@@ -36,12 +31,15 @@ export function Lead ({ passUpLoop, playPause }) {
   }, [scale]);
 
   useEffect(() => {
+    // createAndPassUpLoop();
+  }, [scale]);
+
+  function createAndPassUpLoop () {
     const repEvent = new Tone.ToneEvent((time) => repeat(time));
     repEvent.loop = true;
     repEvent.loopEnd = '16n';
     passUpLoop(repEvent, 'keys');
-  }, [scale]);
-
+  }
   function buttonToggleActive (note) {
     const thisNote = document.querySelector(`.step${note.stepNum}.${note.noteID.replace('#', '\\#')}`);
     thisNote.classList.toggle('active');
@@ -111,7 +109,7 @@ export function Lead ({ passUpLoop, playPause }) {
         pattern={pattern}
         stepNum={noSequence ? -1 : i}
         shape="grid"
-        noteNames={oldScale}
+        noteNames={Object.values(scale)}
         key={v4()} />);
     }
     return arr;
@@ -127,15 +125,15 @@ export function Lead ({ passUpLoop, playPause }) {
   }
 
   function setNewScale (newScale) {
-    setOldScale(newScale);
+    // setOldScale(newScale);
     const thisScale = {};
     newScale.forEach((note, i) => {
       thisScale[noteIDs[i]] = note;
     });
-    setScale(thisScale);
+    scale = thisScale;
+    // setScale(thisScale);
     console.log('thisScale', thisScale);
-    // playPause('keys');
-    // playPause('keys');
+    createAndPassUpLoop();
   }
 
   return (

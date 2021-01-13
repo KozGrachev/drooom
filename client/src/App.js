@@ -19,6 +19,7 @@ function App () {
   // const [startTime, setStartTime] = useState(0);
 
   async function playPause (name) {
+    Tone.start();
     if (loops[name].state === 'started' && Tone.Transport.state === 'started') {
       for (const ev in loops) {
         if (ev !== name && Object.hasOwnProperty.call(loops, ev) && loops[ev].state === 'started') {
@@ -57,11 +58,15 @@ function App () {
       // console.log(newLoops);
       // return newLoops;
       if (loops[name]) {
+        console.log('Adding new loop: ', name);
         loops[name].stop();
         loops[name].dispose();
         loops[name] = loop;
         loops[name].start();
-      } else loops[name] = loop;
+      } else {
+        console.log('creating loop', name);
+        loops[name] = loop;
+      }
       return loops;
     });
   }
