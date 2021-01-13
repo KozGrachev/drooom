@@ -4,11 +4,11 @@ import { VSlider } from "./VSlider";
 import '../style/drums.scss';
 import * as Tone from 'tone';
 import { v4 } from 'uuid';
-import kick from '../assets/audio/kick.mp3';
-import snare from '../assets/audio/snare.mp3';
-import ohh from '../assets/audio/hho.mp3';
-import chh from '../assets/audio/hhc.mp3';
-import perc from '../assets/audio/clap.mp3';
+import kick from '../assets/audio/808/kick.mp3';
+import snare from '../assets/audio/808/snare.mp3';
+import ohh from '../assets/audio/808/ohh.mp3';
+import chh from '../assets/audio/808/chh.mp3';
+import perc from '../assets/audio/808/clap.mp3';
 import openSocket from 'socket.io-client';
 const socket = process.env.NODE_ENV === 'production' ? openSocket() : openSocket('localhost:3100');
 const notes = { 'A1': kick, 'B1': snare, 'C1': perc, 'D1': chh, 'E1': ohh };
@@ -16,6 +16,7 @@ const noteNames = { 'A1': 'kick', 'B1': 'snare', 'C1': 'perc', 'D1': 'chh', 'E1'
 const names = Object.values(noteNames);
 const notesEntries = Object.entries(noteNames);
 const sampler = new Tone.Sampler(notes).toDestination();
+sampler.volume.value = -5;
 // let count = 0;
 
 export function Drums ({ playPause, passUpLoop }) {

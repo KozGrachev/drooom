@@ -22,12 +22,12 @@ function App () {
     if (loops[name].state === 'started' && Tone.Transport.state === 'started') {
       for (const ev in loops) {
         if (ev !== name && Object.hasOwnProperty.call(loops, ev) && loops[ev].state === 'started') {
-          // console.log(`CASE #2: Transport and This event was 'started' and was not the only one. Stopping event ${name}`);
+          console.log(`CASE #2: Transport and This event was 'started' and was not the only one. Stopping event ${name}`);
           loops[name].stop();
           return;
         }
       }
-      // console.log(`CASE #1: Transport was 'started' and no other loops were running. Stopping event ${name} and stopping and cancelling transport`);
+      console.log(`CASE #1: Transport was 'started' and no other loops were running. Stopping event ${name} and stopping and cancelling transport`);
       loops[name].stop();
       Tone.Transport.stop();
       Tone.Transport.cancel();
@@ -36,21 +36,33 @@ function App () {
       loops[name].start(nextHalfBar - startTime);
       loops[name].loop = true;
       loops[name].loopEnd = '16n';
-      // console.log(`CASE #3: Did not have the event but transport was playing. Adding the event ${name} id:${loops[name]}`);
+      console.log(`CASE #3: Did not have the event but transport was playing. Adding the event ${name} id:${loops[name]}`);
     } else if (loops[name].state === 'stopped' && Tone.Transport.state === 'stopped') {
       // setStartTime(Tone.Time(Tone.now()).quantize('2n')); //! sets new time relative to when the transport is started
       startTime = Tone.Time(Tone.now()).quantize('2n');
-      // console.log('CASE #4: this event was not in the array and the transport was stopped. Starting transport and adding event');
-      Tone.Transport.start('+0.1');
+      console.log('CASE #4: this event was not in the array and the transport was stopped. Starting transport and adding event');
+      Tone.Transport.start(Tone.now())//'+0.1');
       loops[name].start();
-    } else throw new Error('Unexpected condition! Check the start/stop if statements');
+    } else console.error('Unexpected condition! Check the start/stop if statements');
+  }
+
+  function replaceLoop (loop, name) {
+    loops[name].stop();
+    setLoops()
   }
 
   function addLoop (loop, name) {
     setLoops(loops => {
-      const newLoops = { ...loops, [name]: loop};
-      console.log(newLoops);
-      return newLoops;
+      // const newLoops = { ...loops, [name]: loop};
+      // console.log(newLoops);
+      // return newLoops;
+      if (loops[name]) {
+        loops[name].stop();
+        loops[name].dispose();
+        loops[name] = loop;
+        loops[name].start();
+      } else loops[name] = loop;
+      return loops;
     });
   }
 

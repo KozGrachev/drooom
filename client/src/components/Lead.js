@@ -1,33 +1,46 @@
 import React, { useEffect, useState } from 'react';
 import { Step } from './Step';
 import { KeysModesList } from './KeysModesList'
+import { noteIDs } from '../helpers';
 import { Scale, Note } from '@tonaljs/tonal';
 import * as Tone from 'tone';
 import { v4 } from 'uuid';
 import '../style/lead.scss';
 import '../assets/svg/play.svg';
 const synth = new Tone.PolySynth().toDestination();
-synth.volume.value = -5;
-// const noteID = [];
+synth.volume.value = -15;
 
 
 export function Lead ({ passUpLoop, playPause }) {
   console.log('\n\n');
-  const [scale, setScale] = useState(Scale.rangeOf('C major')('C2', 'C6'));
+  const [oldScale, setOldScale] = useState(Scale.rangeOf('C major')('C2', 'C6'));
+
+  const [scale, setScale] = useState(() => {
+    const newScale = {}
+    Scale.rangeOf('C major')('C2', 'C6').forEach((note, i) => {
+      newScale[noteIDs[i]] = note;
+    });
+    return newScale;
+  });
 
   const [numSteps, setNumSteps] = useState(32);
 
   const [pattern, setPattern] = useState(
     localStorage.getItem('droom-keys-pattern')
       ? JSON.parse(localStorage.getItem('droom-keys-pattern'))
-      : Array.from({ length: numSteps }, Object));
+      : Array.from({ length: numSteps }, Object)
+  );
+
   useEffect(() => {
-    // for (let i = 0; i < 30; i++) noteID.push(`note${i}`);
+    console.log('THIS IS THE NEW SCALE STATE::: ', scale)
+  }, [scale]);
+
+  useEffect(() => {
     const repEvent = new Tone.ToneEvent((time) => repeat(time));
     repEvent.loop = true;
     repEvent.loopEnd = '16n';
     passUpLoop(repEvent, 'keys');
-  }, [])
+  }, [scale]);
 
   function buttonToggleActive (note) {
     const thisNote = document.querySelector(`.step${note.stepNum}.${note.noteID.replace('#', '\\#')}`);
@@ -62,15 +75,14 @@ export function Lead ({ passUpLoop, playPause }) {
   function repeat (time) {
     const count = getSixteenths(numSteps);
     for (let note in pattern[count]) {
-      let thisNoteName = pattern[count][note].name;
-      console.log('noteID:', note, 'actual note:', Note.pitchClass(pattern[count][note].name));
+      let thisNoteName = scale[note];// pattern[count][note].name;
       if (Note.pitchClass(thisNoteName) === 'Cb') {
         thisNoteName = Note.transpose(thisNoteName, '8P');
       }
       synth.triggerAttackRelease(`${Scale.scaleNotes([thisNoteName]) === 'Cb'
-          ? Note.transpose(thisNoteName, '8P')
-          : thisNoteName
-        }`, '16n', time);
+        ? Note.transpose(thisNoteName, '8P')
+        : thisNoteName
+        }`, '16n', time + 0.03);
     };
     //* Adds the triggered class to all active buttons in the current step
     //* and removes it from those in the previous step
@@ -85,14 +97,10 @@ export function Lead ({ passUpLoop, playPause }) {
   }
 
   function addTempClass (element) {
-    // if (element) {
     element.classList.add('triggered');
     setTimeout(() => {
       element.classList.remove('triggered');
     }, 100)
-    // } else {
-    //   console.error('ELEMENT DOES NOT EXIST');
-    // }
   }
 
   function renderSteps (num, noSequence) {
@@ -103,7 +111,7 @@ export function Lead ({ passUpLoop, playPause }) {
         pattern={pattern}
         stepNum={noSequence ? -1 : i}
         shape="grid"
-        noteNames={scale}
+        noteNames={oldScale}
         key={v4()} />);
     }
     return arr;
@@ -119,15 +127,25 @@ export function Lead ({ passUpLoop, playPause }) {
   }
 
   function setNewScale (newScale) {
-    setScale(newScale);
-    
+    setOldScale(newScale);
+    const thisScale = {};
+    newScale.forEach((note, i) => {
+      thisScale[noteIDs[i]] = note;
+    });
+    setScale(thisScale);
+    console.log('thisScale', thisScale);
+    // playPause('keys');
+    // playPause('keys');
   }
 
   return (
     <div>
       <div className="container">
         <div className="top-panel">
-          <div className="play-button" onMouseDown={() => playPause('keys')}>
+          <div className="play-button" onMouseDown={() => {
+            playPause('keys');
+          }
+          }>
             <svg className="play-icon" xmlns="http://www.w3.org/2000/svg" fillRule="evenodd" clipRule="evenodd"><path className="play-icon-path" d="M23 12l-22 12v-24l22 12zm-21 10.315l18.912-10.315-18.912-10.315v20.63z" /></svg>
           </div>
           <div className="controls">

@@ -8,8 +8,6 @@ export function KeysModesList ({ setNewScale }) {
   const [scale, setScale] = useState(localStorage.getItem('droom-keys-scale') || 'C');
   const [mode, setMode] = useState(localStorage.getItem('droom-keys-mode') ||'ionian');
 
-  console.log('====> Db ionian', Scale.rangeOf('Db ionian')('Db2', 'Db6'))
-
   useEffect(() => {
     // console.log('scale: ', scale, '   mode: ', mode)
     setNewScale(Scale.rangeOf(`${scale} ${mode}`)(`${scale}2`, `${scale}6`));
