@@ -120,6 +120,7 @@ export function Lead ({ passUpLoop, playPause }) {
 
   function setNewScale (newScale) {
     setScale(newScale);
+    
   }
 
   return (

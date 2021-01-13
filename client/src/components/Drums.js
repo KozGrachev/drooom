@@ -12,7 +12,7 @@ import perc from '../assets/audio/clap.mp3';
 import openSocket from 'socket.io-client';
 const socket = process.env.NODE_ENV === 'production' ? openSocket() : openSocket('localhost:3100');
 const notes = { 'A1': kick, 'B1': snare, 'C1': perc, 'D1': chh, 'E1': ohh };
-const noteNames = { 'A1': 'kick', 'B1': 'snare', 'C1': 'perc', 'D1': 'chh', 'E1': 'ohh' };
+const noteNames = { 'A1': 'kick', 'B1': 'snare', 'C1': 'perc', 'D1': 'chh', 'E1': 'ohh' }; //! send to variables
 const names = Object.values(noteNames);
 const notesEntries = Object.entries(noteNames);
 const sampler = new Tone.Sampler(notes).toDestination();

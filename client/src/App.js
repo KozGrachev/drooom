@@ -9,6 +9,9 @@ Tone.Transport.swingSubdivision = '16n';
 let startTime = 0;
 
 //TODO: the loops should be instances of Tone.ToneEvent
+//TODO: config file with exported objects containing the variables <-- for constants!
+//TODO: global state for variables that change
+
 
 function App () {
 
