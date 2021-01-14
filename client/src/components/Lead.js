@@ -14,7 +14,6 @@ export function Lead () {
 
   useEffect(() => {
     socket.on('pattern-change-lead', (note) => {
-      console.log('HELLO YOU CUNT');
       Brain.changeLeadPattern(note);
       buttonToggleActive(note);
     });
@@ -33,7 +32,7 @@ export function Lead () {
       socket.emit('pattern-change-lead', note);
       buttonToggleActive(note); //!!!!!!!!
       Brain.changeLeadPattern(note);
-    } else Brain.leadSynth.triggerAttackRelease(note.name, '16n');
+    } else Brain.leadSynth.triggerAttackRelease(Brain.scale[note.noteID], '16n');
   }
 
   function renderSteps (num, noSequence) {

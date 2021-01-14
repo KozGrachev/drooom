@@ -50,7 +50,7 @@ export function Drums () {
   }
 
   return (
-    <div className="drums-container">;
+    <div className="drums-container">
       <div className="drumpad-container">
         <div className="drumpad-wrapper">
           {renderSteps()}

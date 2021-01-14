@@ -164,6 +164,10 @@ function setNewScale (newScale) {
   repEvent.loop = true;
   repEvent.loopEnd = '16n';
   addLoop(repEvent, 'keys');
+
+  document.querySelectorAll('.step-1').forEach((el, i) => {
+    el.setAttribute('value', newScale[i])
+  });
 }
 
 function changeLeadPattern (note) {
