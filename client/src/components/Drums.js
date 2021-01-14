@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Step } from './Step.js';
 import { VSlider } from "./VSlider";
+import * as Brain from '../tone/main';
 import '../style/drums.scss';
 import * as Tone from 'tone';
 import { v4 } from 'uuid';
@@ -28,7 +29,7 @@ const sampler = new Tone.Sampler(notes).toDestination();
 sampler.volume.value = -5;
 // let count = 0;
 
-export function Drums ({ playPause, passUpLoop }) {
+export function Drums () {
 
   const [pattern, setPattern] = useState(
     localStorage.getItem('droom-keys-pattern')
@@ -47,7 +48,7 @@ export function Drums ({ playPause, passUpLoop }) {
     const repEvent = new Tone.ToneEvent((time) => repeat(time));
     repEvent.loop = true;
     repEvent.loopEnd = '16n';
-    passUpLoop(repEvent, 'drums');
+    Brain.addLoop(repEvent, 'drums');
 
     socket.on('pattern-change', (note) => {
       changePattern(note);
@@ -148,13 +149,13 @@ export function Drums ({ playPause, passUpLoop }) {
   }
 
   return (
-    <div className="drums-container">
+    <div className="drums-container">;
       <div className="drumpad-container">
         <div className="drumpad-wrapper">
           {renderSteps()}
         </div>
         <input type="button" id="playPause" onMouseDown={() => {
-          playPause('drums');
+          Brain.playPause('drums');
         }} value="droom"></input>
         <div className="drums-controls">
           <div className="slider-wrapper">

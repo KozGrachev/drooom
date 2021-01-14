@@ -1,16 +1,17 @@
 import React, { useState, useEffect } from 'react'
 import { Scale, Mode } from '@tonaljs/tonal';
+import * as Brain from '../tone/main';
 import { v4 } from 'uuid';
 import '../style/keysModesList.scss'
 
-export function KeysModesList ({ setNewScale }) {
+export function KeysModesList () {
 
   const [scale, setScale] = useState(localStorage.getItem('droom-keys-scale') || 'C');
   const [mode, setMode] = useState(localStorage.getItem('droom-keys-mode') ||'ionian');
 
   useEffect(() => {
     // console.log('scale: ', scale, '   mode: ', mode)
-    setNewScale(Scale.rangeOf(`${scale} ${mode}`)(`${scale}2`, `${scale}6`));
+    Brain.setNewScale(Scale.rangeOf(`${scale} ${mode}`)(`${scale}2`, `${scale}6`));
   }, [scale, mode]);
 
   function renderScales (arr) {
