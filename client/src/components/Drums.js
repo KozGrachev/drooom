@@ -5,19 +5,15 @@ import * as Brain from '../tone/main';
 import '../style/drums.scss';
 import * as Tone from 'tone';
 import { v4 } from 'uuid';
-
-import openSocket from 'socket.io-client';
-const socket = process.env.NODE_ENV === 'production' ? openSocket() : openSocket('localhost:3100');
+import {socket} from '../api'
 
 export function Drums () {
 
   useEffect(() => {
-    socket.on('pattern-change', (note) => {
+    socket.on('pattern-change-drums', (note) => {
       Brain.changeDrumPattern(note);
       buttonToggleActive(note);
     });
-    return () => socket.disconnect()
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   function buttonToggleActive (note) {
@@ -28,7 +24,7 @@ export function Drums () {
   }
 
   function handleNoteClick (note) {
-    socket.emit('pattern-change', note);
+    socket.emit('pattern-change-drums', note);
     buttonToggleActive(note);
     Brain.changeDrumPattern(note);
   }

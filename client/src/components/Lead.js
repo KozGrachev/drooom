@@ -1,8 +1,9 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Step } from './Step';
 import { KeysModesList } from './KeysModesList'
 import * as Brain from '../tone/main';
 import { v4 } from 'uuid';
+import { socket } from '../api'
 import '../style/lead.scss';
 import '../assets/svg/play.svg';
 
@@ -10,6 +11,16 @@ export function Lead () {
   console.log('\n\n');
 
   const [numSteps, setNumSteps] = useState(32);
+
+  useEffect(() => {
+    socket.on('pattern-change-lead', (note) => {
+      console.log('HELLO YOU CUNT');
+      Brain.changeLeadPattern(note);
+      buttonToggleActive(note);
+    });
+  }, []);
+
+
 
   function buttonToggleActive (note) {
     const thisNote = document.querySelector(`.step${note.stepNum}.${note.noteID.replace('#', '\\#')}`);
@@ -19,6 +30,7 @@ export function Lead () {
 
   function handleNoteClick (note) {
     if (note.stepNum >= 0) {
+      socket.emit('pattern-change-lead', note);
       buttonToggleActive(note); //!!!!!!!!
       Brain.changeLeadPattern(note);
     } else Brain.leadSynth.triggerAttackRelease(note.name, '16n');
