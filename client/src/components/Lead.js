@@ -11,6 +11,7 @@ const synth = new Tone.PolySynth().toDestination();
 synth.volume.value = -15;
 
 let scale = {}
+
 Scale.rangeOf('C major')('C2', 'C6').forEach((note, i) => {
   scale[noteIDs[i]] = note;
 });
@@ -34,12 +35,7 @@ export function Lead ({ passUpLoop, playPause }) {
     // createAndPassUpLoop();
   }, [scale]);
 
-  function createAndPassUpLoop () {
-    const repEvent = new Tone.ToneEvent((time) => repeat(time));
-    repEvent.loop = true;
-    repEvent.loopEnd = '16n';
-    passUpLoop(repEvent, 'keys');
-  }
+
   function buttonToggleActive (note) {
     const thisNote = document.querySelector(`.step${note.stepNum}.${note.noteID.replace('#', '\\#')}`);
     thisNote.classList.toggle('active');
@@ -133,7 +129,14 @@ export function Lead ({ passUpLoop, playPause }) {
     scale = thisScale;
     // setScale(thisScale);
     console.log('thisScale', thisScale);
-    createAndPassUpLoop();
+    // createAndPassUpLoop();
+    const repEvent = new Tone.ToneEvent((time) => repeat(time));
+    repEvent.loop = true;
+    repEvent.loopEnd = '16n';
+    passUpLoop(repEvent, 'keys');
+  }
+
+  function createAndPassUpLoop () {
   }
 
   return (
