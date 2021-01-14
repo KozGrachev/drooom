@@ -2,13 +2,26 @@ import * as Tone from 'tone';
 import { Scale, Note } from '@tonaljs/tonal';
 import { noteIDs } from '../helpers';
 
+
+// import kick from '../assets/audio/808/kick.mp3';
+// import snare from '../assets/audio/808/snare.mp3';
+// import ohh from '../assets/audio/808/ohh.mp3';
+// import chh from '../assets/audio/808/chh.mp3';
+// import perc from '../assets/audio/808/clap.mp3';
+import kick from '../assets/audio/909/kick.mp3';
+import snare from '../assets/audio/909/snare.mp3';
+import ohh from '../assets/audio/909/ohh.mp3';
+import chh from '../assets/audio/909/chh.mp3';
+import perc from '../assets/audio/909/clap.mp3';
+
+
 const leadSynth = new Tone.PolySynth().toDestination();
 let leadNumSteps = 32;
 let startTime = 0;
 const loops = { keys: [], drums: [] };
 let playing = {};
-const leadPattern = localStorage.getItem('droom-keys-pattern')
-  ? JSON.parse(localStorage.getItem('droom-keys-pattern'))
+const leadPattern = localStorage.getItem('droom-lead-pattern')
+  ? JSON.parse(localStorage.getItem('droom-lead-pattern'))
   : Array.from({ length: leadNumSteps }, Object)
 
 let scale = {}
@@ -16,15 +29,48 @@ Scale.rangeOf('C major')('C2', 'C6').forEach((note, i) => {
   scale[noteIDs[i]] = note;
 });
 
+const drumsPattern = localStorage.getItem('droom-keys-pattern')
+  ? JSON.parse(localStorage.getItem('droom-drums-pattern'))
+  : {
+    kick: Array(16).fill(false),
+    snare: Array(16).fill(false),
+    chh: Array(16).fill(false),
+    ohh: Array(16).fill(false),
+    perc: Array(16).fill(false),
+  };
+
+const notes = { 'A1': kick, 'B1': snare, 'C1': perc, 'D1': chh, 'E1': ohh };
+const drumNoteNamePairs = { 'A1': 'kick', 'B1': 'snare', 'C1': 'perc', 'D1': 'chh', 'E1': 'ohh' }; //! send to variables
+const drumNames = Object.values(drumNoteNamePairs);
+const drumNoteNames = Object.entries(drumNoteNamePairs);
+const sampler = new Tone.Sampler(notes).toDestination();
+sampler.volume.value = -5;
+
+const repEvent = new Tone.ToneEvent((time) => repeat(time));
+repEvent.loop = true;
+repEvent.loopEnd = '16n';
+addLoop(repEvent, 'drums');
+
+
+
 leadSynth.volume.value = -15;
 Tone.Transport.bpm.value = 120;
 Tone.Transport.swing = 0.15;
 Tone.Transport.swingSubdivision = '16n';
 
 
-//*---- FROM APP.JS ----//
 
 
+
+//*---- FROM APP.JS -----------------------------------------//
+//*----------------------------------------------------------//
+
+
+function addLoop (loop, name) {
+  loops.loop = true;
+  loops.loopEnd = '16n';
+  loops[name].push(loop);
+}
 
 function startLoop (name, time) {
   for (let i = loops[name].length - 1; i > 0; i--) {
@@ -87,17 +133,15 @@ async function playPause (name) {
   }
 }
 
-function addLoop (loop, name) {
-  loops.loop = true;
-  loops.loopEnd = '16n';
-  loops[name].push(loop);
-}
+
+
+//*----------------------------------------------------------//
+//*---------------------------------------- FROM APP.JS -----//
 
 
 
-
-//*---- FROM LEAD.JS ----//
-
+//*---- FROM LEAD.JS ----------------------------------------//
+//*----------------------------------------------------------//
 function setNewScale (newScale) {
   // setOldScale(newScale);
   const thisScale = {};
@@ -171,9 +215,59 @@ function getSixteenths (num) {
   return (sixteenths + quarters * 4 + bars * 16) % num;
 }
 
+//*----------------------------------------------------------//
+//*-------------------------------------- FROM LEAD.JS ------//
+
+
+
+
+
+
+//*---- FROM DRUMS.JS ---------------------------------------//
+//*----------------------------------------------------------//
+
+function changeDrumPattern (note) {
+    drumsPattern[note.name][note.stepNum] = !drumsPattern[note.name][note.stepNum];
+
+    localStorage.setItem('droom-drums-pattern', JSON.stringify(drumsPattern));
+    console.log('Drum pattern:', drumsPattern)
+    return drumsPattern;
+}
+
+function repeat (time) {
+  const count = getSixteenths(16);
+  for (const [note, drum] of drumNoteNames) {
+    if (drumsPattern[drum][count]) {
+      sampler.triggerAttackRelease(note, '16n', time);
+    }
+  }
+  //* Adds the triggered class to all active buttons in the current step
+  //* and removes it from those in the previous step
+  Tone.Draw.schedule(() => {
+    for (let i = 0; i < drumNoteNames.length; i++) {
+      let current = document.querySelector(`.${drumNoteNames[i][1]}.step${count}.active`);
+      if (current) {
+        current.classList.add('triggered');
+        if (current) {
+          current.classList.add('triggered');
+          setTimeout(() => {
+            current.classList.remove('triggered');
+          }, 100)
+        }
+      }
+    }
+  }, '+0.02') //! Delay for synching animations (default: time)
+}
+
+
+//*----------------------------------------------------------//
+//*------------------------------------- FROM DRUMS.JS ------//
+
 export {
   playPause, addLoop, scale,
   leadSynth, setNewScale,
   repeatLead, setLeadNumSteps,
   changeLeadPattern, leadPattern,
+  changeDrumPattern, drumsPattern,
+  drumNames
 };

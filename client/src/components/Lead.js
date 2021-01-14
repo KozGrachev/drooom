@@ -1,11 +1,7 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { Step } from './Step';
 import { KeysModesList } from './KeysModesList'
 import * as Brain from '../tone/main';
-import { Scale, Note } from '@tonaljs/tonal';
-import { noteIDs } from '../helpers';
-
-import * as Tone from 'tone';
 import { v4 } from 'uuid';
 import '../style/lead.scss';
 import '../assets/svg/play.svg';
@@ -15,8 +11,6 @@ export function Lead () {
 
   const [numSteps, setNumSteps] = useState(32);
 
-
-
   function buttonToggleActive (note) {
     const thisNote = document.querySelector(`.step${note.stepNum}.${note.noteID.replace('#', '\\#')}`);
     thisNote.classList.toggle('active');
@@ -24,17 +18,11 @@ export function Lead () {
   }
 
   function handleNoteClick (note) {
-
-    console.log('Brain.leadPattern', Brain.leadPattern);
     if (note.stepNum >= 0) {
       buttonToggleActive(note); //!!!!!!!!
       Brain.changeLeadPattern(note);
     } else Brain.leadSynth.triggerAttackRelease(note.name, '16n');
   }
-
-
-
-
 
   function renderSteps (num, noSequence) {
     const arr = [];
@@ -49,9 +37,6 @@ export function Lead () {
     }
     return arr;
   }
-
-
-
 
   return (
     <div>
