@@ -26,8 +26,15 @@ io.on('connection', (socket) => {
   console.log('A user has connected');
   socket.on('disconnect', () => console.log('User has disconnected'));
 
-  socket.on('pattern-change', (note) => {
+  socket.on('pattern-change-drums', (note) => {
     console.log('event received!!', note);
-    socket.broadcast.emit('pattern-change', (note));
-  }) 
+    socket.broadcast.emit('pattern-change-drums', (note));
+  })
+
+  socket.on('pattern-change-lead', (note) => {
+    console.log('event received!!', note);
+    socket.broadcast.emit('pattern-change-lead', (note));
+  })
+
+  
 })
