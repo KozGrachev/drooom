@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { Scale, Mode } from '@tonaljs/tonal';
 import * as Brain from '../tone/main';
 import { v4 } from 'uuid';
+import { socket } from '../api';
 import '../style/keysModesList.scss'
 
 export function KeysModesList () {
@@ -10,9 +11,23 @@ export function KeysModesList () {
   const [mode, setMode] = useState(localStorage.getItem('droom-keys-mode') ||'ionian');
 
   useEffect(() => {
-    // console.log('scale: ', scale, '   mode: ', mode)
-    Brain.setNewScale(Scale.rangeOf(`${scale} ${mode}`)(`${scale}2`, `${scale}6`));
+    sendNewScale();
   }, [scale, mode]);
+
+  useEffect(() => {
+    socket.on('key-change', (key) => {
+      setScale(key);
+      localStorage.setItem('droom-keys-scale', key);
+    });
+    socket.on('mode-change', (mode) => {
+      setMode(mode);
+      localStorage.setItem('droom-keys-mode', mode);
+    });
+  }, []);
+
+  function sendNewScale () {
+    Brain.setNewScale(Scale.rangeOf(`${scale} ${mode}`)(`${scale}2`, `${scale}6`));
+  }
 
   function renderScales (arr) {
     return arr.map((note) => {
@@ -34,14 +49,16 @@ export function KeysModesList () {
     })
   };
 
-  function handleScaleClick (note) {
-    setScale(note);
-    localStorage.setItem('droom-keys-scale', note);
+  function handleScaleClick (key) {
+    socket.emit('key-change', key);
+    setScale(key);
+    localStorage.setItem('droom-keys-scale', key);
   }
 
-  function handleModeClick (note) {
-    setMode(note);
-    localStorage.setItem('droom-keys-mode', note);
+  function handleModeClick (mode) {
+    socket.emit('mode-change', mode)
+    setMode(mode);
+    localStorage.setItem('droom-keys-mode', mode);
   }
 
   return (

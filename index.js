@@ -12,10 +12,6 @@ if (process.env.NODE_ENV === 'production') {
 }
 
 
-// app.listen(PORT, () => {
-//   console.log('Server listening on port', PORT);
-// });
-
 const server = app.listen(PORT, () => {
   console.log('Server listening on port', PORT);
 })
@@ -27,14 +23,23 @@ io.on('connection', (socket) => {
   socket.on('disconnect', () => console.log('User has disconnected'));
 
   socket.on('pattern-change-drums', (note) => {
-    console.log('event received!!', note);
+    console.log('Drums pattern change event received!!', note);
     socket.broadcast.emit('pattern-change-drums', (note));
   })
 
   socket.on('pattern-change-lead', (note) => {
-    console.log('event received!!', note);
+    console.log('Lead pattern change event received!!', note);
     socket.broadcast.emit('pattern-change-lead', (note));
   })
 
-  
+  socket.on('key-change', (key) => {
+    console.log('key change event received!!', key);
+    socket.broadcast.emit('key-change', (key));
+  })
+
+  socket.on('mode-change', (mode) => {
+    console.log('mode change event received!!', mode);
+    socket.broadcast.emit('mode-change', (mode));
+  })
+
 })
