@@ -185,7 +185,7 @@ function changeSynthPattern (note, name, index = 0) {
     console.log('DELETING note:', note);
     delete thisPattern[note.stepNum][note.noteID];
   }
-  localStorage.setItem('droom-lead-pattern', JSON.stringify(thisPattern));
+  localStorage.setItem(`droom-${name}-pattern`, JSON.stringify(thisPattern));
   return thisPattern;
 }
 
