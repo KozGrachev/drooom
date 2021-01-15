@@ -16,8 +16,11 @@ import perc from '../assets/audio/909/clap.mp3';
 
 
 const leadSynth = new Tone.PolySynth().toDestination();
+leadSynth.volume.value = -15;
 let leadNumSteps = 32;
 let startTime = 0;
+
+
 const loops = { keys: [], drums: [] };
 let playing = {};
 const leadPattern = localStorage.getItem('droom-lead-pattern')
@@ -46,14 +49,13 @@ const drumNoteNames = Object.entries(drumNoteNamePairs);
 const sampler = new Tone.Sampler(notes).toDestination();
 sampler.volume.value = -5;
 
-const repEvent = new Tone.ToneEvent((time) => repeat(time));
+const repEvent = new Tone.ToneEvent((time) => repeatDrums(time));
 repEvent.loop = true;
 repEvent.loopEnd = '16n';
 addLoop(repEvent, 'drums');
 
 
 
-leadSynth.volume.value = -15;
 Tone.Transport.bpm.value = 120;
 Tone.Transport.swing = 0.15;
 Tone.Transport.swingSubdivision = '16n';
@@ -144,8 +146,8 @@ async function playPause (name) {
 
 
 
-//*---- FROM LEAD.JS ----------------------------------------//
-//*----------------------------------------------------------//
+//*---- FROM SYNTH.JS ----------------------------------------//
+//*-----------------------------------------------------------//
 function setNewScale (newScale) {
   // setOldScale(newScale);
   const thisScale = {};
@@ -156,7 +158,7 @@ function setNewScale (newScale) {
   // setScale(thisScale);
   console.log('thisScale', thisScale);
   // createAndPassUpLoop();
-  const repEvent = new Tone.ToneEvent((time) => repeatLead(time));
+  const repEvent = new Tone.ToneEvent((time) => repeatSynth(time));
   repEvent.loop = true;
   repEvent.loopEnd = '16n';
   addLoop(repEvent, 'keys');
@@ -179,7 +181,7 @@ function changeLeadPattern (note) {
   return leadPattern;
 }
 
-function repeatLead (time) {
+function repeatSynth (time) {
   const count = getSixteenths(leadNumSteps);
   for (let note in leadPattern[count]) {
     let thisNoteName = scale[note];// leadPattern[count][note].name;
@@ -223,8 +225,8 @@ function getSixteenths (num) {
   return (sixteenths + quarters * 4 + bars * 16) % num;
 }
 
-//*----------------------------------------------------------//
-//*-------------------------------------- FROM LEAD.JS ------//
+//*-----------------------------------------------------------//
+//*-------------------------------------- FROM SYNTH.JS ------//
 
 
 
@@ -244,7 +246,7 @@ function changeDrumPattern (note) {
     return drumsPattern;
 }
 
-function repeat (time) {
+function repeatDrums (time) {
   const count = getSixteenths(16);
   for (const [note, drum] of drumNoteNames) {
     if (drumsPattern[drum][count]) {
@@ -281,12 +283,21 @@ function repeat (time) {
 
 
 
+//*---- FROM DRUMS.JS ---------------------------------------//
+//*----------------------------------------------------------//
 
+
+
+
+
+
+//*----------------------------------------------------------//
+//*------------------------------------- FROM DRUMS.JS ------//
 
 export {
   playPause, addLoop, scale,
   leadSynth, setNewScale,
-  repeatLead, setLeadNumSteps,
+  repeatSynth, setLeadNumSteps,
   changeLeadPattern, leadPattern,
   changeDrumPattern, drumsPattern,
   drumNames, playing
