@@ -23,17 +23,32 @@ let startTime = 0;
 
 const loops = {};
 let playing = {};
-const leadPattern = localStorage.getItem('droom-lead-pattern')
-  ? JSON.parse(localStorage.getItem('droom-lead-pattern'))
-  : Array.from({ length: leadNumSteps }, Object)
 
+const synthPatterns = {
+  lead: [initializePattern('lead')],
+  bass: [initializePattern('bass')]
+};
+
+const currentSynthPatterns = {
+  lead: synthPatterns.lead[0],
+  bass: synthPatterns.bass[0]
+}
+
+function initializePattern (name) {
+  return localStorage.getItem(`droom-${name}-pattern`)
+    ? JSON.parse(localStorage.getItem(`droom-${name}-pattern`))
+    : Array.from({ length: leadNumSteps }, Object)
+}
+
+console.log('CURRENT PATTERN -----> IN BRAIN: ' ,currentSynthPatterns['lead']);
 
 let scale = {}
 Scale.rangeOf('C major')('C2', 'C6').forEach((note, i) => {
   scale[noteIDs[i]] = note;
 });
 
-loops.lead = createLoop();
+loops.lead = createLoop('lead');
+loops.bass = createLoop('bass');
 
 
 const drumsPattern = localStorage.getItem('droom-drums-pattern')
@@ -53,11 +68,11 @@ const drumNoteNames = Object.entries(drumNoteNamePairs);
 const sampler = new Tone.Sampler(notes).toDestination();
 sampler.volume.value = -5;
 
-const repEvent = new Tone.ToneEvent((time) => repeatDrums(time));
-repEvent.loop = true;
-repEvent.loopEnd = '16n';
-loops.drums = repEvent; //addLoop(repEvent, 'drums');
-
+// const repEvent = new Tone.ToneEvent((time) => repeatDrums(time));
+// repEvent.loop = true;
+// repEvent.loopEnd = '16n';
+// loops.drums = repEvent; //addLoop(repEvent, 'drums');
+loops.drums = createLoop('drums');
 
 
 Tone.Transport.bpm.value = 120;
@@ -80,6 +95,7 @@ Tone.Transport.swingSubdivision = '16n';
 async function playPause (name) {
 
   console.log('PLAY/PAUSE', name, loops[name], loops);
+  console.log('PATTERNS:', currentSynthPatterns);
   Tone.start();
   if (playing[name] && Tone.Transport.state === 'started') {
     for (const ev in playing) {
@@ -128,6 +144,7 @@ async function playPause (name) {
 
 //*---- FROM SYNTH.JS ----------------------------------------//
 //*-----------------------------------------------------------//
+
 function setNewScale (newScale) {
   const thisScale = {};
   newScale.forEach((note, i) => {
@@ -142,33 +159,41 @@ function setNewScale (newScale) {
 }
 
 function createLoop (name) {
-  console.log('ADDING LOOP FOR THE VERY FIRST TIME');
+  console.log('CREATING LOOP', name);
   const repEvent = new Tone.ToneEvent((time) => {
-    return name === 'drums'
-      ? repeatDrums(time)
-      : repeatSynth(time)
+    return name === 'drums' ? repeatDrums(time) : repeatSynth(time, currentSynthPatterns[name]);
+
   });
   repEvent.loop = true;
   repEvent.loopEnd = '16n';
   return repEvent;
 }
 
-function changeLeadPattern (note) {
-
-  if (!leadPattern[note.stepNum].hasOwnProperty(note.noteID)) {
-    console.log('adding note:', note);
-    leadPattern[note.stepNum][note.noteID] = note;
-  } else if (leadPattern[note.stepNum].hasOwnProperty(note.noteID) || !note.active) {
-    console.log('DELETING note:', note);
-    delete leadPattern[note.stepNum][note.noteID];
-  }
-  localStorage.setItem('droom-lead-pattern', JSON.stringify(leadPattern));
-  return leadPattern;
+//! EXPORT THIS AND USE TO ASSIGN CURRENTLY PLAYING PATTERN TO leadPattern and bassPattern
+//! repeat() function should always use the leadPattern and bassPattern
+function selectPattern (name, index) {
+  currentSynthPatterns[name] = synthPatterns[name][index];
 }
 
-function repeatSynth (time) {
+function changeSynthPattern (note, name, index = 0) {
+  const thisPattern = synthPatterns[name][index];
+
+  if (!thisPattern[note.stepNum].hasOwnProperty(note.noteID)) {
+    console.log('adding note:', note);
+    thisPattern[note.stepNum][note.noteID] = note;
+  } else if (thisPattern[note.stepNum].hasOwnProperty(note.noteID) || !note.active) {
+    console.log('DELETING note:', note);
+    delete thisPattern[note.stepNum][note.noteID];
+  }
+  localStorage.setItem('droom-lead-pattern', JSON.stringify(thisPattern));
+  return thisPattern;
+}
+
+function repeatSynth (time, pattern) {
   const count = getSixteenths(leadNumSteps);
-  for (let note in leadPattern[count]) {
+  console.log(count, pattern);
+  for (let note in pattern[count]) {
+    console.log(note)
     let thisNoteName = scale[note];// leadPattern[count][note].name;
     if (Note.pitchClass(thisNoteName) === 'Cb') {
       thisNoteName = Note.transpose(thisNoteName, '8P');
@@ -181,7 +206,7 @@ function repeatSynth (time) {
   //* Adds the triggered class to all active buttons in the current step
   //* and removes it from those in the previous step
   Tone.Draw.schedule(() => {
-    for (const note in leadPattern[count]) {
+    for (const note in pattern[count]) {
       const pianoRollFeedback = document.querySelector(`.${note}.step-1`)
       const currentPlayingNote = document.querySelector(`.${note}.step${count}`)
       addTempClass(pianoRollFeedback);
@@ -280,10 +305,10 @@ function repeatDrums (time) {
 //*------------------------------------- FROM DRUMS.JS ------//
 
 export {
-  playPause, createLoop,
+  playPause,
   scale, leadSynth, setNewScale,
   repeatSynth, setLeadNumSteps,
-  changeLeadPattern, leadPattern,
+  changeSynthPattern, currentSynthPatterns,
   changeDrumPattern, drumsPattern,
   drumNames, playing
 };

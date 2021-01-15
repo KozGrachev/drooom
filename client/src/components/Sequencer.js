@@ -5,13 +5,13 @@ import * as Brain from '../tone/main';
 import { v4 } from 'uuid';
 import { socket } from '../api'
 
-function Sequencer ({buttonColor}) {
+function Sequencer ({buttonColor, instrument}) {
 
   const [numSteps, setNumSteps] = useState(32);
 
   useEffect(() => {
-    socket.on('pattern-change-lead', (note) => {
-      Brain.changeLeadPattern(note);
+    socket.on(`pattern-change-${instrument}`, (note) => {
+      Brain.changeSynthPattern(note, instrument, 0);
       buttonToggleActive(note);
     });
   }, []);
@@ -23,18 +23,20 @@ function Sequencer ({buttonColor}) {
 
   function handleNoteClick (note) {
     if (note.stepNum >= 0) {
-      socket.emit('pattern-change-lead', note);
+      socket.emit(`pattern-change-${instrument}`, note);
       buttonToggleActive(note); //!!!!!!!!
-      Brain.changeLeadPattern(note);
+      Brain.changeSynthPattern(note, instrument, 0);
     } else Brain.leadSynth.triggerAttackRelease(Brain.scale[note.noteID], '16n');
   }
+
+  console.log('CURRENT LEAD PATTERN',Brain.currentSynthPatterns[instrument], instrument)
 
   function renderSteps (num, noSequence) {
     const arr = [];
     for (let i = 0; i < num; i++) {
       arr.push(<Step
         handleNoteClick={handleNoteClick}
-        pattern={Brain.leadPattern}
+        pattern={Brain.currentSynthPatterns[instrument]}
         stepNum={noSequence ? -1 : i}
         shape="grid"
         noteNames={Object.values(Brain.scale)}

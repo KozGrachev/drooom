@@ -32,6 +32,11 @@ io.on('connection', (socket) => {
     socket.broadcast.emit('pattern-change-lead', (note));
   })
 
+  socket.on('pattern-change-bass', (note) => {
+    console.log('Bass pattern change event received!!', note);
+    socket.broadcast.emit('pattern-change-bass', (note));
+  })
+
   socket.on('key-change', (key) => {
     console.log('key change event received!!', key);
     socket.broadcast.emit('key-change', (key));
