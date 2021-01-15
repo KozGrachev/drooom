@@ -36,23 +36,3 @@
   // border: 3px solid green;
 }
 
-#playPause {
-  position: absolute;
-  width: 90px;
-  height: 90px;
-  border-radius: 50%;
-  background-color: #56cfe1;
-  color: rgba(0, 0, 0, 0.473);
-  left: 50%;
-  top: 50%;
-  transform: translate(-50%, -50%);
-  font-size: x-large;
-  font-weight: 600;
-
-  &.active {
-    background-color: #5390d9;
-  }
-
-  &.inatctive {}
-
-}

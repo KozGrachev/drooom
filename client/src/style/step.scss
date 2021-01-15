@@ -16,6 +16,10 @@
     display: grid;
     // justify-content: center;
     grid-template-rows: repeat(auto-fill, auto);
+
+    .button-wrapper:nth-of-type(7n+1) {
+      background-color: #f1ee55de;
+    }
     // width: 50px;
     // border: 1px solid rgba(0, 0, 255, 0.322);
   }

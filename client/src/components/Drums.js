@@ -6,6 +6,7 @@ import '../style/drums.scss';
 import * as Tone from 'tone';
 import { v4 } from 'uuid';
 import {socket} from '../api'
+import PlayButton from './PlayButton.js';
 
 export function Drums () {
 
@@ -55,9 +56,10 @@ export function Drums () {
         <div className="drumpad-wrapper">
           {renderSteps()}
         </div>
-        <input type="button" id="playPause" onMouseDown={() => {
+        <PlayButton shape="circle" instrument="drums" />
+        {/* <input type="button" id="playPause" onMouseDown={() => {
           Brain.playPause('drums');
-        }} value="droom"></input>
+        }} value="droom"></input> */}
         <div className="drums-controls">
           <div className="slider-wrapper">
             <VSlider handleChange={setBpm} className="slider" />

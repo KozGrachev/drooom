@@ -6,6 +6,7 @@ import { v4 } from 'uuid';
 import { socket } from '../api'
 import '../style/lead.scss';
 import '../assets/svg/play.svg';
+import PlayButton from './PlayButton';
 
 export function Lead () {
   console.log('\n\n');
@@ -53,12 +54,7 @@ export function Lead () {
     <div>
       <div className="container">
         <div className="top-panel">
-          <div className="play-button" onMouseDown={() => {
-            Brain.playPause('keys');
-          }
-          }>
-            <svg className="play-icon" xmlns="http://www.w3.org/2000/svg" fillRule="evenodd" clipRule="evenodd"><path className="play-icon-path" d="M23 12l-22 12v-24l22 12zm-21 10.315l18.912-10.315-18.912-10.315v20.63z" /></svg>
-          </div>
+          <PlayButton instrument="keys" shape="grid" />
           <div className="controls">
             <div className="third-height tempo"></div>
             <div className="third-height tempo-nudge"></div>

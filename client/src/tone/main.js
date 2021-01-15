@@ -103,12 +103,7 @@ async function playPause (name) {
     for (const ev in playing) {
       if (ev !== name && playing[ev]) {
         console.log(`CASE #2: Transport and This event was 'started' and was not the only one. Stopping event ${name}`);
-
         stopLoop(name);
-        // loops[name].forEach(el => {
-        //   el.stop();
-        //   // el.dispose()
-        // });
         playing[name] = false;
         return;
       }
@@ -130,6 +125,7 @@ async function playPause (name) {
     Tone.Transport.start(Tone.now())//'+0.1');
     startLoop(name);
     playing[name] = true;
+
   } else {
     console.error('Unexpected condition! Check the start/stop if statements');
     console.error('playing[name]:', name, playing[name])
@@ -293,5 +289,5 @@ export {
   repeatLead, setLeadNumSteps,
   changeLeadPattern, leadPattern,
   changeDrumPattern, drumsPattern,
-  drumNames
+  drumNames, playing
 };
