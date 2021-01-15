@@ -19,6 +19,7 @@ input {
       }
       &.triggered {
         background: $yellow-light;
+        z-index: 2;
       }
     }
 

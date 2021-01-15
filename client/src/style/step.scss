@@ -16,7 +16,7 @@
     display: grid;
     // justify-content: center;
     grid-template-rows: repeat(auto-fill, auto);
-
+    position:relative;
     .button-wrapper:nth-of-type(7n+1) {
       background-color: #f1ee55de;
     }

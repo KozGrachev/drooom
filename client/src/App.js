@@ -3,7 +3,6 @@ import { Drums } from './components/Drums'
 import { Synth } from './components/Synth';
 import { useEffect } from 'react';
 import { socket } from './api'
-import Slider from 'infinite-react-carousel';
 
 function App () {
 
