@@ -11,15 +11,33 @@ input {
     // background-color: #30292f;
     height: 100%;
     border: 1px solid #C8C8C8;
-    &.active {
-      background: #ebe983;
+    // transform-origin: center;
+
+    &.yellow {
+      &.active {
+        background: $yellow;
+      }
+      &.triggered {
+        background: $yellow-light;
+      }
     }
+
+    &.red {
+      &.active {
+        background: $red;
+      }
+
+      &.triggered {
+        background: $red-light;
+      }
+    }
+
     &.triggered {
       transform: scale(1.3);
-      background-color: #fcfbc9;
     }
+
     &:active {
-      background-color: #f1ef55;
+      background-color: $yellow-dark;
     }
   }
 
@@ -28,10 +46,12 @@ input {
     top: 100%;
     height: 85%;
     border-radius: 50%;
+
     &.triggered {
       transform: scale(1.1);
       background-color: #6930c3;
     }
+
     &:active {
       background-color: #5390d9;
     }
