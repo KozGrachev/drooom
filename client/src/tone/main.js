@@ -21,18 +21,22 @@ let leadNumSteps = 32;
 let startTime = 0;
 
 
-const loops = { keys: [], drums: [] };
+const loops = {};
 let playing = {};
 const leadPattern = localStorage.getItem('droom-lead-pattern')
   ? JSON.parse(localStorage.getItem('droom-lead-pattern'))
   : Array.from({ length: leadNumSteps }, Object)
+
 
 let scale = {}
 Scale.rangeOf('C major')('C2', 'C6').forEach((note, i) => {
   scale[noteIDs[i]] = note;
 });
 
-const drumsPattern = localStorage.getItem('droom-keys-pattern')
+loops.lead = createLoop();
+
+
+const drumsPattern = localStorage.getItem('droom-drums-pattern')
   ? JSON.parse(localStorage.getItem('droom-drums-pattern'))
   : {
     kick: Array(16).fill(false),
@@ -52,7 +56,7 @@ sampler.volume.value = -5;
 const repEvent = new Tone.ToneEvent((time) => repeatDrums(time));
 repEvent.loop = true;
 repEvent.loopEnd = '16n';
-addLoop(repEvent, 'drums');
+loops.drums = repEvent; //addLoop(repEvent, 'drums');
 
 
 
@@ -73,51 +77,27 @@ Tone.Transport.swingSubdivision = '16n';
 //*----------------------------------------------------------//
 
 
-function addLoop (loop, name) {
-  loops.loop = true;
-  loops.loopEnd = '16n';
-  loops[name].push(loop);
-}
-
-function startLoop (name, time) {
-  for (let i = loops[name].length - 1; i > 0; i--) {
-    loops[name][i].stop();
-    loops[name][i].dispose();
-  }
-  loops[name] = loops[name].slice(0, 1);
-  loops[name][0].start(time);
-}
-
-function stopLoop (name) {
-  for (let i = loops[name].length - 1; i > 0; i--) {
-    loops[name][i].stop();
-    loops[name][i].dispose();
-  }
-  loops[name] = loops[name].slice(0, 1);
-  loops[name][0].stop();
-}
-
 async function playPause (name) {
 
-  console.log('PLAY/PAUSE', loops);
+  console.log('PLAY/PAUSE', name, loops[name], loops);
   Tone.start();
   if (playing[name] && Tone.Transport.state === 'started') {
     for (const ev in playing) {
       if (ev !== name && playing[ev]) {
         console.log(`CASE #2: Transport and This event was 'started' and was not the only one. Stopping event ${name}`);
-        stopLoop(name);
+        loops[name].stop();//stopLoop(name);
         playing[name] = false;
         return;
       }
     }
     console.log(`CASE #1: Transport was 'started' and no other loops were running. Stopping event ${name} and stopping and cancelling transport`);
-    stopLoop(name);
+    loops[name].stop(); //stopLoop(name);
     playing[name] = false;
     Tone.Transport.stop();
     Tone.Transport.cancel();
   } else if (!playing[name] && Tone.Transport.state === 'started') {
     const nextHalfBar = Tone.Time('@2n').quantize('2n'); // .Transport.nextSubdivision('2n'); // .quantize('2n'); // - last;
-    startLoop(name, nextHalfBar - startTime);
+    loops[name].start(nextHalfBar - startTime); // startLoop(name, nextHalfBar - startTime);
     playing[name] = true;
     console.log(`CASE #3: Did not have the event but transport was playing. Adding the event ${name} id:${loops[name]}`);
   } else if (!playing[name] && Tone.Transport.state === 'stopped') {
@@ -125,7 +105,7 @@ async function playPause (name) {
     startTime = Tone.Time(Tone.now()).quantize('2n');
     console.log('CASE #4: this event was not in the array and the transport was stopped. Starting transport and adding event');
     Tone.Transport.start(Tone.now())//'+0.1');
-    startLoop(name);
+    loops[name].start();// startLoop(name);
     playing[name] = true;
 
   } else {
@@ -149,23 +129,28 @@ async function playPause (name) {
 //*---- FROM SYNTH.JS ----------------------------------------//
 //*-----------------------------------------------------------//
 function setNewScale (newScale) {
-  // setOldScale(newScale);
   const thisScale = {};
   newScale.forEach((note, i) => {
     thisScale[noteIDs[i]] = note;
   });
   scale = thisScale;
-  // setScale(thisScale);
   console.log('thisScale', thisScale);
-  // createAndPassUpLoop();
-  const repEvent = new Tone.ToneEvent((time) => repeatSynth(time));
-  repEvent.loop = true;
-  repEvent.loopEnd = '16n';
-  addLoop(repEvent, 'keys');
 
   document.querySelectorAll('.step-1').forEach((el, i) => {
     el.setAttribute('value', newScale[i])
   });
+}
+
+function createLoop (name) {
+  console.log('ADDING LOOP FOR THE VERY FIRST TIME');
+  const repEvent = new Tone.ToneEvent((time) => {
+    return name === 'drums'
+      ? repeatDrums(time)
+      : repeatSynth(time)
+  });
+  repEvent.loop = true;
+  repEvent.loopEnd = '16n';
+  return repEvent;
 }
 
 function changeLeadPattern (note) {
@@ -239,11 +224,11 @@ function getSixteenths (num) {
 //*----------------------------------------------------------//
 
 function changeDrumPattern (note) {
-    drumsPattern[note.name][note.stepNum] = !drumsPattern[note.name][note.stepNum];
+  drumsPattern[note.name][note.stepNum] = !drumsPattern[note.name][note.stepNum];
 
-    localStorage.setItem('droom-drums-pattern', JSON.stringify(drumsPattern));
-    console.log('Drum pattern:', drumsPattern)
-    return drumsPattern;
+  localStorage.setItem('droom-drums-pattern', JSON.stringify(drumsPattern));
+  console.log('Drum pattern:', drumsPattern)
+  return drumsPattern;
 }
 
 function repeatDrums (time) {
@@ -295,8 +280,8 @@ function repeatDrums (time) {
 //*------------------------------------- FROM DRUMS.JS ------//
 
 export {
-  playPause, addLoop, scale,
-  leadSynth, setNewScale,
+  playPause, createLoop,
+  scale, leadSynth, setNewScale,
   repeatSynth, setLeadNumSteps,
   changeLeadPattern, leadPattern,
   changeDrumPattern, drumsPattern,

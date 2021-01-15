@@ -14,7 +14,7 @@ export function Synth ({buttonColor, sideBar, numOctaves}) {
     <div>
       <div className="container">
         <div className="top-panel">
-          <PlayButton buttonColor={buttonColor} instrument="keys" shape="grid" />
+          <PlayButton buttonColor={buttonColor} instrument="lead" shape="grid" />
           <div className="controls">
             <div className="third-height tempo"></div>
             <div className="third-height tempo-nudge"></div>

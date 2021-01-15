@@ -11,10 +11,12 @@ export function KeysModesList ({buttonColor}) {
   const [mode, setMode] = useState(localStorage.getItem('droom-keys-mode') ||'ionian');
 
   useEffect(() => {
-    sendNewScale();
+    // sendNewScale();
+    Brain.setNewScale(createScale());
   }, [scale, mode]);
 
   useEffect(() => {
+    // Brain.createLoop(createScale());
     socket.on('key-change', (key) => {
       setScale(key);
       localStorage.setItem('droom-keys-scale', key);
@@ -25,8 +27,8 @@ export function KeysModesList ({buttonColor}) {
     });
   }, []);
 
-  function sendNewScale () {
-    Brain.setNewScale(Scale.rangeOf(`${scale} ${mode}`)(`${scale}2`, `${scale}6`));
+  function createScale () {
+    return Scale.rangeOf(`${scale} ${mode}`)(`${scale}2`, `${scale}6`);
   }
 
   function renderScales (arr) {
