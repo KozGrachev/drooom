@@ -11,7 +11,7 @@ export function Note ({ pattern, name, stepNum, handleNoteClick, numOfNotes, pos
 
 
   function handleClick () {
-    if (shape === 'grid' ) console.log('FROM BUTTON: ', pattern[stepNum]);
+    if (shape === 'grid' ) console.log('FROM BUTTON: ', pattern[stepNum], pattern, stepNum);
     else console.log('THIS STEP IS :',name, pattern[name][stepNum]);
     const newActive = !active;
     setActive(newActive);

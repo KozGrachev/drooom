@@ -15,10 +15,10 @@ function App () {
     // <Slider rows={2}>
     <div className="app-container">
       <section className="instrument-wrapper lead">
-        <Synth instrument="lead" buttonColor="yellow" sideBar="keysModesList" numOctaves={ 4 }/>
+        <Synth instrument="lead" buttonColor="yellow" sideBar="keysModesList" />
       </section>
       <section className="instrument-wrapper bass">
-        <Synth instrument="bass" buttonColor="red" sideBar="" numOctaves={4}/>
+        <Synth instrument="bass" buttonColor="red" sideBar="" />
       </section>
       <section className="instrument-wrapper drums">
         <Drums />

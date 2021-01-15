@@ -20,6 +20,12 @@ leadSynth.volume.value = -15;
 let leadNumSteps = 32;
 let startTime = 0;
 
+const leadFirstOctave = 2;
+const leadNumOctaves = 4;
+
+const bassFirstOctave = 2;
+const bassNumOctaves = 2;
+
 
 const loops = {};
 let playing = {};
@@ -42,10 +48,17 @@ function initializePattern (name) {
 
 console.log('CURRENT PATTERN -----> IN BRAIN: ' ,currentSynthPatterns['lead']);
 
-let scale = {}
-Scale.rangeOf('C major')('C2', 'C6').forEach((note, i) => {
-  scale[noteIDs[i]] = note;
-});
+const scales = {
+  lead: {},
+  bass: {},
+}
+
+// Scale.rangeOf('C major')('C2', 'C6').forEach((note, i) => {
+//   scales.lead[noteIDs[i]] = note;
+// });
+// Scale.rangeOf('C major')('C2', 'C6').forEach((note, i) => {
+//   scales.bass[noteIDs[i]] = note;
+// });
 
 loops.lead = createLoop('lead');
 loops.bass = createLoop('bass');
@@ -145,16 +158,18 @@ async function playPause (name) {
 //*---- FROM SYNTH.JS ----------------------------------------//
 //*-----------------------------------------------------------//
 
-function setNewScale (newScale) {
+function setNewScale (name, newScale) {
   const thisScale = {};
+  console.log('SCALE BEFORE SETTING:', name, scales[name]);
   newScale.forEach((note, i) => {
     thisScale[noteIDs[i]] = note;
   });
-  scale = thisScale;
+
+  scales['lead'] = thisScale;
   console.log('thisScale', thisScale);
 
-  document.querySelectorAll('.step-1').forEach((el, i) => {
-    el.setAttribute('value', newScale[i])
+  document.querySelectorAll(`.${name} .step-1`).forEach((el, i) => {
+    el.setAttribute('value', newScale[newScale.length-i-1])
   });
 }
 
@@ -191,10 +206,10 @@ function changeSynthPattern (note, name, index = 0) {
 
 function repeatSynth (time, pattern) {
   const count = getSixteenths(leadNumSteps);
-  console.log(count, pattern);
+  // console.log(count, pattern);
   for (let note in pattern[count]) {
-    console.log(note)
-    let thisNoteName = scale[note];// leadPattern[count][note].name;
+    // console.log(note)
+    let thisNoteName = scales['lead'][note];// leadPattern[count][note].name;
     if (Note.pitchClass(thisNoteName) === 'Cb') {
       thisNoteName = Note.transpose(thisNoteName, '8P');
     }
@@ -305,8 +320,9 @@ function repeatDrums (time) {
 //*------------------------------------- FROM DRUMS.JS ------//
 
 export {
-  playPause,
-  scale, leadSynth, setNewScale,
+  playPause, bassNumOctaves,
+  bassFirstOctave,
+  scales, leadSynth, setNewScale,
   repeatSynth, setLeadNumSteps,
   changeSynthPattern, currentSynthPatterns,
   changeDrumPattern, drumsPattern,

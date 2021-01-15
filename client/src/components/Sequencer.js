@@ -15,8 +15,9 @@ function Sequencer ({buttonColor, instrument}) {
       buttonToggleActive(note);
     });
   }, []);
+
   function buttonToggleActive (note) {
-    const thisNote = document.querySelector(`.step${note.stepNum}.${note.noteID.replace('#', '\\#')}`);
+    const thisNote = document.querySelector(`.${instrument} .step${note.stepNum}.${note.noteID.replace('#', '\\#')}`);
     thisNote.classList.toggle('active');
     thisNote.classList.toggle('inactive');
   }
@@ -26,12 +27,15 @@ function Sequencer ({buttonColor, instrument}) {
       socket.emit(`pattern-change-${instrument}`, note);
       buttonToggleActive(note); //!!!!!!!!
       Brain.changeSynthPattern(note, instrument, 0);
-    } else Brain.leadSynth.triggerAttackRelease(Brain.scale[note.noteID], '16n');
+    } else Brain.leadSynth.triggerAttackRelease(Brain.scales[instrument][note.noteID], '16n');
   }
 
   console.log('CURRENT LEAD PATTERN',Brain.currentSynthPatterns[instrument], instrument)
 
   function renderSteps (num, noSequence) {
+
+    console.log('Brain.scales[instrument]',instrument, Brain.scales[instrument]);
+    //!renders before scale is created
     const arr = [];
     for (let i = 0; i < num; i++) {
       arr.push(<Step
@@ -39,7 +43,7 @@ function Sequencer ({buttonColor, instrument}) {
         pattern={Brain.currentSynthPatterns[instrument]}
         stepNum={noSequence ? -1 : i}
         shape="grid"
-        noteNames={Object.values(Brain.scale)}
+        noteNames={Object.values(Brain.scales[instrument])}
         buttonColor={buttonColor}
         key={v4()} />);
     }

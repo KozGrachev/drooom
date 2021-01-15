@@ -12,7 +12,8 @@ export function KeysModesList ({buttonColor}) {
 
   useEffect(() => {
     // sendNewScale();
-    Brain.setNewScale(createScale());
+    Brain.setNewScale('lead', createScale());
+    Brain.setNewScale('bass', createBassScale());
   }, [scale, mode]);
 
   useEffect(() => {
@@ -29,6 +30,10 @@ export function KeysModesList ({buttonColor}) {
 
   function createScale () {
     return Scale.rangeOf(`${scale} ${mode}`)(`${scale}2`, `${scale}6`);
+  }
+
+  function createBassScale () {
+    return Scale.rangeOf(`${scale} ${mode}`)(`${scale + Brain.bassFirstOctave}`, `${scale + (Brain.bassFirstOctave + Brain.bassNumOctaves)}`);
   }
 
   function renderScales (arr) {
