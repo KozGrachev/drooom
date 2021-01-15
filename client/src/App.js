@@ -1,6 +1,6 @@
 import './style/App.scss';
 import { Drums } from './components/Drums'
-import { Lead } from './components/Lead';
+import { Synth } from './components/Synth';
 import { useEffect } from 'react';
 import { socket } from './api'
 
@@ -13,7 +13,7 @@ function App () {
 
   return (
     <div className="app-container">
-      <Lead  />
+      <Synth  />
       <Drums  />
     </div>
   );

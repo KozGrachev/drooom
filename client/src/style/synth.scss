@@ -1,0 +1,59 @@
+@import "./variables.scss";
+
+
+
+.container {
+  // position: relative;
+  // flex-basis: 100%;
+  background: $grid-color-dark;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+
+  // border: 3px solid rgba(255, 0, 0, 0.39);
+
+  * {
+    // border: 1px solid rgba(0, 0, 0, 0.295);
+  }
+}
+
+.top-panel {
+  display: flex;
+  // flex-basis: 50%;
+  height: $panel-height;
+  // background-color: nth($color-scheme3, 4);
+}
+
+.controls {
+  display: flex;
+  flex-direction: column;
+  // width: $panel-height * 2;
+}
+
+
+.third-height {
+  height: $panel-height /3;
+  border: 1px solid $grid-color;
+}
+
+.tempo {
+  width: $panel-height;
+}
+
+.tempo-nudge {
+  width: $panel-height;
+}
+
+.side-panel_left {
+  position: relative;
+  width: 224px;
+  // border: 3px solid rgba(0, 255, 34, 0.623);
+}
+
+.main-panel {
+  display: flex;
+  overflow: hidden;
+
+}
+

@@ -1,15 +1,11 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react'
 import { Step } from './Step';
-import { KeysModesList } from './KeysModesList'
+import '../style/sequencer.scss'
 import * as Brain from '../tone/main';
 import { v4 } from 'uuid';
 import { socket } from '../api'
-import '../style/lead.scss';
-import '../assets/svg/play.svg';
-import PlayButton from './PlayButton';
 
-export function Lead () {
-  console.log('\n\n');
+function Sequencer () {
 
   const [numSteps, setNumSteps] = useState(32);
 
@@ -19,9 +15,6 @@ export function Lead () {
       buttonToggleActive(note);
     });
   }, []);
-
-
-
   function buttonToggleActive (note) {
     const thisNote = document.querySelector(`.step${note.stepNum}.${note.noteID.replace('#', '\\#')}`);
     thisNote.classList.toggle('active');
@@ -51,35 +44,16 @@ export function Lead () {
   }
 
   return (
-    <div>
-      <div className="container">
-        <div className="top-panel">
-          <PlayButton instrument="keys" shape="grid" />
-          <div className="controls">
-            <div className="third-height tempo"></div>
-            <div className="third-height tempo-nudge"></div>
-            <div className="third-height swing"></div>
-          </div>
-        </div>
-        <div className="main-panel" >
-          <div className="side-panel_left">
-            <KeysModesList />
-          </div>
-          <div className="piano-roll">
-            <div className="piano">
-              {renderSteps(1, true)}
-            </div>
-            <div className="sequencer"
-            // style={{
-            //   grid
-            // }}
-            >
-              {renderSteps(numSteps)}
-            </div>
-          </div>
-
-        </div>
+    <div className="piano-roll">
+      <div className="piano">
+        {renderSteps(1, true)}
+      </div>
+      <div className="sequencer">
+        {renderSteps(numSteps)}
       </div>
     </div>
+
   )
 }
+
+export default Sequencer
