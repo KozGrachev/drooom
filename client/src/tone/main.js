@@ -176,7 +176,7 @@ function setNewScale (name, newScale) {
 function createLoop (name) {
   console.log('CREATING LOOP', name);
   const repEvent = new Tone.ToneEvent((time) => {
-    return name === 'drums' ? repeatDrums(time) : repeatSynth(time, currentSynthPatterns[name]);
+    return name === 'drums' ? repeatDrums(time) : repeatSynth(time, name);
 
   });
   repEvent.loop = true;
@@ -204,10 +204,10 @@ function changeSynthPattern (note, name, index = 0) {
   return thisPattern;
 }
 
-function repeatSynth (time, pattern) {
+function repeatSynth (time, name) {
   const count = getSixteenths(leadNumSteps);
   console.log('LEAD SCALE: ', scales.lead);
-  for (let note in pattern[count]) {
+  for (let note in currentSynthPatterns[name][count]) {
     let thisNoteName = scales.lead[note];// leadPattern[count][note].name;
     if (Note.pitchClass(thisNoteName) === 'Cb') {
       thisNoteName = Note.transpose(thisNoteName, '8P');
@@ -222,9 +222,9 @@ function repeatSynth (time, pattern) {
   //* Adds the triggered class to all active buttons in the current step
   //* and removes it from those in the previous step
   Tone.Draw.schedule(() => {
-    for (const note in pattern[count]) {
-      const pianoRollFeedback = document.querySelector(`.${note}.step-1`)
-      const currentPlayingNote = document.querySelector(`.${note}.step${count}`)
+    for (const note in currentSynthPatterns[name][count]) {
+      const pianoRollFeedback = document.querySelector(`.${name} .${note}.step-1`)
+      const currentPlayingNote = document.querySelector(`.${name} .${note}.step${count}`)
       addTempClass(pianoRollFeedback);
       addTempClass(currentPlayingNote);
     }
