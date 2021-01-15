@@ -1,4 +1,3 @@
-
 button {
   &:focus {
     outline: none;
@@ -9,11 +8,34 @@ button {
   // background-color: black;
 }
 
+.instrument-wrapper {
+  width: 100vw;
+  height: 100vh;
+  // border: 3px solid green;
+}
+
 button:active {
   translate: scale(1.2);
 }
 
-.app-container{
-  // display: flex;
-  // width: 200vw;
+.app-container {
+  display: grid;
+  grid-template-columns: repeat(2, 100vw);
+  grid-template-rows: repeat(2, 100vh);
+  grid-template-areas:
+    "drums lead"
+    "bass .";
+  width: 100%;
+  height: auto;
+  // border: 3px solid blue;
+}
+
+.drums{
+  grid-area: drums;
+}
+.lead{
+  grid-area: lead;
+}
+.bass{
+  grid-area: bass;
 }

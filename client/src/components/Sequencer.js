@@ -5,7 +5,7 @@ import * as Brain from '../tone/main';
 import { v4 } from 'uuid';
 import { socket } from '../api'
 
-function Sequencer () {
+function Sequencer ({buttonColor}) {
 
   const [numSteps, setNumSteps] = useState(32);
 
@@ -38,6 +38,7 @@ function Sequencer () {
         stepNum={noSequence ? -1 : i}
         shape="grid"
         noteNames={Object.values(Brain.scale)}
+        buttonColor={buttonColor}
         key={v4()} />);
     }
     return arr;

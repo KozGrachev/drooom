@@ -6,8 +6,7 @@ import '../assets/svg/play.svg';
 import PlayButton from './PlayButton';
 import Sequencer from './Sequencer';
 
-export function Synth () {
-  console.log('\n\n');
+export function Synth ({buttonColor, sideBar, numOctaves}) {
 
 
 
@@ -24,9 +23,9 @@ export function Synth () {
         </div>
         <div className="main-panel" >
           <div className="side-panel_left">
-            <KeysModesList />
+            {sideBar === 'keysModesList' ? <KeysModesList /> : ''}
           </div>
-          <Sequencer />
+          <Sequencer buttonColor={buttonColor} />
         </div>
       </div>
     </div>

@@ -5,7 +5,7 @@ import * as Brain from '../tone/main'
 let noteID = helpers.generateNoteIDs(40);
 
 
-export function Note ({ pattern, name, stepNum, handleNoteClick, numOfNotes, position, shape }) {
+export function Note ({ pattern, name, stepNum, handleNoteClick, numOfNotes, position, shape, buttonColor }) {
 
   const [active, setActive] = useState(false, () => false);
 
@@ -47,7 +47,7 @@ export function Note ({ pattern, name, stepNum, handleNoteClick, numOfNotes, pos
       {/* <input className={`${name} ${numberString[stepNum]} ${active ? 'active' : 'inactive'} btn`} */}
       <input
         className={`
-          ${isActive() ? 'active' : ''}
+          ${isActive() ? 'active ' + buttonColor : ''}
           btn
           ${shape === 'circle' ? name : noteID[position]}
           step${stepNum}

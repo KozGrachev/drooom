@@ -3,6 +3,7 @@ import { Drums } from './components/Drums'
 import { Synth } from './components/Synth';
 import { useEffect } from 'react';
 import { socket } from './api'
+import Slider from 'infinite-react-carousel';
 
 function App () {
 
@@ -12,10 +13,20 @@ function App () {
   }, []);
 
   return (
+    // <Slider rows={2}>
     <div className="app-container">
-      <Synth  />
-      <Drums  />
+      <section className="instrument-wrapper lead">
+        <Synth buttonColor="yellow" sideBar="keysModesList" numOctaves={ 4 }/>
+      </section>
+      <section className="instrument-wrapper bass">
+        <Synth buttonColor="red" sideBar="" numOctaves={4}/>
+      </section>
+      <section className="instrument-wrapper drums">
+        <Drums />
+      </section>
+
     </div>
+    // </Slider>
   );
 }
 
