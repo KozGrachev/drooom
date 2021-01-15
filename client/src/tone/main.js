@@ -53,12 +53,12 @@ const scales = {
   bass: {},
 }
 
-// Scale.rangeOf('C major')('C2', 'C6').forEach((note, i) => {
-//   scales.lead[noteIDs[i]] = note;
-// });
-// Scale.rangeOf('C major')('C2', 'C6').forEach((note, i) => {
-//   scales.bass[noteIDs[i]] = note;
-// });
+Scale.rangeOf('C major')('C2', 'C6').forEach((note, i) => {
+  scales.lead[noteIDs[i]] = note;
+});
+Scale.rangeOf('C major')('C2', 'C4').forEach((note, i) => {
+  scales.bass[noteIDs[i]] = note;
+});
 
 loops.lead = createLoop('lead');
 loops.bass = createLoop('bass');
@@ -165,7 +165,7 @@ function setNewScale (name, newScale) {
     thisScale[noteIDs[i]] = note;
   });
 
-  scales['lead'] = thisScale;
+  scales[name] = thisScale;
   console.log('thisScale', thisScale);
 
   document.querySelectorAll(`.${name} .step-1`).forEach((el, i) => {
@@ -206,13 +206,14 @@ function changeSynthPattern (note, name, index = 0) {
 
 function repeatSynth (time, pattern) {
   const count = getSixteenths(leadNumSteps);
-  // console.log(count, pattern);
+  console.log('LEAD SCALE: ', scales.lead);
   for (let note in pattern[count]) {
-    // console.log(note)
-    let thisNoteName = scales['lead'][note];// leadPattern[count][note].name;
+    let thisNoteName = scales.lead[note];// leadPattern[count][note].name;
     if (Note.pitchClass(thisNoteName) === 'Cb') {
       thisNoteName = Note.transpose(thisNoteName, '8P');
     }
+    console.log('FROM REPEAT-SYNTH', note, thisNoteName)
+
     leadSynth.triggerAttackRelease(`${Scale.scaleNotes([thisNoteName]) === 'Cb'
       ? Note.transpose(thisNoteName, '8P')
       : thisNoteName
