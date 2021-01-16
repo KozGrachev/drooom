@@ -1,8 +1,18 @@
 @import './variables.scss';
 
 .pattern-container {
+  position: relative;
   height: 100%;
   width: $panel-height*2;
   border: 1px solid $grid-color;
   color: white;
+  // display: flex;
+}
+
+.play-pattern {
+  position:absolute;
+  right: 0;
+  width: $button-size;
+  height: $button-size;
+  color: $grid-color-dark;
 }

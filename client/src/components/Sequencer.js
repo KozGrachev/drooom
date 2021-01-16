@@ -27,6 +27,7 @@ function Sequencer ({buttonColor, instrument}) {
     if (note.stepNum >= 0) {
       socket.emit(`pattern-change-${instrument}`, note);
       buttonToggleActive(note);
+      //! this should set notes on the currently visible pattern
       Brain.changeSynthPattern(note, instrument, 0);
     } else Brain.leadSynth.triggerAttackRelease(Brain.scales[instrument][note.noteID], '16n');
   }
