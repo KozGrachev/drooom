@@ -17,9 +17,9 @@ function App () {
       <section className="instrument-wrapper lead">
         <Synth instrument="lead" buttonColor="yellow" sideBar="keysModesList" />
       </section>
-      <section className="instrument-wrapper bass">
+      {/* <section className="instrument-wrapper bass">
         <Synth instrument="bass" buttonColor="red" sideBar="" />
-      </section>
+      </section> */}
       <section className="instrument-wrapper drums">
         <Drums />
       </section>

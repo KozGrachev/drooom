@@ -1,12 +1,6 @@
 @import './variables.scss';
 
-.pattern-container {
-  height: 100%;
-  width: $panel-height*2;
-  border: 1px solid $grid-color;
-  color: white;
 
-}
 
 .timeline-container {
   display: flex;
@@ -18,4 +12,10 @@
   align-items: center;
   width: 50px;
   border: 1px solid $grid-color;
+  border-right: 2px solid $grid-color;
+}
+
+svg path {
+  fill: $grid-color;
+  stroke: $grid-color;
 }

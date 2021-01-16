@@ -39,15 +39,20 @@ const currentSynthPatterns = {
   lead: synthPatterns.lead[0],
   bass: synthPatterns.bass[0]
 }
+const visibleSynthPatterns = {
+  lead: synthPatterns.lead[0],
+  bass: synthPatterns.bass[0]
+}
 
 function initializePattern (name) {
   return localStorage.getItem(`droom-${name}-pattern`)
     ? JSON.parse(localStorage.getItem(`droom-${name}-pattern`))
-    : Array.from({ length: leadNumSteps }, Object)
+    : createEmptyPattern()
 }
 
-console.log('CURRENT PATTERN -----> IN BRAIN: ' ,currentSynthPatterns['lead']);
-
+function createEmptyPattern () {
+  return Array.from({ length: leadNumSteps }, Object);
+}
 
 
 const scales = {
@@ -176,24 +181,19 @@ async function playPause (name) {
 
 function setNewScale (name, newScale) {
   const thisScale = {};
-  console.log('SCALE BEFORE SETTING:', name, scales[name]);
   newScale.forEach((note, i) => {
     thisScale[noteIDs[i]] = note;
   });
 
   scales[name] = thisScale;
-  console.log('thisScale', thisScale);
-
   document.querySelectorAll(`.${name} .step-1`).forEach((el, i) => {
     el.setAttribute('value', newScale[newScale.length-i-1])
   });
 }
 
 function createLoop (name) {
-  console.log('CREATING LOOP', name);
   const repEvent = new Tone.ToneEvent((time) => {
     return name === 'drums' ? repeatDrums(time) : repeatSynth(time, name);
-
   });
   repEvent.loop = true;
   repEvent.loopEnd = '16n';
@@ -201,9 +201,25 @@ function createLoop (name) {
 }
 
 //! EXPORT THIS AND USE TO ASSIGN CURRENTLY PLAYING PATTERN TO leadPattern and bassPattern
-//! repeat() function should always use the leadPattern and bassPattern
-function selectPattern (name, index) {
-  currentSynthPatterns[name] = synthPatterns[name][index];
+//! repeat() function should always use the currentLeadPattern and currentBassPattern
+function displayPattern (name, index) {
+  console.log('Selecting Pattern ', index, ' in ', name, '-----> ', synthPatterns[name][index])
+  const prevVisiblePattern = visibleSynthPatterns[name];
+  visibleSynthPatterns[name] = synthPatterns[name][index];
+
+  //* deactivate the last pattern's notes
+  prevVisiblePattern.forEach((step, i) => {
+    for (const note in step) {
+      document.querySelector(`.${name} .step${i}.${note}`).classList.remove('active');
+    }
+  })
+
+  //* activate the new pattern's notes
+  visibleSynthPatterns[name].forEach((step, i) => {
+    for (const note in step) {
+      document.querySelector(`.${name} .step${i}.${note}`).classList.add('active');
+    }
+  })
 }
 
 function changeSynthPattern (note, name, index = 0) {
@@ -342,7 +358,8 @@ export {
   scales, leadSynth, setNewScale,
   repeatSynth, setLeadNumSteps,
   changeSynthPattern, synthPatterns,
-  currentSynthPatterns,
+  currentSynthPatterns, displayPattern,
+  createEmptyPattern,
   changeDrumPattern, drumsPattern,
   drumNames, playing
 };

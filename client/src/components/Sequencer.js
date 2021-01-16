@@ -26,16 +26,13 @@ function Sequencer ({buttonColor, instrument}) {
   function handleNoteClick (note) {
     if (note.stepNum >= 0) {
       socket.emit(`pattern-change-${instrument}`, note);
-      buttonToggleActive(note); //!!!!!!!!
+      buttonToggleActive(note);
       Brain.changeSynthPattern(note, instrument, 0);
     } else Brain.leadSynth.triggerAttackRelease(Brain.scales[instrument][note.noteID], '16n');
   }
 
-  console.log('CURRENT LEAD PATTERN',Brain.currentSynthPatterns[instrument], instrument)
-
   function renderSteps (num, noSequence) {
 
-    console.log('Brain.scales[instrument]',instrument, Brain.scales[instrument]);
     //!renders before scale is created
     const arr = [];
     for (let i = 0; i < num; i++) {

@@ -1,0 +1,8 @@
+@import './variables.scss';
+
+.pattern-container {
+  height: 100%;
+  width: $panel-height*2;
+  border: 1px solid $grid-color;
+  color: white;
+}

@@ -34,10 +34,9 @@ export function Drums () {
     Tone.Transport.bpm.value = val;
   }
 
-  console.log('RERENDERED');
 
   function renderSteps () {
-    console.log('RENDERING STEPS');
+    // console.log('RENDERING STEPS');
     const arr = [];
     for (let i = 0; i < 16; i++) {
       arr.push(<Step

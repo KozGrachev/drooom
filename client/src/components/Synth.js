@@ -9,7 +9,7 @@ import TimeLine from './TimeLine';
 
 export function Synth ({ buttonColor, sideBar, numOctaves, instrument }) {
 
-
+  
 
   return (
     <div>
