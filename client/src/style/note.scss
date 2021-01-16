@@ -37,9 +37,9 @@ input {
       transform: scale(1.3);
     }
 
-    &:active {
-      background-color: $yellow-dark;
-    }
+    // &:active {
+    //   background-color: $yellow-dark;
+    // }
   }
 
   &.circle {

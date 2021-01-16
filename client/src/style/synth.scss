@@ -20,6 +20,7 @@
 
 .top-panel {
   display: flex;
+  // flex: 1;
   // flex-basis: 50%;
   height: $panel-height;
   // background-color: nth($color-scheme3, 4);
@@ -48,7 +49,6 @@
 .side-panel_left {
   position: relative;
   width: 224px;
-  // border: 3px solid rgba(0, 255, 34, 0.623);
 }
 
 .main-panel {
@@ -57,3 +57,9 @@
 
 }
 
+.bottom-panel {
+  // border: 3px solid rgba(0, 255, 34, 0.623);
+  flex:1;
+  position: relative;
+  display: flex;
+}

@@ -48,17 +48,33 @@ function initializePattern (name) {
 
 console.log('CURRENT PATTERN -----> IN BRAIN: ' ,currentSynthPatterns['lead']);
 
+
+
 const scales = {
   lead: {},
   bass: {},
 }
 
-Scale.rangeOf('C major')('C2', 'C6').forEach((note, i) => {
+Scale.rangeOf('C major')('C3', 'C6').forEach((note, i) => {
   scales.lead[noteIDs[i]] = note;
 });
 Scale.rangeOf('C major')('C2', 'C4').forEach((note, i) => {
   scales.bass[noteIDs[i]] = note;
 });
+
+//! check this and use it to replace the above scales assignment
+// const scales = {
+//   lead: localStorage.getItem('droom-lead-scale')
+//     || Scale.rangeOf('C major')('C3', 'C6').reduce((acc, note, i) => {
+//       return { ...acc, [noteIDs[i]]: note }
+//     }),
+//   bass: localStorage.getItem('droom-bass-scale')
+//     || Scale.rangeOf('C major')('C2', 'C5').reduce((acc, note, i) => {
+//       return { ...acc, [noteIDs[i]]: note }
+//     }),
+// }
+
+
 
 loops.lead = createLoop('lead');
 loops.bass = createLoop('bass');
@@ -206,9 +222,9 @@ function changeSynthPattern (note, name, index = 0) {
 
 function repeatSynth (time, name) {
   const count = getSixteenths(leadNumSteps);
-  console.log('LEAD SCALE: ', scales.lead);
+  console.log('LEAD SCALE: ', scales[name]);
   for (let note in currentSynthPatterns[name][count]) {
-    let thisNoteName = scales.lead[note];// leadPattern[count][note].name;
+    let thisNoteName = scales[name][note];// leadPattern[count][note].name;
     if (Note.pitchClass(thisNoteName) === 'Cb') {
       thisNoteName = Note.transpose(thisNoteName, '8P');
     }
@@ -325,7 +341,8 @@ export {
   bassFirstOctave,
   scales, leadSynth, setNewScale,
   repeatSynth, setLeadNumSteps,
-  changeSynthPattern, currentSynthPatterns,
+  changeSynthPattern, synthPatterns,
+  currentSynthPatterns,
   changeDrumPattern, drumsPattern,
   drumNames, playing
 };

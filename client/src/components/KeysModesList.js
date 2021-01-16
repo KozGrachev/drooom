@@ -7,8 +7,8 @@ import '../style/keysModesList.scss'
 
 export function KeysModesList ({buttonColor}) {
 
-  const [scale, setScale] = useState(localStorage.getItem('droom-keys-scale') || 'C');
-  const [mode, setMode] = useState(localStorage.getItem('droom-keys-mode') ||'ionian');
+  const [scale, setScale] = useState(localStorage.getItem('droom-lead-key') || 'C');
+  const [mode, setMode] = useState(localStorage.getItem('droom-lead-mode') ||'ionian');
 
   useEffect(() => {
     // sendNewScale();
@@ -20,20 +20,24 @@ export function KeysModesList ({buttonColor}) {
     // Brain.createLoop(createScale());
     socket.on('key-change', (key) => {
       setScale(key);
-      localStorage.setItem('droom-keys-scale', key);
+      localStorage.setItem('droom-lead-key', key);
     });
     socket.on('mode-change', (mode) => {
       setMode(mode);
-      localStorage.setItem('droom-keys-mode', mode);
+      localStorage.setItem('droom-lead-mode', mode);
     });
   }, []);
 
   function createScale () {
-    return Scale.rangeOf(`${scale} ${mode}`)(`${scale}2`, `${scale}6`);
+    const newScale = Scale.rangeOf(`${scale} ${mode}`)(`${scale}3`, `${scale}6`);
+    localStorage.setItem('droom-lead-scale', newScale);
+    return newScale;
   }
 
   function createBassScale () {
-    return Scale.rangeOf(`${scale} ${mode}`)(`${scale + Brain.bassFirstOctave}`, `${scale + (Brain.bassFirstOctave + Brain.bassNumOctaves)}`);
+    const newScale = Scale.rangeOf(`${scale} ${mode}`)(`${scale + Brain.bassFirstOctave}`, `${scale + (Brain.bassFirstOctave + Brain.bassNumOctaves)}`);
+    localStorage.setItem('droom-bass-scale', newScale);
+    return newScale;
   }
 
   function renderScales (arr) {
@@ -59,13 +63,13 @@ export function KeysModesList ({buttonColor}) {
   function handleScaleClick (key) {
     socket.emit('key-change', key);
     setScale(key);
-    localStorage.setItem('droom-keys-scale', key);
+    localStorage.setItem('droom-lead-key', key);
   }
 
   function handleModeClick (mode) {
     socket.emit('mode-change', mode)
     setMode(mode);
-    localStorage.setItem('droom-keys-mode', mode);
+    localStorage.setItem('droom-lead-mode', mode);
   }
 
   return (

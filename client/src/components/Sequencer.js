@@ -19,6 +19,7 @@ function Sequencer ({buttonColor, instrument}) {
   function buttonToggleActive (note) {
     const thisNote = document.querySelector(`.${instrument} .step${note.stepNum}.${note.noteID.replace('#', '\\#')}`);
     thisNote.classList.toggle('active');
+    thisNote.classList.toggle(buttonColor);
     thisNote.classList.toggle('inactive');
   }
 

@@ -21,7 +21,7 @@
   height: max-content;
   width: 100%;
   display: grid;
-  grid-template-columns: repeat(32, minmax(40px, auto));
+  grid-template-columns: repeat(32, auto);
   // grid-auto-columns: 60px;
   // flex-direction: column;
 
