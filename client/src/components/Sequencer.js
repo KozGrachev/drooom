@@ -11,7 +11,7 @@ function Sequencer ({buttonColor, instrument}) {
 
   useEffect(() => {
     socket.on(`pattern-change-${instrument}`, (note) => {
-      Brain.changeSynthPattern(note, instrument, 0);
+      Brain.changeSynthPattern(note, instrument, 0); //! event should say which pattern to change
       buttonToggleActive(note);
     });
   }, []);
@@ -28,7 +28,7 @@ function Sequencer ({buttonColor, instrument}) {
       socket.emit(`pattern-change-${instrument}`, note);
       buttonToggleActive(note);
       //! this should set notes on the currently visible pattern
-      Brain.changeSynthPattern(note, instrument, 0);
+      Brain.changeSynthPattern(note, instrument, Brain.visiblePatterns[instrument]);
     } else Brain.leadSynth.triggerAttackRelease(Brain.scales[instrument][note.noteID], '16n');
   }
 
@@ -39,7 +39,7 @@ function Sequencer ({buttonColor, instrument}) {
     for (let i = 0; i < num; i++) {
       arr.push(<Step
         handleNoteClick={handleNoteClick}
-        pattern={Brain.currentSynthPatterns[instrument]}
+        pattern={Brain.synthPatterns[instrument][Brain.visiblePatterns[instrument]]}//! IS THIS REDUNDANT?
         stepNum={noSequence ? -1 : i}
         shape="grid"
         noteNames={Object.values(Brain.scales[instrument])}

@@ -16,7 +16,7 @@ function Pattern ({ instrument, pattern, patNum }) {
       <input className={`play-pattern`} type="button" value="Play" onClick={() => {
         //* set playing pattern to this instrument and pattern number
 
-        // Brain.playingPattern[instrument] = patNum;
+        Brain.playingPatterns[instrument] = patNum;
       }}/>
     </div>
   )
