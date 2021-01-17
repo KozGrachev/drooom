@@ -14,12 +14,15 @@ function Sequencer ({buttonColor, instrument}) {
       // console.log('');
       if (inst === instrument) {
           Brain.changeSynthPattern(note, inst, patNum); //! event should say which pattern to change
+        if (patNum === Brain.visiblePatterns[instrument]) {
           buttonToggleActive(note);
+        }
       }
     });
   }, []);
 
   function buttonToggleActive (note) {
+
     const thisNote = document.querySelector(`.${instrument} .step${note.stepNum}.${note.noteID.replace('#', '\\#')}`);
     console.log(`TRYING TO FIND ELEMENT::  .${instrument} .step${note.stepNum}.${note.noteID.replace('#', '\\#')}`)
     thisNote.classList.toggle('active');
