@@ -51,7 +51,8 @@ export function Note ({ pattern, name, stepNum, handleNoteClick, numOfNotes, pos
           btn
           ${shape === 'circle' ? name : noteID[position]}
           step${stepNum}
-          ${shape}`
+          ${shape}
+          ${buttonColor}`
         }
         type="button"
         onMouseDown={() => handleClick()}

@@ -26,7 +26,7 @@ function Sequencer ({buttonColor, instrument}) {
     const thisNote = document.querySelector(`.${instrument} .step${note.stepNum}.${note.noteID.replace('#', '\\#')}`);
     console.log(`TRYING TO FIND ELEMENT::  .${instrument} .step${note.stepNum}.${note.noteID.replace('#', '\\#')}`)
     thisNote.classList.toggle('active');
-    thisNote.classList.toggle(buttonColor);
+    // thisNote.classList.toggle(buttonColor);
     thisNote.classList.toggle('inactive');
   }
 
