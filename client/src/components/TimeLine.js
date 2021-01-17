@@ -14,15 +14,19 @@ function TimeLine ({instrument}) {
     console.log('Synth patterns on init:', Brain.synthPatterns);
     socket.on('create-pattern', (inst) => {
       if (inst === instrument) {
-        setPatterns([...patterns, Brain.createEmptyPattern()]);
+        console.log('inst === instrument');
+        setPatterns((pats) => {
+          return [...pats, Brain.createEmptyPattern()];
+        });
       }
     });
   }, []);
 
   useEffect(() => {
+    console.log('useEffect[pattrns]', patterns.length);
     console.log(instrument, ' patterns in Timeline: ', patterns);
-    Brain.synthPatterns[instrument] = patterns;
-    Brain.displayPattern(instrument, patterns.length - 1);
+    // Brain.synthPatterns[instrument] = patterns;
+    // Brain.displayPattern(instrument, patterns.length - 1);
   }, [patterns]);
 
   function renderPatterns () {
@@ -32,17 +36,24 @@ function TimeLine ({instrument}) {
     })
   }
 
+  console.log('RE-RENDERING');
+
   //! Add logic to play selected patterns in sequence
   //! Use GSAP Draggable to set order
 
-  function addPattern () {
+  function handleClickAddPattern () {
     //* create empty pattern
     //* select empty pattern
     //* redraw pattern in sequencer from brain
-    // socket.emit('create-pattern', instrument);
-    const newPats = [...patterns, Brain.createEmptyPattern()]
-    console.log('newPats', newPats);
-    setPatterns([...patterns, Brain.createEmptyPattern()]);
+
+    socket.emit('create-pattern', instrument);
+    // const newPats = [...patterns, Brain.createEmptyPattern()]
+    // console.log('newPats', newPats);
+    setPatterns((pats) => {
+      return [...pats, Brain.createEmptyPattern()]
+    });
+    // Brain.synthPatterns[instrument] = newPats;
+    // Brain.displayPattern(instrument, patterns.length - 1);
     // Brain.selectPattern();
 
   }
@@ -50,11 +61,7 @@ function TimeLine ({instrument}) {
   return (
     <div className="timeline-container">
       {renderPatterns()}
-      <div className="add-pattern" onClick={() => {
-        addPattern();
-
-        console.log('INSTRUMENT:', instrument);
-      }}>
+      <div className="add-pattern" onClick={handleClickAddPattern}>
         <svg width="24" height="24" xmlns="http://www.w3.org/2000/svg" fillRule="evenodd" clipRule="evenodd"><path d="M11 11v-11h1v11h11v1h-11v11h-1v-11h-11v-1h11z" /></svg>
       </div>
     </div>
