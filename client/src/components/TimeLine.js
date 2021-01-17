@@ -25,8 +25,8 @@ function TimeLine ({instrument}) {
   useEffect(() => {
     console.log('useEffect[pattrns]', patterns.length);
     console.log(instrument, ' patterns in Timeline: ', patterns);
-    // Brain.synthPatterns[instrument] = patterns;
-    // Brain.displayPattern(instrument, patterns.length - 1);
+    Brain.synthPatterns[instrument] = patterns;
+    Brain.displayPattern(instrument, patterns.length - 1);
   }, [patterns]);
 
   function renderPatterns () {
@@ -40,6 +40,7 @@ function TimeLine ({instrument}) {
 
   //! Add logic to play selected patterns in sequence
   //! Use GSAP Draggable to set order
+
 
   function handleClickAddPattern () {
     //* create empty pattern
