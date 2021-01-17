@@ -2,17 +2,34 @@
 
 .pattern-container {
   position: relative;
-  height: 100%;
+  // height: 100%;
   width: $panel-height*2;
   border: 1px solid $grid-color;
   color: white;
   // display: flex;
+  border: 3px solid rgb(36, 170, 148);
 }
 
-.play-pattern {
+.pattern-actions-container {
+  border: 3px solid rgb(119, 182, 119);
   position:absolute;
   right: 0;
-  width: $button-size;
-  height: $button-size;
+  top: 0;
+  min-width: $button-size;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  // justify-content: space-evenly;
+}
+
+.pattern-action {
+
+  border-bottom: 2px solid $grid-color;
+  border-left: 2px solid $grid-color;
+  // margin: 10px 10px 0 0;
+  max-width: $button-size;
+  max-height: $button-size;
+  min-height: $button-size/2;
   color: $grid-color-dark;
+  flex-grow: 1;
 }

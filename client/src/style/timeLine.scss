@@ -4,6 +4,7 @@
 
 .timeline-container {
   display: flex;
+  max-height: $button-size*2;
 }
 
 .add-pattern {
