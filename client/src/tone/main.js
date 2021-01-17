@@ -20,11 +20,6 @@ leadSynth.volume.value = -15;
 let leadNumSteps = 32;
 let startTime = 0;
 
-const leadFirstOctave = 2;
-const leadNumOctaves = 4;
-
-const bassFirstOctave = 1;
-const bassNumOctaves = 3;
 
 
 const loops = {};
@@ -53,6 +48,12 @@ function initializePattern (name) {
 function createEmptyPattern () {
   return Array.from({ length: leadNumSteps }, Object);
 }
+
+const leadFirstOctave = 2;
+const leadNumOctaves = 4;
+
+const bassFirstOctave = 1;
+const bassNumOctaves = 3;
 
 
 const scales = {
