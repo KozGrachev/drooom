@@ -12,6 +12,11 @@ function Pattern ({ instrument, pattern, patNum }) {
         Brain.playingPatterns[instrument] = patNum;
       }
     });
+    socket.on('clear-pattern', ([inst, patN]) => {
+      if (patN === patNum && inst === instrument) {
+        Brain.clearPattern(instrument, patNum);
+      }
+    });
   }, []);
 
   function handleClickActivate () {
