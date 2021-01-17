@@ -23,8 +23,8 @@ let startTime = 0;
 const leadFirstOctave = 2;
 const leadNumOctaves = 4;
 
-const bassFirstOctave = 2;
-const bassNumOctaves = 2;
+const bassFirstOctave = 1;
+const bassNumOctaves = 3;
 
 
 const loops = {};
@@ -63,7 +63,7 @@ const scales = {
 Scale.rangeOf('C major')('C3', 'C6').forEach((note, i) => {
   scales.lead[noteIDs[i]] = note;
 });
-Scale.rangeOf('C major')('C2', 'C4').forEach((note, i) => {
+Scale.rangeOf('C major')('C1', 'C4').forEach((note, i) => {
   scales.bass[noteIDs[i]] = note;
 });
 
@@ -260,9 +260,11 @@ function repeatSynth (time, name) {
   //* Adds the triggered class to all active buttons in the current step
   //* and removes it from those in the previous step
   Tone.Draw.schedule(() => {
+
     for (const note in synthPatterns[name][playingPatterns[name]][count]) {
       const pianoRollFeedback = document.querySelector(`.${name} .${note}.step-1`)
       const currentPlayingNote = document.querySelector(`.${name} .${note}.step${count}`)
+      console.log('TRYING TO SELECT ', `.${name} .${note}.step${count}`, document.querySelector(`.${name} .${note}.step${count}`));
       addTempClass(pianoRollFeedback);
       addTempClass(currentPlayingNote);
     }
