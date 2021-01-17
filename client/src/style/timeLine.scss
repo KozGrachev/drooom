@@ -5,6 +5,9 @@
 .timeline-container {
   display: flex;
   max-height: $button-size*2;
+  min-height: $button-size;
+  width: 100%;
+  border: 1px solid $grid-color;
 }
 
 .add-pattern {

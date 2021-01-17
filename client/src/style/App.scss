@@ -9,9 +9,18 @@ button {
 }
 
 .instrument-wrapper {
+  position: relative;
+  display: flex;
+  // height: fit-content;
+  // height: 100%;
+  align-items: center;
+  justify-content: center;
   // width: 100vw;
-  // height: 100vh;
+  width: 100%;
+  height: 100vh;
   // border: 3px solid green;
+  padding: 50px;
+
 }
 
 button:active {
@@ -27,15 +36,20 @@ button:active {
     "bass .";
   width: 100%;
   height: auto;
+  align-items: center;
+  justify-items: center;
+
   // border: 3px solid blue;
 }
 
-.drums{
+.drums {
   grid-area: drums;
 }
-.lead{
+
+.lead {
   grid-area: lead;
 }
-.bass{
+
+.bass {
   grid-area: bass;
 }

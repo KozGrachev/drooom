@@ -3,12 +3,13 @@ import {
   SliderTrack,
   SliderFilledTrack,
   SliderThumb,
+  ChakraProvider
 } from "@chakra-ui/react"
 
 export const VSlider = (props) => {
 
   return (
-    <>
+    <ChakraProvider>
       {/* <input className="slider" type="range" value={120} min="90" max="170" onChange={(e)=>props.setBpm(e.target.value)} /> */}
       <Slider className="slider"
         min={90}
@@ -23,6 +24,6 @@ export const VSlider = (props) => {
           {/* <Box color="tomato" as={MdGraphicEq} /> */}
         </SliderThumb>
       </Slider>
-    </>
+    </ChakraProvider>
   )
 }

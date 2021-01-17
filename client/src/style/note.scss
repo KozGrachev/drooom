@@ -2,12 +2,12 @@
 
 input {
   color: rgba(255, 255, 255, 0.473);
-
+  // padding: 5px 0;
   width: 100%;
   z-index: 1;
 
   &.grid {
-    // color: rgba(255, 255, 255, 0.473);
+    color: $grid-color-dark;
     // background-color: #30292f;
     height: 100%;
     border: 1px solid #C8C8C8;
@@ -17,6 +17,7 @@ input {
       &.active {
         background: $yellow;
       }
+
       &.triggered {
         background: $yellow-light;
         z-index: 2;
@@ -47,6 +48,7 @@ input {
     top: 100%;
     height: 85%;
     border-radius: 50%;
+    border: none;
 
     &.triggered {
       transform: scale(1.1);

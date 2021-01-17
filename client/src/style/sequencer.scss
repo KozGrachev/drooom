@@ -2,26 +2,36 @@
 
 
 .piano-roll {
+  position:relative;
   height: 100%;
-  // border: 3px solid rgba(0, 255, 34, 0.623);
+  // border: 3px solid rgba(183, 0, 255, 0.623);
   display: flex;
+
   overflow-y: scroll;
   width: 100%;
 }
 
 .piano {
+  position:relative;
+  height:100%;
   width: 50px;
-  height: max-content;
+  display: flex;
+  // height: max-content;
   border-right: 2px solid rgba(255, 255, 255, 0.349);
   color: $grid-color;
+  // border: 3px solid rgba(255, 238, 0, 0.623);
 }
 
 .sequencer {
-  // border: 3px solid blue;
+  // border: 3px solid rgba(0, 255, 34, 0.623);
   height: max-content;
   width: 100%;
+  height:100%;
   display: grid;
+  flex-grow: 1;
   grid-template-columns: repeat(32, auto);
+  align-content: stretch;
+
   // grid-auto-columns: 60px;
   // flex-direction: column;
 

@@ -23,12 +23,12 @@ function Pattern ({ instrument, pattern, patNum }) {
       Pattern {patNum}
       {/* //! simplify css: create .container class */}
       <div className="pattern-actions-container">
-        <input className={`pattern-action`} type="button" value="Play" onClick={() => {
+        <input className={`pattern-action btn grid`} type="button" value="Play" onClick={() => {
           //* set playing pattern to this instrument and pattern number
           socket.emit('activate-pattern', [instrument, patNum])
           Brain.playingPatterns[instrument] = patNum;
         }} />
-        <input className={`pattern-action`} type="button" value="Clear" onClick={() => {
+        <input className={`pattern-action btn grid`} type="button" value="Clear" onClick={() => {
           //* set playing pattern to this instrument and pattern number
           socket.emit('clear-pattern', [instrument, patNum])
           Brain.playingPatterns[instrument] = patNum;

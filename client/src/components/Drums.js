@@ -61,7 +61,7 @@ export function Drums () {
         }} value="droom"></input> */}
         <div className="drums-controls">
           <div className="slider-wrapper">
-            <VSlider handleChange={setBpm} className="slider" />
+            {/* <VSlider handleChange={setBpm} className="slider" /> */}
           </div>
         </div>
       </div>

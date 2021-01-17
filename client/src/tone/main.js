@@ -1,7 +1,6 @@
 import * as Tone from 'tone';
 import { Scale, Note } from '@tonaljs/tonal';
 import { noteIDs } from '../helpers';
-import { socket } from '../api'
 
 
 // import kick from '../assets/audio/808/kick.mp3';

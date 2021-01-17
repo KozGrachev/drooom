@@ -6,7 +6,7 @@
   &.grid {
     // color: red;
     height: $panel-height;
-    width: $panel-height;
+    min-width: $panel-height;
     display: flex;
     justify-content: center;
     align-items: center;
