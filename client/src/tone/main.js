@@ -1,6 +1,7 @@
 import * as Tone from 'tone';
 import { Scale, Note } from '@tonaljs/tonal';
 import { noteIDs } from '../helpers';
+import { socket } from '../api'
 
 
 // import kick from '../assets/audio/808/kick.mp3';
@@ -45,8 +46,8 @@ const visiblePatterns = {
 }
 
 function initializePattern (name) {
-  return localStorage.getItem(`droom-${name}-pattern`)
-    ? JSON.parse(localStorage.getItem(`droom-${name}-pattern`))
+  return localStorage.getItem(`droom-${name}-pattern0`)
+    ? JSON.parse(localStorage.getItem(`droom-${name}-pattern0`))
     : createEmptyPattern()
 }
 
@@ -128,19 +129,17 @@ Tone.Transport.swingSubdivision = '16n';
 
 async function playPause (name) {
 
-  console.log('PLAY/PAUSE', name, loops[name], loops);
-  console.log('PATTERNS:', synthPatterns);
   Tone.start();
   if (playing[name] && Tone.Transport.state === 'started') {
     for (const ev in playing) {
       if (ev !== name && playing[ev]) {
-        console.log(`CASE #2: Transport and This event was 'started' and was not the only one. Stopping event ${name}`);
+        // console.log(`CASE #2: Transport and This event was 'started' and was not the only one. Stopping event ${name}`);
         loops[name].stop();//stopLoop(name);
         playing[name] = false;
         return;
       }
     }
-    console.log(`CASE #1: Transport was 'started' and no other loops were running. Stopping event ${name} and stopping and cancelling transport`);
+    // console.log(`CASE #1: Transport was 'started' and no other loops were running. Stopping event ${name} and stopping and cancelling transport`);
     loops[name].stop(); //stopLoop(name);
     playing[name] = false;
     Tone.Transport.stop();
@@ -149,11 +148,11 @@ async function playPause (name) {
     const nextHalfBar = Tone.Time('@2n').quantize('2n'); // .Transport.nextSubdivision('2n'); // .quantize('2n'); // - last;
     loops[name].start(nextHalfBar - startTime); // startLoop(name, nextHalfBar - startTime);
     playing[name] = true;
-    console.log(`CASE #3: Did not have the event but transport was playing. Adding the event ${name} id:${loops[name]}`);
+    // console.log(`CASE #3: Did not have the event but transport was playing. Adding the event ${name} id:${loops[name]}`);
   } else if (!playing[name] && Tone.Transport.state === 'stopped') {
     // setStartTime(Tone.Time(Tone.now()).quantize('2n')); //! sets new time relative to when the transport is started
     startTime = Tone.Time(Tone.now()).quantize('2n');
-    console.log('CASE #4: this event was not in the array and the transport was stopped. Starting transport and adding event');
+    // console.log('CASE #4: this event was not in the array and the transport was stopped. Starting transport and adding event');
     Tone.Transport.start(Tone.now())//'+0.1');
     loops[name].start();// startLoop(name);
     playing[name] = true;
@@ -187,7 +186,7 @@ function setNewScale (name, newScale) {
 
   scales[name] = thisScale;
   document.querySelectorAll(`.${name} .step-1`).forEach((el, i) => {
-    el.setAttribute('value', newScale[newScale.length-i-1])
+    el.setAttribute('value', newScale[newScale.length - i - 1])
   });
 }
 
@@ -222,29 +221,37 @@ function displayPattern (name, index) {
   })
 }
 
-function changeSynthPattern (note, name, index = 0) {
+function changeSynthPattern (note, name, index) {
+
+  // if (!synthPatterns[name][index]) {
+  //   //* check if this pattern exists in case a socket.io event says to change
+  //   //* pattern before it is created on a guest computer. Should not be necessary
+  //   //* when the whole session state is sent to guest on joining session
+  //   for (let i = 0; i < index + 1; i++) {
+  //     if (!synthPatterns[name][i]) {
+  //       synthPatterns[name][i] = createEmptyPattern();
+  //     }
+  //   }
+  // }
+
   const thisPattern = synthPatterns[name][index];
 
   if (!thisPattern[note.stepNum].hasOwnProperty(note.noteID)) {
-    console.log('adding note:', note);
     thisPattern[note.stepNum][note.noteID] = note;
   } else if (thisPattern[note.stepNum].hasOwnProperty(note.noteID) || !note.active) {
-    console.log('DELETING note:', note);
     delete thisPattern[note.stepNum][note.noteID];
   }
-  localStorage.setItem(`droom-${name}-pattern-${index}`, JSON.stringify(thisPattern));
-  return thisPattern;
+  localStorage.setItem(`droom-${name}-pattern${index}`, JSON.stringify(thisPattern));
+
 }
 
 function repeatSynth (time, name) {
   const count = getSixteenths(leadNumSteps);
-  console.log('LEAD SCALE: ', scales[name]);
   for (let note in synthPatterns[name][playingPatterns[name]][count]) {
     let thisNoteName = scales[name][note];// leadPattern[count][note].name;
     if (Note.pitchClass(thisNoteName) === 'Cb') {
       thisNoteName = Note.transpose(thisNoteName, '8P');
     }
-    console.log('FROM REPEAT-SYNTH', note, thisNoteName)
 
     leadSynth.triggerAttackRelease(`${Scale.scaleNotes([thisNoteName]) === 'Cb'
       ? Note.transpose(thisNoteName, '8P')
@@ -300,7 +307,6 @@ function changeDrumPattern (note) {
   drumsPattern[note.name][note.stepNum] = !drumsPattern[note.name][note.stepNum];
 
   localStorage.setItem('droom-drums-pattern', JSON.stringify(drumsPattern));
-  console.log('Drum pattern:', drumsPattern)
   return drumsPattern;
 }
 

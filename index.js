@@ -24,27 +24,37 @@ io.on('connection', (socket) => {
 
   socket.on('pattern-change-drums', (note) => {
     console.log('Drums pattern change event received!!', note);
-    socket.broadcast.emit('pattern-change-drums', (note));
+    socket.broadcast.emit('pattern-change-drums', note);
   })
 
-  socket.on('pattern-change-lead', (note) => {
-    console.log('Lead pattern change event received!!', note);
-    socket.broadcast.emit('pattern-change-lead', (note));
+  socket.on('pattern-change', ([instrument, patNum, note]) => {
+    console.log(`${instrument} pattern change event received!! pattern`,patNum, note);
+    socket.broadcast.emit('pattern-change', [instrument, patNum, note]);
   })
 
-  socket.on('pattern-change-bass', (note) => {
-    console.log('Bass pattern change event received!!', note);
-    socket.broadcast.emit('pattern-change-bass', (note));
+  socket.on('activate-pattern', ([instrument, patNum]) => {
+    console.log('activate pattern event received!!', instrument, patNum);
+    socket.broadcast.emit('activate-pattern', [instrument, patNum]);
   })
 
   socket.on('key-change', (key) => {
     console.log('key change event received!!', key);
-    socket.broadcast.emit('key-change', (key));
+    socket.broadcast.emit('key-change', key);
   })
 
   socket.on('mode-change', (mode) => {
     console.log('mode change event received!!', mode);
-    socket.broadcast.emit('mode-change', (mode));
+    socket.broadcast.emit('mode-change', mode);
+  })
+
+  socket.on('play-instrument', (instrument) => {
+    console.log('play instrument event received!!', instrument);
+    socket.broadcast.emit('play-instrument', instrument);
+  })
+
+  socket.on('create-pattern', (instrument) => {
+    console.log('create pattern event received!!', instrument);
+    socket.broadcast.emit('create-pattern', instrument);
   })
 
 })

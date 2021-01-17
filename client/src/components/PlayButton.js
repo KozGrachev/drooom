@@ -1,17 +1,30 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import * as Brain from '../tone/main';
+import { socket } from '../api'
+
 import '../style/playButton.scss'
 
 function PlayButton ({ instrument, shape }) {
 
+  useEffect(() => {
+    socket.on('play-instrument', (inst) => {
+      if (inst === instrument) {
+        Brain.playPause(instrument);
+        setIsPlaying(Brain.playing[instrument]);
+      }
+    });
+  }, []);
+
   const [isPlaying, setIsPlaying] = useState(Brain.playing[instrument]);
 
+  function play () {
+    socket.emit('play-instrument', instrument);
+    Brain.playPause(instrument);
+    setIsPlaying(Brain.playing[instrument]);
+  }
+
   return (
-    <div className={`play-button ${shape}`} onMouseDown={() => {
-      Brain.playPause(instrument);
-      setIsPlaying(Brain.playing[instrument]);
-    }
-    }>
+    <div className={`play-button ${shape}`} onMouseDown={play}>
       {
         shape === 'circle'
           ? Brain.playing[instrument]
