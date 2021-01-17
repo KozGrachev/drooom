@@ -9,6 +9,7 @@ import { socket } from '../api'
 function TimeLine ({instrument}) {
 
   const [patterns, setPatterns] = useState(Brain.synthPatterns[instrument]);
+  const [willDisplayPattern, setWillDisplayPattern] = useState();
 
   useEffect(() => {
     console.log('Synth patterns on init:', Brain.synthPatterns);
@@ -18,16 +19,19 @@ function TimeLine ({instrument}) {
         setPatterns((pats) => {
           return [...pats, Brain.createEmptyPattern()];
         });
+        setWillDisplayPattern(false);
       }
     });
   }, []);
 
   useEffect(() => {
-    console.log('useEffect[pattrns]', patterns.length);
-    console.log(instrument, ' patterns in Timeline: ', patterns);
     Brain.synthPatterns[instrument] = patterns;
-    Brain.displayPattern(instrument, patterns.length - 1);
+    // if (willDisplayPattern) Brain.displayPattern(instrument, patterns.length - 1);
   }, [patterns]);
+
+  useEffect(() => {
+    if (willDisplayPattern) Brain.displayPattern(instrument, patterns.length - 1);
+  },[willDisplayPattern])
 
   function renderPatterns () {
     console.log(instrument, ' PATTERNS in Brain', Brain.synthPatterns[instrument] )
@@ -35,8 +39,6 @@ function TimeLine ({instrument}) {
       return <Pattern instrument={instrument} pattern={pat} patNum={i} key={ v4() }/>
     })
   }
-
-  console.log('RE-RENDERING');
 
   //! Add logic to play selected patterns in sequence
   //! Use GSAP Draggable to set order
@@ -51,8 +53,12 @@ function TimeLine ({instrument}) {
     // const newPats = [...patterns, Brain.createEmptyPattern()]
     // console.log('newPats', newPats);
     setPatterns((pats) => {
-      return [...pats, Brain.createEmptyPattern()]
+      const newPats = [...pats, Brain.createEmptyPattern()];
+      // Brain.synthPatterns[instrument] = newPats;
+      return newPats;
     });
+
+    setWillDisplayPattern(true);
     // Brain.synthPatterns[instrument] = newPats;
     // Brain.displayPattern(instrument, patterns.length - 1);
     // Brain.selectPattern();
