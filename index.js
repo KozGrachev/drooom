@@ -62,4 +62,8 @@ io.on('connection', (socket) => {
     socket.broadcast.emit('clear-pattern', [instrument, patNum]);
   })
 
+  socket.on('pattern-action', ([instrument, patNum, action]) => {
+    console.log('clear pattern event received!!', instrument, patNum);
+    socket.broadcast.emit('pattern-action', [instrument, patNum, action]);
+  })
 })

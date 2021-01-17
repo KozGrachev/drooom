@@ -10,6 +10,8 @@ function TimeLine ({instrument}) {
 
   const [patterns, setPatterns] = useState(Brain.synthPatterns[instrument]);
   const [willDisplayPattern, setWillDisplayPattern] = useState();
+  const [selected, setSelected] = useState(0);
+  const [activated, setActivated] = useState(0);
 
   useEffect(() => {
     console.log('Synth patterns on init:', Brain.synthPatterns);
@@ -31,12 +33,20 @@ function TimeLine ({instrument}) {
 
   useEffect(() => {
     if (willDisplayPattern) Brain.displayPattern(instrument, patterns.length - 1);
-  },[willDisplayPattern])
+  }, [willDisplayPattern])
+
+  useEffect(() => {
+    Brain.displayPattern(instrument, selected);
+  }, [selected])
+
+  useEffect(() => {
+    Brain.handlePatternAction(instrument, activated, 'activate');
+  },[activated])
 
   function renderPatterns () {
     console.log(instrument, ' PATTERNS in Brain', Brain.synthPatterns[instrument] )
     return patterns.map((pat, i) => {
-      return <Pattern instrument={instrument} pattern={pat} patNum={i} key={ v4() }/>
+      return <Pattern selected={i === selected} handleTimelineAction={handleTimelineAction} instrument={instrument} pattern={pat} patNum={i} key={ v4() }/>
     })
   }
 
@@ -62,7 +72,44 @@ function TimeLine ({instrument}) {
     // Brain.synthPatterns[instrument] = newPats;
     // Brain.displayPattern(instrument, patterns.length - 1);
     // Brain.selectPattern();
+  }
 
+  function handleTimelineAction (action, patNum) {
+    switch (action) {
+      case 'delete':
+
+        setPatterns((pats) => {
+          const newPats = [...pats];
+          newPats.splice(patNum, 1);
+          return newPats;
+        })
+        break;
+
+      case 'duplicate':
+        setPatterns((pats) => {
+          const newPats = [...pats];
+          newPats.splice(patNum, 0, [...pats[patNum]]);
+          return newPats;
+        })
+        setSelected(patNum > 0 ? patNum - 1 : patNum === 0 && patterns.length > 1 ? patNum : '')
+        break;
+
+      case 'select':
+        console.log('SELECT!!')
+        setSelected(patNum);
+        break;
+
+      case 'activate':
+        setActivated(patNum);
+        break;
+
+      case 'clear':
+        Brain.handlePatternAction(instrument, patNum, 'clear')
+        break;
+      
+      default:
+        break;
+    }
   }
 
   return (

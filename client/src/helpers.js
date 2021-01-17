@@ -17,4 +17,9 @@ exports.noteIDs = [
   'note27', 'note28', 'note29'
 ];
 
+exports.buttonColor = {
+  lead: 'yellow',
+  bass: 'red',
+}
+
 // console.log(this.generateNoteIDs());

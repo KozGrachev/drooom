@@ -1,12 +1,27 @@
 @import './variables.scss';
 
 .pattern-container {
+
   position: relative;
   width: $panel-height*2;
   border: 1px solid $grid-color;
-  color: white;
-  // display: flex;
+  color: $grid-color;
+  display: flex;
+  place: center;
   // border: 3px solid rgb(36, 170, 148);
+  &.yellow {
+    background-color: $yellow;
+    color: $grid-color-dark;
+  }
+
+  &.red {
+    background-color: $red;
+    color: #EFEFEF;
+  }
+
+  p {
+    padding: 20px;
+  }
 }
 
 .pattern-actions-container {
@@ -15,11 +30,17 @@
   right: 0;
   top: 0;
   min-width: $button-size;
-  display: flex;
+  display: grid;
+  grid-template-columns: repeat(2, $button-size);
+  grid-template-rows: repeat(2, auto);
   flex-direction: column;
   align-items: flex-end;
   height: 100%;
   // justify-content: space-evenly;
+
+  &.selected{
+    background: #a8a8a8;
+  }
 }
 
 .pattern-action {
@@ -35,3 +56,4 @@
   // color: $grid-color-dark;
   flex-grow: 1;
 }
+

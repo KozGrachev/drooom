@@ -188,6 +188,26 @@ async function playPause (name) {
 //*---- FROM SYNTH.JS ----------------------------------------//
 //*-----------------------------------------------------------//
 
+function handlePatternAction (name, index, action) {
+  switch (action) {
+    case 'activate':
+      playingPatterns[name] = index;
+      break;
+    case 'duplicate':
+      synthPatterns[name].splice(index, 0, [...synthPatterns[name][index]]);
+      break;
+    case 'clear':
+      clearPattern(name, index);
+      break;
+    case 'delete':
+      synthPatterns[name].splice(index,1);
+      break;
+
+    default:
+      break;
+  }
+}
+
 function setNewScale (name, newScale) {
   const thisScale = {};
   newScale.forEach((note, i) => {
@@ -394,7 +414,7 @@ export {
   repeatSynth, setLeadNumSteps,
   changeSynthPattern, synthPatterns,
   playingPatterns, visiblePatterns, displayPattern,
-  createEmptyPattern, clearPattern,
+  createEmptyPattern, handlePatternAction,
   changeDrumPattern, drumsPattern,
   drumNames, playing
 };
