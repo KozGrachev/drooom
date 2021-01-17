@@ -14,6 +14,18 @@ function Pattern ({ instrument, pattern, patNum }) {
     });
   }, []);
 
+  function handleClickActivate () {
+    //* set playing pattern to this instrument and pattern number
+    socket.emit('activate-pattern', [instrument, patNum])
+    Brain.playingPatterns[instrument] = patNum;
+  }
+
+  function handleClickClear () {
+    //* set playing pattern to this instrument and pattern number
+    socket.emit('clear-pattern', [instrument, patNum])
+    Brain.clearPattern(instrument, patNum);
+  }
+
   return (
     <div className="pattern-container" id={`pattern${patNum}`} onClick={() => {
       Brain.displayPattern(instrument, patNum)
@@ -23,16 +35,8 @@ function Pattern ({ instrument, pattern, patNum }) {
       Pattern {patNum}
       {/* //! simplify css: create .container class */}
       <div className="pattern-actions-container">
-        <input className={`pattern-action btn grid`} type="button" value="Play" onClick={() => {
-          //* set playing pattern to this instrument and pattern number
-          socket.emit('activate-pattern', [instrument, patNum])
-          Brain.playingPatterns[instrument] = patNum;
-        }} />
-        <input className={`pattern-action btn grid`} type="button" value="Clear" onClick={() => {
-          //* set playing pattern to this instrument and pattern number
-          socket.emit('clear-pattern', [instrument, patNum])
-          Brain.playingPatterns[instrument] = patNum;
-        }} />
+        <input className={`pattern-action btn grid`} type="button" value="Play" onClick={handleClickActivate} />
+        <input className={`pattern-action btn grid`} type="button" value="Clear" onClick={handleClickClear} />
       </div>
     </div>
   )

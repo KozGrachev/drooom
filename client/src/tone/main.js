@@ -207,18 +207,31 @@ function displayPattern (name, index) {
   visiblePatterns[name] = index;
 
   //* deactivate the last pattern's notes
-  synthPatterns[name][prevVisiblePattern].forEach((step, i) => {
+  deactivateAllNotes(name, prevVisiblePattern);
+
+  //* activate the new pattern's notes
+  activateNotesInPattern(name, visiblePatterns[name]);
+}
+
+function deactivateAllNotes (name, index) {
+  synthPatterns[name][index].forEach((step, i) => {
     for (const note in step) {
       document.querySelector(`.${name} .step${i}.${note}`).classList.remove('active');
     }
   })
+}
 
-  //* activate the new pattern's notes
-  synthPatterns[name][visiblePatterns[name]].forEach((step, i) => {
+function activateNotesInPattern (name, index) {
+  synthPatterns[name][index].forEach((step, i) => {
     for (const note in step) {
       document.querySelector(`.${name} .step${i}.${note}`).classList.add('active');
     }
   })
+}
+
+function clearPattern (name, index) {
+  deactivateAllNotes(name, index);
+  synthPatterns[name][index] = createEmptyPattern();
 }
 
 function changeSynthPattern (note, name, index) {
@@ -367,7 +380,7 @@ export {
   repeatSynth, setLeadNumSteps,
   changeSynthPattern, synthPatterns,
   playingPatterns, visiblePatterns, displayPattern,
-  createEmptyPattern,
+  createEmptyPattern, clearPattern,
   changeDrumPattern, drumsPattern,
   drumNames, playing
 };
