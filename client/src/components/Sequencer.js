@@ -36,7 +36,7 @@ function Sequencer ({buttonColor, instrument}) {
       buttonToggleActive(note);
       //! this should set notes on the currently visible pattern
       Brain.changeSynthPattern(note, instrument, Brain.visiblePatterns[instrument]);
-    } else Brain.leadSynth.triggerAttackRelease(Brain.scales[instrument][note.noteID], '16n');
+    } else Brain.synths[instrument].triggerAttackRelease(Brain.scales[instrument][note.noteID], '16n');
   }
 
   function renderSteps (num, noSequence) {

@@ -15,15 +15,25 @@ import chh from '../assets/audio/909/chh.mp3';
 import perc from '../assets/audio/909/clap.mp3';
 
 
-const leadSynth = new Tone.PolySynth().toDestination();
-leadSynth.volume.value = -15;
+// const leadSynth = new Tone.PolySynth().toDestination();
+// leadSynth.volume.value = -15;
 let leadNumSteps = 32;
 let startTime = 0;
 
+// leadSynth.volume.value = -5;
 
 
 const loops = {};
 let playing = {};
+
+//! Refactor to have an object for each instrument that holds all its porperties
+
+const synths = {
+  lead: new Tone.PolySynth().toDestination(),
+  bass: new Tone.PolySynth().toDestination(),
+}
+synths.lead.volume.value = -15;
+synths.bass.volume.value = -5;
 
 const synthPatterns = {
   lead: [initializePattern('lead')],
@@ -266,10 +276,7 @@ function repeatSynth (time, name) {
       thisNoteName = Note.transpose(thisNoteName, '8P');
     }
 
-    leadSynth.triggerAttackRelease(`${Scale.scaleNotes([thisNoteName]) === 'Cb'
-      ? Note.transpose(thisNoteName, '8P')
-      : thisNoteName
-      }`, '16n', time + 0.03);
+    playSynthNote(time, thisNoteName, name);
   };
   //* Adds the triggered class to all active buttons in the current step
   //* and removes it from those in the previous step
@@ -283,6 +290,13 @@ function repeatSynth (time, name) {
       addTempClass(currentPlayingNote);
     }
   }, time);
+}
+
+function playSynthNote (time, note, name) {
+  synths[name].triggerAttackRelease(`${Scale.scaleNotes([note]) === 'Cb'
+    ? Note.transpose(note, '8P')
+    : note
+    }`, '16n', time + 0.03);
 }
 
 
@@ -376,7 +390,7 @@ function repeatDrums (time) {
 export {
   playPause, bassNumOctaves,
   bassFirstOctave,
-  scales, leadSynth, setNewScale,
+  scales, synths, setNewScale,
   repeatSynth, setLeadNumSteps,
   changeSynthPattern, synthPatterns,
   playingPatterns, visiblePatterns, displayPattern,
