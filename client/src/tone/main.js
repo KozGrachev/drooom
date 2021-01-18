@@ -42,7 +42,7 @@ synths.bass.volume.value = -5;
 // };
 
 const synthPatterns = {
-  lead: [demo.lead1, demo.lead2],
+  lead: [demo.lead1, demo.lead2, demo.lead3],
   bass: [demo.bass]
 }
 

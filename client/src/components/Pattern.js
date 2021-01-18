@@ -8,36 +8,13 @@ import {buttonColor} from '../helpers'
 function Pattern ({ selected, handleTimelineAction, instrument, pattern, patNum, numOfPatterns }) {
 
   useEffect(() => {
-    // socket.on('activate-pattern', ([inst, patN]) => {
-    //   if (patN === patNum && inst === instrument) {
-    //     // Brain.playingPatterns[instrument] = patNum;
-    //     Brain.handlePatternAction('activate')
-    //   }
-    // });
-    // socket.on('clear-pattern', ([inst, patN]) => {
-    //   if (patN === patNum && inst === instrument) {
-    //     // Brain.clearPattern(instrument, patNum);
-    //     Brain.handlePatternAction('clear')
-    //   }
-    // });
+
     socket.on('pattern-action', ([inst, patN, act]) => {
       if (patN === patNum && inst === instrument) {
         handleTimelineAction(act, patN);
       }
     })
   }, []);
-
-  // function handleClickActivate () {
-  //   //* set playing pattern to this instrument and pattern number
-  //   socket.emit('activate-pattern', [instrument, patNum])
-  //   Brain.playingPatterns[instrument] = patNum;
-  // }
-
-  // function handleClickClear () {
-  //   //* set playing pattern to this instrument and pattern number
-  //   socket.emit('clear-pattern', [instrument, patNum])
-  //   Brain.clearPattern(instrument, patNum);
-  // }
 
   function handleAction (action) {
     socket.emit('pattern-action', [instrument, patNum, action]);
@@ -47,7 +24,7 @@ function Pattern ({ selected, handleTimelineAction, instrument, pattern, patNum,
 
   return (
     <div className={`pattern-container ${selected ? buttonColor[instrument] : ''}`} id={`pattern${patNum}`} onClick={() => {
-      handleAction('select');
+      handleTimelineAction('select', patNum);
       // console.log(Brain.synthPatterns[instrument]);
     }
     }>
