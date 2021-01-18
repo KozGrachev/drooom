@@ -121,6 +121,7 @@ function TimeLine ({instrument}) {
 
       case 'clear':
         Brain.handlePatternAction(instrument, patNum, 'clear');
+        setSelected(patNum);
         break;
 
       case 'add':

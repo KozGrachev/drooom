@@ -35,7 +35,11 @@ function Sequencer ({buttonColor, instrument}) {
       socket.emit(`pattern-change`, [instrument, Brain.visiblePatterns[instrument], note]);
       buttonToggleActive(note);
       //! this should set notes on the currently visible pattern
-      Brain.changeSynthPattern(note, instrument, Brain.visiblePatterns[instrument]);
+      try {
+        Brain.changeSynthPattern(note, instrument, Brain.visiblePatterns[instrument]);
+      } catch (error) {
+        console.error(`Cound not change pattern. note:${note}, instrument:${instrument}, Brain.visiblePatterns[instrument]:${Brain.visiblePatterns[instrument]}`)
+      }
     } else Brain.synths[instrument].triggerAttackRelease(Brain.scales[instrument][note.noteID], '16n');
   }
 

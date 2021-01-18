@@ -1,6 +1,7 @@
 import * as Tone from 'tone';
 import { Scale, Note } from '@tonaljs/tonal';
 import { noteIDs } from '../helpers';
+import * as demo from '../demos/demo5'
 
 
 // import kick from '../assets/audio/808/kick.mp3';
@@ -35,10 +36,15 @@ const synths = {
 synths.lead.volume.value = -15;
 synths.bass.volume.value = -5;
 
+// const synthPatterns = {
+//   lead: [initializePattern('lead')],
+//   bass: [initializePattern('bass')]
+// };
+
 const synthPatterns = {
-  lead: [initializePattern('lead')],
-  bass: [initializePattern('bass')]
-};
+  lead: [demo.lead1, demo.lead2],
+  bass: [demo.bass]
+}
 
 const playingPatterns = {
   lead: 0,
@@ -96,15 +102,17 @@ loops.lead = createLoop('lead');
 loops.bass = createLoop('bass');
 
 
-const drumsPattern = localStorage.getItem('droom-drums-pattern')
-  ? JSON.parse(localStorage.getItem('droom-drums-pattern'))
-  : {
-    kick: Array(16).fill(false),
-    snare: Array(16).fill(false),
-    chh: Array(16).fill(false),
-    ohh: Array(16).fill(false),
-    perc: Array(16).fill(false),
-  };
+// const drumsPattern =  localStorage.getItem('droom-drums-pattern')
+//   ? JSON.parse(localStorage.getItem('droom-drums-pattern'))
+//   : {
+//     kick: Array(16).fill(false),
+//     snare: Array(16).fill(false),
+//     chh: Array(16).fill(false),
+//     ohh: Array(16).fill(false),
+//     perc: Array(16).fill(false),
+//   };
+
+const drumsPattern = demo.drums;
 
 const notes = { 'A1': kick, 'B1': snare, 'C1': perc, 'D1': chh, 'E1': ohh };
 const drumNoteNamePairs = { 'A1': 'kick', 'B1': 'snare', 'C1': 'perc', 'D1': 'chh', 'E1': 'ohh' }; //! send to variables
