@@ -1,5 +1,9 @@
+import React from 'react'
 import openSocket from 'socket.io-client';
-const socket = process.env.NODE_ENV === 'production' ? openSocket() : openSocket('localhost:3100');
 
+export const socket = process.env.NODE_ENV === 'production' ? openSocket() : openSocket('localhost:3100');
 
-export { socket };
+const SocketAPIContext = React.createContext({})
+export const SocketAPIContextProvider = SocketAPIContext.Provider
+
+export default SocketAPIContext;
