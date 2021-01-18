@@ -38,6 +38,7 @@ function Sequencer ({buttonColor, instrument}) {
       try {
         Brain.changeSynthPattern(note, instrument, Brain.visiblePatterns[instrument]);
       } catch (error) {
+        buttonToggleActive(note);
         console.error(`Cound not change pattern. note:${note}, instrument:${instrument}, Brain.visiblePatterns[instrument]:${Brain.visiblePatterns[instrument]}`)
       }
     } else Brain.synths[instrument].triggerAttackRelease(Brain.scales[instrument][note.noteID], '16n');
