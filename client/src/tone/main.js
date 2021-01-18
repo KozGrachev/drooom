@@ -244,11 +244,14 @@ function displayPattern (name, index) {
 }
 
 function deactivateAllNotes (name, index) {
-  synthPatterns[name][index].forEach((step, i) => {
-    for (const note in step) {
-      document.querySelector(`.${name} .step${i}.${note}`).classList.remove('active');
-    }
-  })
+  console.log('@@@@@ Deactivating ', name, index, ' patterns length:', synthPatterns[name].length);
+  if (index < synthPatterns[name].length) {
+    synthPatterns[name][index].forEach((step, i) => {
+      for (const note in step) {
+        document.querySelector(`.${name} .step${i}.${note}`).classList.remove('active');
+      }
+    })
+  }
 }
 
 function activateNotesInPattern (name, index) {
@@ -414,6 +417,7 @@ export {
   repeatSynth, setLeadNumSteps,
   changeSynthPattern, synthPatterns,
   playingPatterns, visiblePatterns, displayPattern,
+  deactivateAllNotes,
   createEmptyPattern, handlePatternAction,
   changeDrumPattern, drumsPattern,
   drumNames, playing

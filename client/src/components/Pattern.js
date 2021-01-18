@@ -5,7 +5,7 @@ import * as Brain from '../tone/main'
 import {buttonColor} from '../helpers'
 
 
-function Pattern ({ selected, handleTimelineAction, instrument, pattern, patNum }) {
+function Pattern ({ selected, handleTimelineAction, instrument, pattern, patNum, numOfPatterns }) {
 
   useEffect(() => {
     // socket.on('activate-pattern', ([inst, patN]) => {
@@ -66,7 +66,7 @@ function Pattern ({ selected, handleTimelineAction, instrument, pattern, patNum 
           event.stopPropagation();
           handleAction('duplicate')
         }} />
-        <input className={`pattern-action btn grid`} type="button" value="Delete" onClick={(event) => {
+        <input disabled={patNum === 0 && numOfPatterns <= 1} className={`pattern-action btn grid`} type="button" value="Delete" onClick={(event) => {
           event.stopPropagation();
           handleAction('delete')
         }} />
