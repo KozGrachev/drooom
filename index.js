@@ -32,11 +32,6 @@ io.on('connection', (socket) => {
     socket.broadcast.emit('pattern-change', [instrument, patNum, note]);
   })
 
-  // socket.on('activate-pattern', ([instrument, patNum]) => {
-  //   console.log('activate pattern event received!!', instrument, patNum);
-  //   socket.broadcast.emit('activate-pattern', [instrument, patNum]);
-  // })
-
   socket.on('key-change', (key) => {
     console.log('key change event received!!', key);
     socket.broadcast.emit('key-change', key);
@@ -52,18 +47,8 @@ io.on('connection', (socket) => {
     socket.broadcast.emit('play-instrument', instrument);
   })
 
-  // socket.on('create-pattern', (instrument) => {
-  //   console.log('create pattern event received!!', instrument);
-  //   socket.broadcast.emit('create-pattern', instrument);
-  // })
-
-  // socket.on('clear-pattern', ([instrument, patNum]) => {
-  //   console.log('clear pattern event received!!', instrument, patNum);
-  //   socket.broadcast.emit('clear-pattern', [instrument, patNum]);
-  // })
-
   socket.on('pattern-action', ([instrument, patNum, action]) => {
-    console.log('clear pattern event received!!', instrument, patNum);
+    console.log('clear pattern event received!!', instrument, patNum, action);
     socket.broadcast.emit('pattern-action', [instrument, patNum, action]);
   })
 })

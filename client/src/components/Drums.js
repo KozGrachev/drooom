@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { Step } from './Step.js';
-import { VSlider } from "./VSlider";
+// import { VSlider } from "./VSlider";
 import * as Brain from '../tone/main';
 import '../style/drums.scss';
 import * as Tone from 'tone';
@@ -56,9 +56,7 @@ export function Drums () {
           {renderSteps()}
         </div>
         <PlayButton shape="circle" instrument="drums" />
-        {/* <input type="button" id="playPause" onMouseDown={() => {
-          Brain.playPause('drums');
-        }} value="droom"></input> */}
+
         <div className="drums-controls">
           <div className="slider-wrapper">
             {/* <VSlider handleChange={setBpm} className="slider" /> */}

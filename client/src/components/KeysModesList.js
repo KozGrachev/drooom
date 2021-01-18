@@ -4,11 +4,12 @@ import * as Brain from '../tone/main';
 import { v4 } from 'uuid';
 import { socket } from '../api';
 import '../style/keysModesList.scss'
+import * as demo from '../demos/demo5'
 
 export function KeysModesList ({buttonColor}) {
 
-  const [scale, setScale] = useState(localStorage.getItem('droom-lead-key') || 'C');
-  const [mode, setMode] = useState(localStorage.getItem('droom-lead-mode') ||'ionian');
+  const [scale, setScale] = useState(localStorage.getItem('droom-lead-key') || demo.key);
+  const [mode, setMode] = useState(localStorage.getItem('droom-lead-mode') ||demo.mode);
 
   useEffect(() => {
     // sendNewScale();
