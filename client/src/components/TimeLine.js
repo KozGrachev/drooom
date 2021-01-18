@@ -85,7 +85,7 @@ function TimeLine ({instrument}) {
         setPatterns((pats) => {
           const newPats = [...pats];
           newPats.splice(patNum, 1);
-          
+
           return newPats;
         })
         break;
@@ -93,7 +93,8 @@ function TimeLine ({instrument}) {
       case 'duplicate':
         setPatterns((pats) => {
           const newPats = [...pats];
-          newPats.splice(patNum, 0, [...pats[patNum]]);
+          const clonedPatArray = JSON.parse(JSON.stringify(pats[patNum]));
+          newPats.splice(patNum, 0, clonedPatArray);
           return newPats;
         })
         break;
