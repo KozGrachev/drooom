@@ -293,14 +293,18 @@ function changeSynthPattern (note, name, index) {
 
 function repeatSynth (time, name) {
   const count = getSixteenths(leadNumSteps);
-  for (let note in synthPatterns[name][playingPatterns[name]][count]) {
-    let thisNoteName = scales[name][note];// leadPattern[count][note].name;
-    if (Note.pitchClass(thisNoteName) === 'Cb') {
-      thisNoteName = Note.transpose(thisNoteName, '8P');
-    }
+  try {
+    for (let note in synthPatterns[name][playingPatterns[name]][count]) {
+      let thisNoteName = scales[name][note];// leadPattern[count][note].name;
+      if (Note.pitchClass(thisNoteName) === 'Cb') {
+        thisNoteName = Note.transpose(thisNoteName, '8P');
+      }
 
-    playSynthNote(time, thisNoteName, name);
-  };
+      playSynthNote(time, thisNoteName, name);
+    };
+  } catch (error) {
+    console.error('Unable to play note:', name,' at time ', time, ' step:', count)
+  }
   //* Adds the triggered class to all active buttons in the current step
   //* and removes it from those in the previous step
   Tone.Draw.schedule(() => {

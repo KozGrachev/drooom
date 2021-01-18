@@ -81,13 +81,24 @@ function TimeLine ({instrument}) {
       case 'delete':
         console.log('Deleting... ', instrument, patNum, ' length:',patterns.length);
         Brain.deactivateAllNotes(instrument, patNum);
-        setSelected(0);//patNum === patterns.length-1 ? patNum-2 : patNum === 0 && patterns.length > 1 ? patNum : patNum - 1);// : patNum > 0 ? patNum - 1 );
         setPatterns((pats) => {
           const newPats = [...pats];
           newPats.splice(patNum, 1);
 
           return newPats;
         })
+
+        if (activated >= patNum && activated > 0) {
+          setActivated((actv) => actv - 1);
+        }
+        if (selected >= patNum && selected > 0) {
+          setSelected((sel) => sel - 1);
+        } else if (patNum === 0 && selected === 0) Brain.displayPattern(instrument, 1);
+        //activated === patterns.length - 1 ) { //! When implementing chained pattern playback, change activated to nowPlaying
+          // setSelected( patNum -1);//patNum === patterns.length-1 ? patNum-2 : patNum === 0 && patterns.length > 1 ? patNum : patNum - 1);// : patNum > 0 ? patNum - 1 );
+          // setActivated(activated - 2);
+        // }
+
         break;
 
       case 'duplicate':
