@@ -49,7 +49,7 @@ io.on('connection', (socket) => {
     socket.to(roomId).emit('pattern-change-drums', note);
   })
 
-  socket.on('pattern-change', ([instrument, patNum, note, , roomId]) => {
+  socket.on('pattern-change', ([instrument, patNum, note, roomId]) => {
     console.log(`${instrument} pattern change event received!! pattern`, patNum, note);
     socket.to(roomId).emit('pattern-change', [instrument, patNum, note]);
   })
