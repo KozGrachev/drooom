@@ -1,13 +1,14 @@
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { Step } from './Step';
 import '../style/sequencer.scss'
 import * as Brain from '../tone/main';
 import { v4 } from 'uuid';
-import { socket } from '../api'
+import SocketAPIContext, { socket } from '../api'
 
 function Sequencer ({buttonColor, instrument}) {
 
   const [numSteps, setNumSteps] = useState(32);
+  const roomId = useContext(SocketAPIContext);
 
   useEffect(() => {
     socket.on(`pattern-change`, ([inst, patNum, note]) => {
@@ -32,7 +33,7 @@ function Sequencer ({buttonColor, instrument}) {
 
   function handleNoteClick (note) {
     if (note.stepNum >= 0) {
-      socket.emit(`pattern-change`, [instrument, Brain.visiblePatterns[instrument], note]);
+      socket.emit(`pattern-change`, [instrument, Brain.visiblePatterns[instrument], note, roomId]);
       buttonToggleActive(note);
       //! this should set notes on the currently visible pattern
       try {

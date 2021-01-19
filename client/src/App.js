@@ -1,43 +1,43 @@
 import './style/App.scss';
-import { Drums } from './components/Drums'
-import { Synth } from './components/Synth';
-import { useEffect, useRef, useState } from 'react';
-import { socket, SocketAPIContextProvider } from './api'
-import {SessionLink} from './components/SessionLink';
+import { useEffect, useState } from 'react';
+import { socket, } from './api'
+import {
+  BrowserRouter as Router,
+  Switch, Route, Link
+} from 'react-router-dom';
+import Sandbox from './components/Sandbox';
+import { v4 } from 'uuid';
 
 function App () {
 
   const [roomId, setRoomId] = useState();
 
   useEffect(() => {
-    socket.on('create-session-id', (id) => setRoomId(id));
-    return () => socket.disconnect();
-  }, []);
-
-  useEffect(() => {
-    console.log("YAAAAY Your ID is: ", roomId);
-  }, [roomId]);
-
+    // socket.on('connect', () => setRoomId(socket.id));
+    // socket.on
+    return () => {
+      // socket.leave()
+      socket.disconnect();
+    }
+  }, [])
 
 
   return (
     // <Slider rows={2}>
-    <div className="app-container">
-      <SocketAPIContextProvider value={roomId}>
-        <section className="instrument-wrapper lead">
-          <Synth instrument="lead" buttonColor="yellow" sideBar="keysModesList" />
-        </section>
-        <section className="instrument-wrapper bass">
-          <Synth instrument="bass" buttonColor="red" sideBar="" />
-        </section>
-        <section className="instrument-wrapper drums">
-          <SessionLink />
-          <Drums />
-        </section>
-      </SocketAPIContextProvider>
+    <Router>
+      <Link to={`/room/${v4()}`}>Start new</Link>
+      <Link>About</Link>
+      <Link>Contact</Link>
 
-
-    </div>
+      <Switch>
+        <Route path="/about">
+          "Fucking home page"
+          </Route>
+        <Route path="/room/:roomId">
+          <Sandbox />
+        </Route>
+      </Switch>
+    </Router>
     // </Slider>
   );
 }

@@ -1,14 +1,16 @@
-import React, { useEffect } from 'react';
+import React, { useContext, useEffect } from 'react';
 import { Step } from './Step.js';
 // import { VSlider } from "./VSlider";
 import * as Brain from '../tone/main';
 import '../style/drums.scss';
 import * as Tone from 'tone';
 import { v4 } from 'uuid';
-import {socket} from '../api'
+import SocketAPIContext, {socket} from '../api'
 import PlayButton from './PlayButton.js';
 
 export function Drums () {
+
+  const roomId = useContext(SocketAPIContext);
 
   useEffect(() => {
     socket.on('pattern-change-drums', (note) => {
@@ -25,7 +27,7 @@ export function Drums () {
   }
 
   function handleNoteClick (note) {
-    socket.emit('pattern-change-drums', note);
+    socket.emit('pattern-change-drums', note, roomId);
     buttonToggleActive(note);
     Brain.changeDrumPattern(note);
   }

@@ -7,7 +7,7 @@ export function SessionLink () {
 
   const [copySuccess, setCopySuccess] = useState('');
   const textAreaRef = useRef(null);
-  const sessionId = useContext(SocketAPIContext);
+  const roomId = useContext(SocketAPIContext);
 
   function copyToClipboard () {
     textAreaRef.current.select();
@@ -23,7 +23,8 @@ export function SessionLink () {
       <form className="session-link">
         <textarea
           ref={textAreaRef}
-          value={sessionId}
+          value={roomId}
+          readOnly
         />
       </form>
     </div>

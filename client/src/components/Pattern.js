@@ -1,11 +1,13 @@
-import React, { useEffect } from 'react'
-import { socket } from '../api'
+import React, { useContext, useEffect } from 'react'
+import SocketAPIContext, { socket } from '../api'
 import '../style/pattern.scss'
 import * as Brain from '../tone/main'
 import {buttonColor} from '../helpers'
 
 
 function Pattern ({ selected, handleTimelineAction, instrument, pattern, patNum, numOfPatterns }) {
+
+  const roomId = useContext(SocketAPIContext);
 
   useEffect(() => {
 
@@ -17,7 +19,7 @@ function Pattern ({ selected, handleTimelineAction, instrument, pattern, patNum,
   }, []);
 
   function handleAction (action) {
-    socket.emit('pattern-action', [instrument, patNum, action]);
+    socket.emit('pattern-action', [instrument, patNum, action, roomId]);
     // Brain.handlePatternAction(action);
     handleTimelineAction(action, patNum);
   }

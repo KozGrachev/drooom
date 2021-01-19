@@ -1,10 +1,12 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import * as Brain from '../tone/main';
-import { socket } from '../api'
+import SocketAPIContext, { socket } from '../api'
 
 import '../style/playButton.scss'
 
 function PlayButton ({ instrument, shape }) {
+
+  const roomId = useContext(SocketAPIContext);
 
   useEffect(() => {
     socket.on('play-instrument', (inst) => {
@@ -18,7 +20,7 @@ function PlayButton ({ instrument, shape }) {
   const [isPlaying, setIsPlaying] = useState(Brain.playing[instrument]);
 
   function play () {
-    socket.emit('play-instrument', instrument);
+    socket.emit('play-instrument', instrument, roomId);
     Brain.playPause(instrument);
     setIsPlaying(Brain.playing[instrument]);
   }

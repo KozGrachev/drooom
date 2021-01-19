@@ -1,9 +1,9 @@
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import * as Brain from '../tone/main'
 import { v4 } from 'uuid';
 import '../style/timeLine.scss'
 import Pattern from './Pattern'
-import { socket } from '../api'
+import SocketAPIContext, { socket } from '../api'
 
 
 function TimeLine ({instrument}) {
@@ -12,6 +12,7 @@ function TimeLine ({instrument}) {
   // const [willDisplayPattern, setWillDisplayPattern] = useState();
   const [selected, setSelected] = useState(0);
   const [activated, setActivated] = useState(0);
+  const roomId = useContext(SocketAPIContext);
 
   useEffect(() => {
     console.log('Synth patterns on init:', Brain.synthPatterns);
@@ -125,7 +126,7 @@ function TimeLine ({instrument}) {
       {renderPatterns()}
       <div className="add-pattern" onClick={() => {
         handleTimelineAction('add');
-        socket.emit('pattern-action', [instrument, '_', 'add']);
+        socket.emit('pattern-action', [instrument, '_', 'add', roomId]);
       }}>
         <svg width="24" height="24" xmlns="http://www.w3.org/2000/svg" fillRule="evenodd" clipRule="evenodd"><path d="M11 11v-11h1v11h11v1h-11v11h-1v-11h-11v-1h11z" /></svg>
       </div>

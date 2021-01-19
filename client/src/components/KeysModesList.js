@@ -1,15 +1,17 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useContext } from 'react'
 import { Scale, Mode } from '@tonaljs/tonal';
 import * as Brain from '../tone/main';
 import { v4 } from 'uuid';
-import { socket } from '../api';
+import SocketAPIContext, { socket } from '../api';
 import '../style/keysModesList.scss'
 import * as demo from '../demos/demo5'
 
 export function KeysModesList ({buttonColor}) {
 
   const [scale, setScale] = useState(localStorage.getItem('droom-lead-key') || demo.key);
-  const [mode, setMode] = useState(localStorage.getItem('droom-lead-mode') ||demo.mode);
+  const [mode, setMode] = useState(localStorage.getItem('droom-lead-mode') || demo.mode);
+  const roomId = useContext(SocketAPIContext);
+
 
   useEffect(() => {
     // sendNewScale();
@@ -62,13 +64,13 @@ export function KeysModesList ({buttonColor}) {
   };
 
   function handleScaleClick (key) {
-    socket.emit('key-change', key);
+    socket.emit('key-change', key, roomId);
     setScale(key);
     localStorage.setItem('droom-lead-key', key);
   }
 
   function handleModeClick (mode) {
-    socket.emit('mode-change', mode)
+    socket.emit('mode-change', mode, roomId)
     setMode(mode);
     localStorage.setItem('droom-lead-mode', mode);
   }
