@@ -16,8 +16,9 @@ function App () {
     // socket.on('connect', () => setRoomId(socket.id));
     // socket.on
     return () => {
-      // socket.leave()
       socket.disconnect();
+      return socket.emit('leave-room', roomId);
+
     }
   }, [])
 

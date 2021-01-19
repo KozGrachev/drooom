@@ -31,10 +31,18 @@ io.on('connection', (socket) => {
       username,
       id: socket.id,
     };
+    console.log('User added!', users);
     users.push(user);
     socket.join(roomId);
     io.emit('new-user', users);
   })
+
+  socket.on('leave-room', (roomId) => {
+    socket.leave(roomId);
+    console.log('Users before filter: ',users);
+    users = users.filter((user) => user.id !== socket.id);
+    console.log('Users after filter: ',users);
+  });
 
   // socket.on('join-room', (roomName, cb) => {
   //   socket.join(roomName);

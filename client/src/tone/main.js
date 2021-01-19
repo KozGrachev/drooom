@@ -263,11 +263,15 @@ function deactivateAllNotes (name, index) {
 }
 
 function activateNotesInPattern (name, index) {
-  synthPatterns[name][index].forEach((step, i) => {
-    for (const note in step) {
-      document.querySelector(`.${name} .step${i}.${note}`).classList.add('active');
-    }
-  })
+  try {
+    synthPatterns[name][index].forEach((step, i) => { //!!! CAUSES ERROR WHEN DELETING 1ST PATTERN. MUST BE FIXED
+      for (const note in step) {
+        document.querySelector(`.${name} .step${i}.${note}`).classList.add('active');
+      }
+    })
+  } catch (error) {
+    console.error('Index out of bounds. This is a known issue')
+  }
 }
 
 function clearPattern (name, index) {
