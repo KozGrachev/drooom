@@ -15,17 +15,35 @@ import ohh from '../assets/audio/909/ohh.mp3';
 import chh from '../assets/audio/909/chh.mp3';
 import perc from '../assets/audio/909/clap.mp3';
 
+const instrumentState = {
+  drums: {
+    numSteps: 16,
+    loop: createLoop('drums'),
+    isPlaying: false,
+  },
+  lead: {
+    numSteps: 32,
+    loop: createLoop('lead'),
+    isPlaying: false,
+  },
+  bass: {
+    numSteps: 32,
+    loop: createLoop('bass'),
+    isPlaying: false,
+  }
+}
+
 
 // const leadSynth = new Tone.PolySynth().toDestination();
 // leadSynth.volume.value = -15;
-let leadNumSteps = 32;
+//! let leadNumSteps = 32;
 let startTime = 0;
 
 // leadSynth.volume.value = -5;
 
 
-const loops = {};
-let playing = {};
+//! const loops = {};
+//! let playing = {};
 
 //! Refactor to have an object for each instrument that holds all its porperties
 
@@ -62,7 +80,7 @@ function initializePattern (name) {
 }
 
 function createEmptyPattern () {
-  return Array.from({ length: leadNumSteps }, Object);
+  return Array.from({ length: instrumentState.lead.numSteps }, Object);
 }
 
 const leadFirstOctave = 2;
@@ -98,8 +116,8 @@ Scale.rangeOf('C major')('C1', 'C4').forEach((note, i) => {
 
 
 
-loops.lead = createLoop('lead');
-loops.bass = createLoop('bass');
+//! loops.lead = createLoop('lead');
+//! loops.bass = createLoop('bass');
 
 
 // const drumsPattern =  localStorage.getItem('droom-drums-pattern')
@@ -125,7 +143,7 @@ sampler.volume.value = -5;
 // repEvent.loop = true;
 // repEvent.loopEnd = '16n';
 // loops.drums = repEvent; //addLoop(repEvent, 'drums');
-loops.drums = createLoop('drums');
+//! loops.drums = createLoop('drums');
 
 
 Tone.Transport.bpm.value = 120;
@@ -148,37 +166,37 @@ Tone.Transport.swingSubdivision = '16n';
 async function playPause (name) {
 
   Tone.start();
-  if (playing[name] && Tone.Transport.state === 'started') {
-    for (const ev in playing) {
-      if (ev !== name && playing[ev]) {
+  if (instrumentState[name].isPlaying && Tone.Transport.state === 'started') {
+    for (const inst in instrumentState) {
+      if (inst !== name && instrumentState[inst].isPlaying) {
         // console.log(`CASE #2: Transport and This event was 'started' and was not the only one. Stopping event ${name}`);
-        loops[name].stop();//stopLoop(name);
-        playing[name] = false;
+        instrumentState[name].loop.stop();//stopLoop(name);
+        instrumentState[name].isPlaying = false;
         return;
       }
     }
     // console.log(`CASE #1: Transport was 'started' and no other loops were running. Stopping event ${name} and stopping and cancelling transport`);
-    loops[name].stop(); //stopLoop(name);
-    playing[name] = false;
+    instrumentState[name].loop.stop(); //stopLoop(name);
+    instrumentState[name].isPlaying = false;
     Tone.Transport.stop();
     Tone.Transport.cancel();
-  } else if (!playing[name] && Tone.Transport.state === 'started') {
+  } else if (!instrumentState[name].isPlaying && Tone.Transport.state === 'started') {
     const nextHalfBar = Tone.Time('@2n').quantize('2n'); // .Transport.nextSubdivision('2n'); // .quantize('2n'); // - last;
-    loops[name].start(nextHalfBar - startTime); // startLoop(name, nextHalfBar - startTime);
-    playing[name] = true;
-    // console.log(`CASE #3: Did not have the event but transport was playing. Adding the event ${name} id:${loops[name]}`);
-  } else if (!playing[name] && Tone.Transport.state === 'stopped') {
+    instrumentState[name].loop.start(nextHalfBar - startTime); // startLoop(name, nextHalfBar - startTime);
+    instrumentState[name].isPlaying = true;
+    // console.log(`CASE #3: Did not have the event but transport was playing. Adding the event ${name} id:${instrumentState[name].loop}`);
+  } else if (!instrumentState[name].isPlaying && Tone.Transport.state === 'stopped') {
     // setStartTime(Tone.Time(Tone.now()).quantize('2n')); //! sets new time relative to when the transport is started
     startTime = Tone.Time(Tone.now()).quantize('2n');
     // console.log('CASE #4: this event was not in the array and the transport was stopped. Starting transport and adding event');
     Tone.Transport.start(Tone.now())//'+0.1');
-    loops[name].start();// startLoop(name);
-    playing[name] = true;
+    instrumentState[name].loop.start();// startLoop(name);
+    instrumentState[name].isPlaying = true;
 
   } else {
     console.error('Unexpected condition! Check the start/stop if statements');
-    console.error('playing[name]:', name, playing[name])
-    // console.error('loops[name]:', name, loops[name].state)
+    console.error('instrumentState[name].isPlaying:', name, instrumentState[name].isPlaying)
+    // console.error('instrumentState[name].loop:', name, instrumentState[name].loop.state)
     console.error('Transport.state:', Tone.Transport.state)
   }
 }
@@ -304,7 +322,7 @@ function changeSynthPattern (note, name, index) {
 }
 
 function repeatSynth (time, name) {
-  const count = getSixteenths(leadNumSteps);
+  const count = getSixteenths(instrumentState.lead.numSteps);
   try {
     for (let note in synthPatterns[name][playingPatterns[name]][count]) {
       let thisNoteName = scales[name][note];// leadPattern[count][note].name;
@@ -347,7 +365,7 @@ function addTempClass (element) {
 }
 
 function setLeadNumSteps (num) {
-  leadNumSteps = num;
+  instrumentState.lead.numSteps = num;
 }
 
 function getSixteenths (num) {
@@ -436,5 +454,5 @@ export {
   deactivateAllNotes,
   createEmptyPattern, handlePatternAction,
   changeDrumPattern, drumsPattern,
-  drumNames, playing
+  drumNames, instrumentState// playing
 };

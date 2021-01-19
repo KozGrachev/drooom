@@ -14,8 +14,6 @@ export default function Sandbox () {
 
   useEffect(() => {
     socket.emit('join-room', 'SomeUser', roomId);
-
-    // return socket.emit('leave-room', roomId);
   }, []);
 
 
