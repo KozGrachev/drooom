@@ -21,6 +21,7 @@ const instrumentState = {
     loop: createLoop('drums'),
     isPlaying: false,
     patterns: [demo.drums],
+    //! scale: {put all the samples here}
   },
   lead: {
     numSteps: 32,
@@ -29,6 +30,7 @@ const instrumentState = {
     patterns: [demo.lead1, demo.lead2, demo.lead3],
     playingPattern: 0,
     visiblePattern: 0,
+    scale: {},
   },
   bass: {
     numSteps: 32,
@@ -37,6 +39,7 @@ const instrumentState = {
     patterns: [demo.bass],
     playingPattern: 0,
     visiblePattern: 0,
+    scale: {},
   }
 }
 
@@ -97,16 +100,16 @@ const bassFirstOctave = 1;
 const bassNumOctaves = 3;
 
 
-const scales = {
-  lead: {},
-  bass: {},
-}
+//! const scales = {
+//   lead: {},
+//   bass: {},
+// }
 
 Scale.rangeOf('C major')('C3', 'C6').forEach((note, i) => {
-  scales.lead[noteIDs[i]] = note;
+  instrumentState.lead.scale[noteIDs[i]] = note;
 });
 Scale.rangeOf('C major')('C1', 'C4').forEach((note, i) => {
-  scales.bass[noteIDs[i]] = note;
+  instrumentState.bass.scale[noteIDs[i]] = note;
 });
 
 //! check this and use it to replace the above scales assignment
@@ -247,7 +250,7 @@ function setNewScale (name, newScale) {
     thisScale[noteIDs[i]] = note;
   });
 
-  scales[name] = thisScale;
+  instrumentState[name].scale = thisScale;
   document.querySelectorAll(`.${name} .step-1`).forEach((el, i) => {
     el.setAttribute('value', newScale[newScale.length - i - 1])
   });
@@ -332,7 +335,7 @@ function repeatSynth (time, name) {
   const count = getSixteenths(instrumentState.lead.numSteps);
   try {
     for (let note in instrumentState[name].patterns[instrumentState[name].playingPattern][count]) {
-      let thisNoteName = scales[name][note];// leadPattern[count][note].name;
+      let thisNoteName = instrumentState[name].scale[note];// leadPattern[count][note].name;
       if (Note.pitchClass(thisNoteName) === 'Cb') {
         thisNoteName = Note.transpose(thisNoteName, '8P');
       }
@@ -454,7 +457,7 @@ function repeatDrums (time) {
 export {
   playPause, bassNumOctaves,
   bassFirstOctave,
-  scales, synths, setNewScale,
+  synths, setNewScale,
   repeatSynth, setLeadNumSteps,
   changeSynthPattern,
   displayPattern,

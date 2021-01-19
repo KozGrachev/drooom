@@ -42,7 +42,7 @@ function Sequencer ({buttonColor, instrument}) {
         buttonToggleActive(note);
         console.error(`Cound not change pattern. note:${note}, instrument:${instrument}, Brain.instrumentState[instrument].visiblePattern:${Brain.instrumentState[instrument].visiblePattern}`)
       }
-    } else Brain.synths[instrument].triggerAttackRelease(Brain.scales[instrument][note.noteID], '16n');
+    } else Brain.synths[instrument].triggerAttackRelease(Brain.instrumentState[instrument].scale[note.noteID], '16n');
   }
 
   function renderSteps (num, noSequence) {
@@ -55,7 +55,7 @@ function Sequencer ({buttonColor, instrument}) {
         pattern={Brain.instrumentState[instrument].patterns[Brain.instrumentState[instrument].visiblePattern]}//! IS THIS REDUNDANT?
         stepNum={noSequence ? -1 : i}
         shape="grid"
-        noteNames={Object.values(Brain.scales[instrument])}
+        noteNames={Object.values(Brain.instrumentState[instrument].scale)}
         buttonColor={buttonColor}
         key={v4()} />);
     }
