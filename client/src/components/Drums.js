@@ -42,7 +42,7 @@ export function Drums () {
     const arr = [];
     for (let i = 0; i < 16; i++) {
       arr.push(<Step
-        pattern={Brain.drumsPattern}
+        pattern={Brain.instrumentState.drums.patterns[0]}
         handleNoteClick={handleNoteClick}
         stepNum={i} shape="circle"
         noteNames={Brain.drumNames}

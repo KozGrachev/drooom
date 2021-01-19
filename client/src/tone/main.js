@@ -20,16 +20,23 @@ const instrumentState = {
     numSteps: 16,
     loop: createLoop('drums'),
     isPlaying: false,
+    patterns: [demo.drums],
   },
   lead: {
     numSteps: 32,
     loop: createLoop('lead'),
     isPlaying: false,
+    patterns: [demo.lead1, demo.lead2, demo.lead3],
+    playingPattern: 0,
+    visiblePattern: 0,
   },
   bass: {
     numSteps: 32,
     loop: createLoop('bass'),
     isPlaying: false,
+    patterns: [demo.bass],
+    playingPattern: 0,
+    visiblePattern: 0,
   }
 }
 
@@ -54,24 +61,24 @@ const synths = {
 synths.lead.volume.value = -15;
 synths.bass.volume.value = -5;
 
-// const synthPatterns = {
+//! const synthPatterns = {
 //   lead: [initializePattern('lead')],
 //   bass: [initializePattern('bass')]
 // };
 
-const synthPatterns = {
-  lead: [demo.lead1, demo.lead2, demo.lead3],
-  bass: [demo.bass]
-}
+//! const synthPatterns = {
+//   lead: [demo.lead1, demo.lead2, demo.lead3],
+//   bass: [demo.bass]
+// }
 
-const playingPatterns = {
-  lead: 0,
-  bass: 0
-}
-const visiblePatterns = {
-  lead: 0,
-  bass: 0
-}
+//! const playingPatterns = {
+//   lead: 0,
+//   bass: 0
+// }
+// const visiblePatterns = {
+//   lead: 0,
+//   bass: 0
+// }
 
 function initializePattern (name) {
   return localStorage.getItem(`droom-${name}-pattern0`)
@@ -130,7 +137,7 @@ Scale.rangeOf('C major')('C1', 'C4').forEach((note, i) => {
 //     perc: Array(16).fill(false),
 //   };
 
-const drumsPattern = demo.drums;
+//! const drumsPattern = demo.drums;
 
 const notes = { 'A1': kick, 'B1': snare, 'C1': perc, 'D1': chh, 'E1': ohh };
 const drumNoteNamePairs = { 'A1': 'kick', 'B1': 'snare', 'C1': 'perc', 'D1': 'chh', 'E1': 'ohh' }; //! send to variables
@@ -217,16 +224,16 @@ async function playPause (name) {
 function handlePatternAction (name, index, action) {
   switch (action) {
     case 'activate':
-      playingPatterns[name] = index;
+      instrumentState[name].playingPattern = index;
       break;
     case 'duplicate':
-      synthPatterns[name].splice(index, 0, [...synthPatterns[name][index]]);
+      instrumentState[name].patterns.splice(index, 0, [...instrumentState[name].patterns[index]]);
       break;
     case 'clear':
       clearPattern(name, index);
       break;
     case 'delete':
-      synthPatterns[name].splice(index,1);
+      instrumentState[name].patterns.splice(index,1);
       break;
 
     default:
@@ -258,21 +265,21 @@ function createLoop (name) {
 //! EXPORT THIS AND USE TO ASSIGN CURRENTLY PLAYING PATTERN TO leadPattern and bassPattern
 //! repeat() function should always use the currentLeadPattern and currentBassPattern
 function displayPattern (name, index) {
-  console.log('Selecting Pattern ', index, ' in ', name, '-----> ', synthPatterns[name][index])
-  const prevVisiblePattern = visiblePatterns[name];
-  visiblePatterns[name] = index;
+  console.log('Selecting Pattern ', index, ' in ', name, '-----> ', instrumentState[name].patterns[index])
+  const prevVisiblePattern = instrumentState[name].visiblePattern;
+  instrumentState[name].visiblePattern = index;
 
   //* deactivate the last pattern's notes
   deactivateAllNotes(name, prevVisiblePattern);
 
   //* activate the new pattern's notes
-  activateNotesInPattern(name, visiblePatterns[name]);
+  activateNotesInPattern(name, instrumentState[name].visiblePattern);
 }
 
 function deactivateAllNotes (name, index) {
-  console.log('@@@@@ Deactivating ', name, index, ' patterns length:', synthPatterns[name].length);
-  if (index < synthPatterns[name].length) {
-    synthPatterns[name][index].forEach((step, i) => {
+  console.log('@@@@@ Deactivating ', name, index, ' patterns length:', instrumentState[name].patterns.length);
+  if (index < instrumentState[name].patterns.length) {
+    instrumentState[name].patterns[index].forEach((step, i) => {
       for (const note in step) {
         document.querySelector(`.${name} .step${i}.${note}`).classList.remove('active');
       }
@@ -282,7 +289,7 @@ function deactivateAllNotes (name, index) {
 
 function activateNotesInPattern (name, index) {
   try {
-    synthPatterns[name][index].forEach((step, i) => { //!!! CAUSES ERROR WHEN DELETING 1ST PATTERN. MUST BE FIXED
+    instrumentState[name].patterns[index].forEach((step, i) => { //!!! CAUSES ERROR WHEN DELETING 1ST PATTERN. MUST BE FIXED
       for (const note in step) {
         document.querySelector(`.${name} .step${i}.${note}`).classList.add('active');
       }
@@ -294,23 +301,23 @@ function activateNotesInPattern (name, index) {
 
 function clearPattern (name, index) {
   deactivateAllNotes(name, index);
-  synthPatterns[name][index] = createEmptyPattern();
+  instrumentState[name].patterns[index] = createEmptyPattern();
 }
 
 function changeSynthPattern (note, name, index) {
 
-  // if (!synthPatterns[name][index]) {
+  // if (!instrumentState[name].patterns[index]) {
   //   //* check if this pattern exists in case a socket.io event says to change
   //   //* pattern before it is created on a guest computer. Should not be necessary
   //   //* when the whole session state is sent to guest on joining session
   //   for (let i = 0; i < index + 1; i++) {
-  //     if (!synthPatterns[name][i]) {
-  //       synthPatterns[name][i] = createEmptyPattern();
+  //     if (!instrumentState[name].patterns[i]) {
+  //       instrumentState[name].patterns[i] = createEmptyPattern();
   //     }
   //   }
   // }
 
-  const thisPattern = synthPatterns[name][index];
+  const thisPattern = instrumentState[name].patterns[index];
 
   if (!thisPattern[note.stepNum].hasOwnProperty(note.noteID)) {
     thisPattern[note.stepNum][note.noteID] = note;
@@ -324,7 +331,7 @@ function changeSynthPattern (note, name, index) {
 function repeatSynth (time, name) {
   const count = getSixteenths(instrumentState.lead.numSteps);
   try {
-    for (let note in synthPatterns[name][playingPatterns[name]][count]) {
+    for (let note in instrumentState[name].patterns[instrumentState[name].playingPattern][count]) {
       let thisNoteName = scales[name][note];// leadPattern[count][note].name;
       if (Note.pitchClass(thisNoteName) === 'Cb') {
         thisNoteName = Note.transpose(thisNoteName, '8P');
@@ -339,7 +346,7 @@ function repeatSynth (time, name) {
   //* and removes it from those in the previous step
   Tone.Draw.schedule(() => {
 
-    for (const note in synthPatterns[name][playingPatterns[name]][count]) {
+    for (const note in instrumentState[name].patterns[instrumentState[name].playingPattern][count]) {
       const pianoRollFeedback = document.querySelector(`.${name} .${note}.step-1`)
       const currentPlayingNote = document.querySelector(`.${name} .${note}.step${count}`)
       console.log('TRYING TO SELECT ', `.${name} .${note}.step${count}`, document.querySelector(`.${name} .${note}.step${count}`));
@@ -390,16 +397,16 @@ function getSixteenths (num) {
 //*----------------------------------------------------------//
 
 function changeDrumPattern (note) {
-  drumsPattern[note.name][note.stepNum] = !drumsPattern[note.name][note.stepNum];
+  instrumentState.drums.patterns[0][note.name][note.stepNum] = !instrumentState.drums.patterns[0][note.name][note.stepNum];
 
-  localStorage.setItem('droom-drums-pattern', JSON.stringify(drumsPattern));
-  return drumsPattern;
+  localStorage.setItem('droom-drums-pattern', JSON.stringify(instrumentState.drums.patterns[0]));
+  return instrumentState.drums.patterns[0];
 }
 
 function repeatDrums (time) {
   const count = getSixteenths(16);
   for (const [note, drum] of drumNoteNames) {
-    if (drumsPattern[drum][count]) {
+    if (instrumentState.drums.patterns[0][drum][count]) {
       sampler.triggerAttackRelease(note, '16n', time);
     }
   }
@@ -449,10 +456,10 @@ export {
   bassFirstOctave,
   scales, synths, setNewScale,
   repeatSynth, setLeadNumSteps,
-  changeSynthPattern, synthPatterns,
-  playingPatterns, visiblePatterns, displayPattern,
+  changeSynthPattern,
+  displayPattern,
   deactivateAllNotes,
   createEmptyPattern, handlePatternAction,
-  changeDrumPattern, drumsPattern,
+  changeDrumPattern,
   drumNames, instrumentState// playing
 };

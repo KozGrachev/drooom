@@ -15,7 +15,7 @@ function Sequencer ({buttonColor, instrument}) {
       // console.log('');
       if (inst === instrument) {
           Brain.changeSynthPattern(note, inst, patNum); //! event should say which pattern to change
-        if (patNum === Brain.visiblePatterns[instrument]) {
+        if (patNum === Brain.instrumentState[instrument].visiblePattern) {
           buttonToggleActive(note);
         }
       }
@@ -33,14 +33,14 @@ function Sequencer ({buttonColor, instrument}) {
 
   function handleNoteClick (note) {
     if (note.stepNum >= 0) {
-      socket.emit(`pattern-change`, [instrument, Brain.visiblePatterns[instrument], note, roomId]);
+      socket.emit(`pattern-change`, [instrument, Brain.instrumentState[instrument].visiblePattern, note, roomId]);
       buttonToggleActive(note);
       //! this should set notes on the currently visible pattern
       try {
-        Brain.changeSynthPattern(note, instrument, Brain.visiblePatterns[instrument]);
+        Brain.changeSynthPattern(note, instrument, Brain.instrumentState[instrument].visiblePattern);
       } catch (error) {
         buttonToggleActive(note);
-        console.error(`Cound not change pattern. note:${note}, instrument:${instrument}, Brain.visiblePatterns[instrument]:${Brain.visiblePatterns[instrument]}`)
+        console.error(`Cound not change pattern. note:${note}, instrument:${instrument}, Brain.instrumentState[instrument].visiblePattern:${Brain.instrumentState[instrument].visiblePattern}`)
       }
     } else Brain.synths[instrument].triggerAttackRelease(Brain.scales[instrument][note.noteID], '16n');
   }
@@ -52,7 +52,7 @@ function Sequencer ({buttonColor, instrument}) {
     for (let i = 0; i < num; i++) {
       arr.push(<Step
         handleNoteClick={handleNoteClick}
-        pattern={Brain.synthPatterns[instrument][Brain.visiblePatterns[instrument]]}//! IS THIS REDUNDANT?
+        pattern={Brain.instrumentState[instrument].patterns[Brain.instrumentState[instrument].visiblePattern]}//! IS THIS REDUNDANT?
         stepNum={noSequence ? -1 : i}
         shape="grid"
         noteNames={Object.values(Brain.scales[instrument])}

@@ -8,14 +8,13 @@ import SocketAPIContext, { socket } from '../api'
 
 function TimeLine ({instrument}) {
 
-  const [patterns, setPatterns] = useState(Brain.synthPatterns[instrument]);
+  const [patterns, setPatterns] = useState(Brain.instrumentState[instrument].patterns);
   // const [willDisplayPattern, setWillDisplayPattern] = useState();
   const [selected, setSelected] = useState(0);
   const [activated, setActivated] = useState(0);
   const roomId = useContext(SocketAPIContext);
 
   useEffect(() => {
-    console.log('Synth patterns on init:', Brain.synthPatterns);
     socket.on('pattern-action', ([inst, patN, act]) => {
       if (inst === instrument && act === 'add') {
         console.log('inst === instrument');
@@ -28,8 +27,8 @@ function TimeLine ({instrument}) {
   }, []);
 
   useEffect(() => {
-    Brain.synthPatterns[instrument] = patterns;
-    console.log(`Number of patterns:`, patterns.length, Brain.synthPatterns[instrument].length);
+    Brain.instrumentState[instrument].patterns = patterns;
+    console.log(`Number of patterns:`, patterns.length, Brain.instrumentState[instrument].patterns.length);
     // if (willDisplayPattern) Brain.displayPattern(instrument, patterns.length - 1);
   }, [patterns]);
 
@@ -47,7 +46,7 @@ function TimeLine ({instrument}) {
   },[activated])
 
   function renderPatterns () {
-    console.log(instrument, ' PATTERNS in Brain', Brain.synthPatterns[instrument] )
+    console.log(instrument, ' PATTERNS in Brain', Brain.instrumentState[instrument].patterns )
     return patterns.map((pat, i) => {
       return <Pattern selected={i === selected} handleTimelineAction={handleTimelineAction} instrument={instrument} pattern={pat} numOfPatterns={patterns.length} patNum={i} key={ v4() }/>
     })
@@ -78,8 +77,8 @@ function TimeLine ({instrument}) {
         if (patNum === 0 && selected === 0) {
           setSelected(0); //!
           Brain.displayPattern(instrument, 1);
-          Brain.playingPatterns[instrument] = 0;
-          Brain.visiblePatterns[instrument] = 0;
+          Brain.instrumentState[instrument].playingPattern = 0;
+          Brain.instrumentState[instrument].visiblePattern = 0;
         }
 
         break;
@@ -110,7 +109,7 @@ function TimeLine ({instrument}) {
       case 'add':
         setPatterns((pats) => {
           const newPats = [...pats, Brain.createEmptyPattern()];
-          // Brain.synthPatterns[instrument] = newPats;
+          // Brain.instrumentState[instrument].patterns = newPats;
           setSelected(patterns.length);
           return newPats;
         });
