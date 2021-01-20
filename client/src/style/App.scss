@@ -20,7 +20,14 @@ button {
   height: 100vh;
   // border: 3px solid green;
   padding: 50px;
-  
+
+}
+
+.about {
+  left: -40%;
+  top: 20%;
+  transform: rotate(-90deg);
+
 }
 
 
@@ -30,11 +37,12 @@ button:active {
 
 .app-container {
   display: grid;
-  grid-template-columns: repeat(2, 2fr);
-  grid-template-rows: repeat(2, 100vh);
+  grid-template-columns: repeat(2, 50vw);
+  grid-template-rows: repeat(3, 100vh);
   grid-template-areas:
-    "drums lead"
-    "bass .";
+    "about drums"
+    "lead lead"
+    "bass bass";
   width: 100%;
   height: auto;
   align-items: center;

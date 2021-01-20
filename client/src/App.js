@@ -51,14 +51,14 @@ function App () {
       <Router>
 
 
-        <ButtonGroup>
-          <Button className="session-link-btn">
-            <Link to={`/room/${v4()}`}>Start new</Link>
-          </Button>
-
-          <SessionLink />
-
-        </ButtonGroup>
+        <div className="session-link-btn">
+          <ButtonGroup >
+            <Button >
+              <Link to={`/room/${v4()}`}>Start new</Link>
+            </Button>
+            <SessionLink />
+          </ButtonGroup>
+        </div>
 
 
         <Switch>
