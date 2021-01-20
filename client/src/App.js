@@ -7,6 +7,9 @@ import {
 } from 'react-router-dom';
 import Sandbox from './components/Sandbox';
 import { v4 } from 'uuid';
+import { Button, ButtonGroup, ChakraProvider } from "@chakra-ui/react"
+import { extendTheme } from "@chakra-ui/react"
+import { SessionLink } from './components/SessionLink'
 
 function App () {
 
@@ -22,23 +25,49 @@ function App () {
     }
   }, [])
 
+  const theme = extendTheme({
+    styles: {
+      global: {
+        // styles for the `body`
+        body: {
+          bg: '#505050',
+          color: "white",
+        },
+        // styles for the `a`
+        a: {
+          color: "teal.500",
+          _hover: {
+            textDecoration: "underline",
+          },
+        },
+      },
+    },
+  });
+
 
   return (
     // <Slider rows={2}>
-    <Router>
-      <Link to={`/room/${v4()}`}>Start new</Link>
-      <Link>About</Link>
-      <Link>Contact</Link>
+    <ChakraProvider theme={theme}>
+      <Router>
 
-      <Switch>
-        <Route path="/about">
-          "Fucking home page"
+
+        <ButtonGroup>
+          <Button className="session-link-btn">
+            <Link to={`/room/${v4()}`}>Start new</Link>
+          </Button>
+
+          <SessionLink />
+
+        </ButtonGroup>
+
+
+        <Switch>
+          <Route path="/room/:roomId">
+            <Sandbox />
           </Route>
-        <Route path="/room/:roomId">
-          <Sandbox />
-        </Route>
-      </Switch>
-    </Router>
+        </Switch>
+      </Router>
+    </ChakraProvider>
     // </Slider>
   );
 }

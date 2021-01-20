@@ -1,3 +1,4 @@
+import { Button } from '@chakra-ui/react';
 import React, { useContext, useRef, useState } from 'react'
 import SocketAPIContext from '../api';
 import '../style/sessionLink.scss'
@@ -18,7 +19,9 @@ export function SessionLink () {
 
   return (
     <div className="session-link-container">
-      <input className="session-link-btn" type="button" value="Copy session link" onClick={copyToClipboard} />
+      <Button className="session-link-btn" onClick={copyToClipboard} >
+        Get session link
+      </Button>
       {copySuccess}
       <form className="session-link">
         <textarea
