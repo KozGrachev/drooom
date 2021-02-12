@@ -1,7 +1,6 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import * as helpers from '../helpers';
 import '../style/note.scss';
-import * as Brain from '../tone/main'
 let noteID = helpers.generateNoteIDs(40);
 
 
@@ -11,8 +10,8 @@ export function Note ({ pattern, name, stepNum, handleNoteClick, numOfNotes, pos
 
 
   function handleClick () {
-    if (shape === 'grid' ) console.log('FROM BUTTON: ', pattern[stepNum], pattern, stepNum);
-    else console.log('THIS STEP IS :',name, pattern[name][stepNum]);
+    if (shape === 'grid') console.log('FROM BUTTON: ', pattern[stepNum], pattern, stepNum);
+    else console.log('THIS STEP IS :', name, pattern[name][stepNum]);
     const newActive = !active;
     setActive(newActive);
     const state = {
@@ -36,7 +35,6 @@ export function Note ({ pattern, name, stepNum, handleNoteClick, numOfNotes, pos
     else return false;
   }
 
-  //${stepNum >= 0 && pattern && pattern[stepNum].hasOwnProperty(noteID[position]) ? 'active' : ''}
   return (
     <div
       className={`button-wrapper ${shape}`}
@@ -44,7 +42,6 @@ export function Note ({ pattern, name, stepNum, handleNoteClick, numOfNotes, pos
         ? { width: (numOfNotes - position) * (360 / 16) }
         : {}
       } >
-      {/* <input className={`${name} ${numberString[stepNum]} ${active ? 'active' : 'inactive'} btn`} */}
       <input
         className={`
           ${isActive() ? 'active ' + buttonColor : ''}
@@ -57,7 +54,6 @@ export function Note ({ pattern, name, stepNum, handleNoteClick, numOfNotes, pos
         type="button"
         onMouseDown={() => handleClick()}
         onKeyDown={(e) => e.preventDefault()}
-        // value={`${shape === 'grid' ? Brain.scale[noteID[position]] : ''}`}
       />
     </div>
   )

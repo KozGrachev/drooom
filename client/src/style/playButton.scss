@@ -4,7 +4,6 @@
 .play-button {
 
   &.grid {
-    // color: red;
     height: $panel-height;
     min-width: $panel-height;
     display: flex;
@@ -15,7 +14,6 @@
     svg {
       width: 100px;
       height: 100px;
-      // border:3px solid yellow;
       overflow: visible;
 
       path {
@@ -46,13 +44,10 @@
     svg {
       width: 90px;
       height: 90px;
-      // border:1px solid yellow;
       overflow: visible;
-      // x: 30;
 
       path {
         transform: scale(3.7);
-        // left: 50px;
         stroke: #56cfe1;
         fill:#56cfe1;
       }

@@ -5,17 +5,13 @@
 *:after {
   box-sizing: border-box;
   margin: 0;
-  // background-color: rgba(0, 255, 0, 0.37);
   font-family: "Arial";
 }
 
 body {
-  // border: 3px solid rgba(0, 255, 0, 0.39);
-  // position:relative;
   background-color: rgb(80, 80, 80);
   height: 200vh;
   width:200vw;
   flex-direction: column;
   justify-content: center;
-  // background-color: #b8ffeb;
 }

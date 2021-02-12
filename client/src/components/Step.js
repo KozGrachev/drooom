@@ -6,11 +6,9 @@ import { Note } from './Note.js';
 
 
 export function Step ({ pattern, noteNames, stepNum, handleNoteClick, shape, buttonColor }) {
-
   function renderButtons () {
     const buttons = [];
     for (let i = noteNames.length - 1; i >= 0; i--) {
-
       buttons.push(<Note
         name={noteNames[i]}
         shape={shape}
@@ -23,7 +21,7 @@ export function Step ({ pattern, noteNames, stepNum, handleNoteClick, shape, but
         key={v4()}
       />);
     }
-    return buttons
+    return buttons;
   }
 
   return (
@@ -35,7 +33,6 @@ export function Step ({ pattern, noteNames, stepNum, handleNoteClick, shape, but
           : {}
         }
       >
-        {/* <p>{stepNum}</p> */}
         {renderButtons()}
       </div>
     </div>

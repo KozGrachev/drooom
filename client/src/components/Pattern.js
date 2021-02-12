@@ -1,11 +1,10 @@
 import React, { useContext, useEffect } from 'react'
 import SocketAPIContext, { socket } from '../api'
 import '../style/pattern.scss'
-import * as Brain from '../tone/main'
-import {buttonColor} from '../helpers'
+import { buttonColor } from '../helpers'
 
 
-function Pattern ({ selected, handleTimelineAction, instrument, pattern, patNum, numOfPatterns }) {
+function Pattern ({ selected, handleTimelineAction, instrument, patNum, numOfPatterns }) {
 
   const roomId = useContext(SocketAPIContext);
 
@@ -20,18 +19,15 @@ function Pattern ({ selected, handleTimelineAction, instrument, pattern, patNum,
 
   function handleAction (action) {
     socket.emit('pattern-action', [instrument, patNum, action, roomId]);
-    // Brain.handlePatternAction(action);
     handleTimelineAction(action, patNum);
   }
 
   return (
     <div className={`pattern-container ${selected ? buttonColor[instrument] : ''}`} id={`pattern${patNum}`} onClick={() => {
       handleTimelineAction('select', patNum);
-      // console.log(Brain.synthPatterns[instrument]);
     }
     }>
       <p>Pattern {patNum}</p>
-      {/* //! simplify css: create .container class */}
       <div className="pattern-actions-container">
         <input className={`pattern-action btn grid`} type="button" value="Play" onClick={(event) => {
           event.stopPropagation();

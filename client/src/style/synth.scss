@@ -11,36 +11,26 @@
   min-width: 500px;
   max-width: 80vw;
   border: 1px solid $grid-color;
-  // min-height: 80vh;
-  // flex-grow: 1;
-  // align-self: center;
-  // border: 3px solid rgba(255, 0, 0, 0.39);
   width:100%;
   * {
-    // border: 1px solid rgba(0, 0, 0, 0.295);
   }
 }
 
 .top-panel {
   display: flex;
-  // flex: 1;
-  // flex-basis: 50%;
   height: $panel-height;
-  // background-color: nth($color-scheme3, 4);
 }
 
 .controls-container {
   display: flex;
   flex-direction: column;
   border: 1px solid $grid-color;
-  // width: $panel-height * 2;
   width: 100%;
 }
 
 
 .third-height {
   height: $panel-height /3;
-  // border: 1px solid $grid-color;
 }
 
 .tempo {
@@ -63,9 +53,7 @@
 }
 
 .bottom-panel {
-  // border: 3px solid rgba(0, 255, 34, 0.623);
   flex: 1;
-  // height: auto;
   position: relative;
   display: flex;
 }

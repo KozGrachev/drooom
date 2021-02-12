@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
-import * as Brain from '../tone/main';
+import * as Brain from '../tone/brain';
 import SocketAPIContext, { socket } from '../api'
 
 import '../style/playButton.scss'

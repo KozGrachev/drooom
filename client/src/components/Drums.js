@@ -1,9 +1,7 @@
 import React, { useContext, useEffect } from 'react';
 import { Step } from './Step.js';
-// import { VSlider } from "./VSlider";
-import * as Brain from '../tone/main';
+import * as Brain from '../tone/brain';
 import '../style/drums.scss';
-import * as Tone from 'tone';
 import { v4 } from 'uuid';
 import SocketAPIContext, {socket} from '../api'
 import PlayButton from './PlayButton.js';
@@ -20,7 +18,6 @@ export function Drums () {
   }, []);
 
   function buttonToggleActive (note) {
-    // const thisNote = document.querySelector(`.step${note.stepNum}.${note.name}`);
     const thisNote = document.querySelector(`.step${note.stepNum}.${note.name}.circle`);
     thisNote.classList.toggle('active');
     thisNote.classList.toggle('inactive');
@@ -32,13 +29,8 @@ export function Drums () {
     Brain.changeDrumPattern(note);
   }
 
-  function setBpm (val) {
-    Tone.Transport.bpm.value = val;
-  }
-
 
   function renderSteps () {
-    // console.log('RENDERING STEPS');
     const arr = [];
     for (let i = 0; i < 16; i++) {
       arr.push(<Step
@@ -58,12 +50,6 @@ export function Drums () {
           {renderSteps()}
         </div>
         <PlayButton shape="circle" instrument="drums" />
-
-        <div className="drums-controls">
-          <div className="slider-wrapper">
-            {/* <VSlider handleChange={setBpm} className="slider" /> */}
-          </div>
-        </div>
       </div>
     </div>
   )

@@ -3,32 +3,22 @@ button {
     outline: none;
     background-color: #5390d9;
   }
-
-
-  // background-color: black;
 }
 
 .instrument-wrapper {
   position: relative;
   display: flex;
-  // height: fit-content;
-  // height: 100%;
   align-items: center;
   justify-content: center;
-  // width: 100vw;
   width: 100%;
   height: 100vh;
-  // border: 3px solid green;
   padding: 50px;
-
 }
 
 .about {
   left: -47%;
   top: -37%;
-  // height: 150%;
   position: fixed;
-  // transform: ;
   transform: rotate(90deg) scale(1.5);
 }
 
@@ -49,8 +39,6 @@ button:active {
   height: auto;
   align-items: center;
   justify-items: center;
-
-  // border: 3px solid blue;
 }
 
 .drums {

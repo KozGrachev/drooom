@@ -16,8 +16,6 @@ function App () {
   const [roomId, setRoomId] = useState();
 
   useEffect(() => {
-    // socket.on('connect', () => setRoomId(socket.id));
-    // socket.on
     return () => {
       socket.disconnect();
       return socket.emit('leave-room', roomId);
@@ -28,12 +26,10 @@ function App () {
   const theme = extendTheme({
     styles: {
       global: {
-        // styles for the `body`
         body: {
           bg: '#505050',
           color: "white",
         },
-        // styles for the `a`
         a: {
           color: "teal.500",
           _hover: {
@@ -46,7 +42,6 @@ function App () {
 
 
   return (
-    // <Slider rows={2}>
     <ChakraProvider theme={theme}>
       <Router>
 
@@ -68,7 +63,6 @@ function App () {
         </Switch>
       </Router>
     </ChakraProvider>
-    // </Slider>
   );
 }
 

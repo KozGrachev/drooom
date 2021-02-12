@@ -5,23 +5,17 @@
     position: absolute;
     flex-direction: column;
     transform-origin: 0% -50px;
-    // transform: rotate(180deg) translateY(0, 50px);
-    // border: 1px solid red;
     left: 50%;
-    // height: 100%;
     width: 0px;
   }
 
   &.grid {
     display: grid;
     height: 100%;
-    // justify-content: center;
     grid-template-rows: repeat(auto-fill, auto);
     position:relative;
     .button-wrapper:nth-of-type(7n+1) {
       background-color: #f1ee55de;
     }
-    // width: 50px;
-    // border: 1px solid rgba(0, 0, 255, 0.322);
   }
 }

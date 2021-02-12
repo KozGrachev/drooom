@@ -1,12 +1,12 @@
 import React, { useState, useEffect, useContext } from 'react'
 import { Scale, Mode } from '@tonaljs/tonal';
-import * as Brain from '../tone/main';
+import * as Brain from '../tone/brain';
 import { v4 } from 'uuid';
 import SocketAPIContext, { socket } from '../api';
 import '../style/keysModesList.scss'
 import * as demo from '../demos/demo5'
 
-export function KeysModesList ({buttonColor}) {
+export function KeysModesList ({ buttonColor }) {
 
   const [scale, setScale] = useState(localStorage.getItem('droom-lead-key') || demo.key);
   const [mode, setMode] = useState(localStorage.getItem('droom-lead-mode') || demo.mode);
@@ -14,13 +14,11 @@ export function KeysModesList ({buttonColor}) {
 
 
   useEffect(() => {
-    // sendNewScale();
     Brain.setNewScale('lead', createScale());
     Brain.setNewScale('bass', createBassScale());
   }, [scale, mode]);
 
   useEffect(() => {
-    // Brain.createLoop(createScale());
     socket.on('key-change', (key) => {
       setScale(key);
       localStorage.setItem('droom-lead-key', key);
@@ -46,7 +44,7 @@ export function KeysModesList ({buttonColor}) {
   function renderScales (arr) {
     return arr.map((note) => {
       return <input
-        className={`list-item grid ${note === scale ? 'active '+buttonColor : ''}`}
+        className={`list-item grid ${note === scale ? 'active ' + buttonColor : ''}`}
         type="button" value={note}
         onClick={() => handleScaleClick(note)}
         key={v4()} />
@@ -58,7 +56,7 @@ export function KeysModesList ({buttonColor}) {
       return <input
         className={`list-item grid ${note === mode ? 'active ' + buttonColor : ''}`}
         type="button" value={note}
-        onClick={()=>handleModeClick(note)}
+        onClick={() => handleModeClick(note)}
         key={v4()} />
     })
   };

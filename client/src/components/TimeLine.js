@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react'
-import * as Brain from '../tone/main'
+import * as Brain from '../tone/brain'
 import { v4 } from 'uuid';
 import '../style/timeLine.scss'
 import Pattern from './Pattern'
@@ -9,7 +9,6 @@ import SocketAPIContext, { socket } from '../api'
 function TimeLine ({instrument}) {
 
   const [patterns, setPatterns] = useState(Brain.instrumentState[instrument].patterns);
-  // const [willDisplayPattern, setWillDisplayPattern] = useState();
   const [selected, setSelected] = useState(0);
   const [activated, setActivated] = useState(0);
   const roomId = useContext(SocketAPIContext);
@@ -17,27 +16,18 @@ function TimeLine ({instrument}) {
   useEffect(() => {
     socket.on('pattern-action', ([inst, patN, act]) => {
       if (inst === instrument && act === 'add') {
-        console.log('inst === instrument');
         setPatterns((pats) => {
           return [...pats, Brain.createEmptyPattern()];
         });
-        // setWillDisplayPattern(false);
       }
     });
   }, []);
 
   useEffect(() => {
     Brain.instrumentState[instrument].patterns = patterns;
-    console.log(`Number of patterns:`, patterns.length, Brain.instrumentState[instrument].patterns.length);
-    // if (willDisplayPattern) Brain.displayPattern(instrument, patterns.length - 1);
   }, [patterns]);
 
-  // useEffect(() => {
-  //   if (willDisplayPattern) Brain.displayPattern(instrument, patterns.length - 1);
-  // }, [willDisplayPattern])
-
   useEffect(() => {
-    console.log('New selected: ', selected);
     Brain.displayPattern(instrument, selected);
   }, [selected])
 
@@ -46,20 +36,14 @@ function TimeLine ({instrument}) {
   },[activated])
 
   function renderPatterns () {
-    console.log(instrument, ' PATTERNS in Brain', Brain.instrumentState[instrument].patterns )
     return patterns.map((pat, i) => {
       return <Pattern selected={i === selected} handleTimelineAction={handleTimelineAction} instrument={instrument} pattern={pat} numOfPatterns={patterns.length} patNum={i} key={ v4() }/>
     })
   }
 
-  //! Add logic to play selected patterns in sequence
-  //! Use GSAP Draggable to set order
-
-
   function handleTimelineAction (action, patNum) {
     switch (action) {
       case 'delete':
-        console.log('Deleting... ', instrument, patNum, ' length:',patterns.length);
         Brain.deactivateAllNotes(instrument, patNum);
         setPatterns((pats) => {
           const newPats = [...pats];
@@ -93,7 +77,6 @@ function TimeLine ({instrument}) {
         break;
 
       case 'select':
-        console.log('SELECT!!')
         setSelected(patNum);
         break;
 
@@ -109,7 +92,6 @@ function TimeLine ({instrument}) {
       case 'add':
         setPatterns((pats) => {
           const newPats = [...pats, Brain.createEmptyPattern()];
-          // Brain.instrumentState[instrument].patterns = newPats;
           setSelected(patterns.length);
           return newPats;
         });

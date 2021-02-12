@@ -8,7 +8,6 @@
   color: $grid-color;
   display: flex;
   place: center;
-  // border: 3px solid rgb(36, 170, 148);
   &.yellow {
     background-color: $yellow;
     color: $grid-color-dark;
@@ -25,7 +24,6 @@
 }
 
 .pattern-actions-container {
-  // border: 3px solid rgb(119, 182, 119);
   position:absolute;
   right: 0;
   top: 0;
@@ -36,7 +34,6 @@
   flex-direction: column;
   align-items: flex-end;
   height: 100%;
-  // justify-content: space-evenly;
 
   &.selected{
     background: #a8a8a8;
@@ -45,15 +42,9 @@
 
 .pattern-action {
   padding: 0;
-  // border-bottom: 2px solid $grid-color;
-  // border-left: 2px solid $grid-color;
-  // margin: 10px 10px 0 0;
   border-radius:0;
   max-width: $button-size;
   max-height: $button-size;
-  // outline: none;
-  // min-height: $button-size/2;
-  // color: $grid-color-dark;
   flex-grow: 1;
 }
 

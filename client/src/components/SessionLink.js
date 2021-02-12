@@ -5,7 +5,6 @@ import '../style/sessionLink.scss'
 
 
 export function SessionLink () {
-
   const [copySuccess, setCopySuccess] = useState('');
   const textAreaRef = useRef(null);
   const roomId = useContext(SocketAPIContext);
@@ -13,7 +12,6 @@ export function SessionLink () {
   function copyToClipboard () {
     textAreaRef.current.select();
     document.execCommand('copy');
-    // e.target.focus();
     setCopySuccess('Copied!');
   };
 

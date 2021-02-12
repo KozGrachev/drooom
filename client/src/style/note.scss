@@ -2,16 +2,13 @@
 
 input {
   color: rgba(255, 255, 255, 0.473);
-  // padding: 5px 0;
   width: 100%;
   z-index: 1;
 
   &.grid {
     color: $grid-color-dark;
-    // background-color: #30292f;
     height: 100%;
     border: 1px solid #C8C8C8;
-    // transform-origin: center;
 
     &.yellow {
       &.active {
@@ -38,9 +35,6 @@ input {
       transform: scale(1.3);
     }
 
-    // &:active {
-    //   background-color: $yellow-dark;
-    // }
   }
 
   &.circle {
@@ -77,14 +71,10 @@ input {
 
 
 .button-wrapper {
-  // background-color: red;
-  // height: 66px;
-  // border: 1px solid rgba(0, 0, 255, 0.514);
   display: flex;
   justify-content: center;
   align-items: center;
 
-  // background: red;
 
   &.circle {
     height: $outer-circle-size/5;

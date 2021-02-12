@@ -1,20 +1,18 @@
 import React, { useContext, useEffect, useState } from 'react'
 import { Step } from './Step';
 import '../style/sequencer.scss'
-import * as Brain from '../tone/main';
+import * as Brain from '../tone/brain';
 import { v4 } from 'uuid';
 import SocketAPIContext, { socket } from '../api'
 
-function Sequencer ({buttonColor, instrument}) {
-
+function Sequencer ({ buttonColor, instrument }) {
   const [numSteps, setNumSteps] = useState(32);
   const roomId = useContext(SocketAPIContext);
 
   useEffect(() => {
     socket.on(`pattern-change`, ([inst, patNum, note]) => {
-      // console.log('');
       if (inst === instrument) {
-          Brain.changeSynthPattern(note, inst, patNum); //! event should say which pattern to change
+        Brain.changeSynthPattern(note, inst, patNum);
         if (patNum === Brain.instrumentState[instrument].visiblePattern) {
           buttonToggleActive(note);
         }
@@ -23,11 +21,9 @@ function Sequencer ({buttonColor, instrument}) {
   }, []);
 
   function buttonToggleActive (note) {
-
     const thisNote = document.querySelector(`.${instrument} .step${note.stepNum}.${note.noteID.replace('#', '\\#')}`);
     console.log(`TRYING TO FIND ELEMENT::  .${instrument} .step${note.stepNum}.${note.noteID.replace('#', '\\#')}`)
     thisNote.classList.toggle('active');
-    // thisNote.classList.toggle(buttonColor);
     thisNote.classList.toggle('inactive');
   }
 
@@ -35,7 +31,6 @@ function Sequencer ({buttonColor, instrument}) {
     if (note.stepNum >= 0) {
       socket.emit(`pattern-change`, [instrument, Brain.instrumentState[instrument].visiblePattern, note, roomId]);
       buttonToggleActive(note);
-      //! this should set notes on the currently visible pattern
       try {
         Brain.changeSynthPattern(note, instrument, Brain.instrumentState[instrument].visiblePattern);
       } catch (error) {
@@ -46,13 +41,11 @@ function Sequencer ({buttonColor, instrument}) {
   }
 
   function renderSteps (num, noSequence) {
-
-    //!renders before scale is created
     const arr = [];
     for (let i = 0; i < num; i++) {
       arr.push(<Step
         handleNoteClick={handleNoteClick}
-        pattern={Brain.instrumentState[instrument].patterns[Brain.instrumentState[instrument].visiblePattern]}//! IS THIS REDUNDANT?
+        pattern={Brain.instrumentState[instrument].patterns[Brain.instrumentState[instrument].visiblePattern]}
         stepNum={noSequence ? -1 : i}
         shape="grid"
         noteNames={Object.values(Brain.instrumentState[instrument].scale)}

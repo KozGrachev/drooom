@@ -22,4 +22,3 @@ exports.buttonColor = {
   bass: 'red',
 }
 
-// console.log(this.generateNoteIDs());

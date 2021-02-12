@@ -4,6 +4,7 @@ import { noteIDs } from '../helpers';
 import * as demo from '../demos/demo5'
 
 
+
 // import kick from '../assets/audio/808/kick.mp3';
 // import snare from '../assets/audio/808/snare.mp3';
 // import ohh from '../assets/audio/808/ohh.mp3';
@@ -179,13 +180,11 @@ async function playPause (name) {
   if (instrumentState[name].isPlaying && Tone.Transport.state === 'started') {
     for (const inst in instrumentState) {
       if (inst !== name && instrumentState[inst].isPlaying) {
-        // console.log(`CASE #2: Transport and This event was 'started' and was not the only one. Stopping event ${name}`);
         instrumentState[name].loop.stop();//stopLoop(name);
         instrumentState[name].isPlaying = false;
         return;
       }
     }
-    // console.log(`CASE #1: Transport was 'started' and no other loops were running. Stopping event ${name} and stopping and cancelling transport`);
     instrumentState[name].loop.stop(); //stopLoop(name);
     instrumentState[name].isPlaying = false;
     Tone.Transport.stop();
@@ -194,20 +193,14 @@ async function playPause (name) {
     const nextHalfBar = Tone.Time('@2n').quantize('2n'); // .Transport.nextSubdivision('2n'); // .quantize('2n'); // - last;
     instrumentState[name].loop.start(nextHalfBar - startTime); // startLoop(name, nextHalfBar - startTime);
     instrumentState[name].isPlaying = true;
-    // console.log(`CASE #3: Did not have the event but transport was playing. Adding the event ${name} id:${instrumentState[name].loop}`);
   } else if (!instrumentState[name].isPlaying && Tone.Transport.state === 'stopped') {
     // setStartTime(Tone.Time(Tone.now()).quantize('2n')); //! sets new time relative to when the transport is started
     startTime = Tone.Time(Tone.now()).quantize('2n');
-    // console.log('CASE #4: this event was not in the array and the transport was stopped. Starting transport and adding event');
     Tone.Transport.start(Tone.now())//'+0.1');
     instrumentState[name].loop.start();// startLoop(name);
     instrumentState[name].isPlaying = true;
 
   } else {
-    console.error('Unexpected condition! Check the start/stop if statements');
-    console.error('instrumentState[name].isPlaying:', name, instrumentState[name].isPlaying)
-    // console.error('instrumentState[name].loop:', name, instrumentState[name].loop.state)
-    console.error('Transport.state:', Tone.Transport.state)
   }
 }
 
@@ -268,7 +261,6 @@ function createLoop (name) {
 //! EXPORT THIS AND USE TO ASSIGN CURRENTLY PLAYING PATTERN TO leadPattern and bassPattern
 //! repeat() function should always use the currentLeadPattern and currentBassPattern
 function displayPattern (name, index) {
-  console.log('Selecting Pattern ', index, ' in ', name, '-----> ', instrumentState[name].patterns[index])
   const prevVisiblePattern = instrumentState[name].visiblePattern;
   instrumentState[name].visiblePattern = index;
 
@@ -280,7 +272,6 @@ function displayPattern (name, index) {
 }
 
 function deactivateAllNotes (name, index) {
-  console.log('@@@@@ Deactivating ', name, index, ' patterns length:', instrumentState[name].patterns.length);
   if (index < instrumentState[name].patterns.length) {
     instrumentState[name].patterns[index].forEach((step, i) => {
       for (const note in step) {
@@ -298,7 +289,6 @@ function activateNotesInPattern (name, index) {
       }
     })
   } catch (error) {
-    console.error('Index out of bounds. This is a known issue')
   }
 }
 
@@ -343,7 +333,6 @@ function repeatSynth (time, name) {
       playSynthNote(time, thisNoteName, name);
     };
   } catch (error) {
-    console.error('Unable to play note:', name,' at time ', time, ' step:', count)
   }
   //* Adds the triggered class to all active buttons in the current step
   //* and removes it from those in the previous step
@@ -352,7 +341,6 @@ function repeatSynth (time, name) {
     for (const note in instrumentState[name].patterns[instrumentState[name].playingPattern][count]) {
       const pianoRollFeedback = document.querySelector(`.${name} .${note}.step-1`)
       const currentPlayingNote = document.querySelector(`.${name} .${note}.step${count}`)
-      console.log('TRYING TO SELECT ', `.${name} .${note}.step${count}`, document.querySelector(`.${name} .${note}.step${count}`));
       addTempClass(pianoRollFeedback);
       addTempClass(currentPlayingNote);
     }

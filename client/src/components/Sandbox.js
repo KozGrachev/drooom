@@ -1,9 +1,8 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect } from 'react'
 import { useParams } from 'react-router-dom';
 import { socket, SocketAPIContextProvider } from '../api';
 import { Drums } from './Drums'
-import {SVGLogo} from './SVGLogo'
-import { SessionLink } from './SessionLink'
+import { SVGLogo } from './SVGLogo'
 import { Synth } from './Synth'
 
 
