@@ -27,6 +27,9 @@ import {
   Spacer,
   Text,
   HStack,
+  Stack,
+  Grid,
+  GridItem,
 } from "@chakra-ui/react"
 import { extendTheme } from "@chakra-ui/react"
 import { SessionLink } from './components/SessionLink'
@@ -92,58 +95,46 @@ function App () {
 
         <div className="session-link-btn">
 
-          <Modal initialFocusRef={initialRef} w="800px" closeOnOverlayClick={false} onClose={onClose} size={'xl'} isOpen={isOpen}>
+          <Modal initialFocusRef={initialRef} w="800px" closeOnOverlayClick={false} onClose={onClose} size={'3xl'} isOpen={isOpen}>
             <ModalOverlay />
             <ModalContent fontFamily="Comfortaa" bg={'#C8C8C8'}>
               <ModalHeader fontSize="6xl">How would you like to drooom?</ModalHeader>
               <ModalBody color={''}>
-                <HStack>
-                  <Box>
-                    <Text mb="5" fontSize="30px">
+                <Grid templateColumns="repeat(2, 1fr)" templateRows="60% 30%" gap={4}>
+                  <GridItem spacing="5" p="5">
+                    <Text fontSize="30px">
                       You can start a new drooom room
                     </Text>
+                  </GridItem>
 
-                    <Spacer />
-
-
-                  </Box>
-
-
-                  <Box p="5">
-
-                    <Text my="5">
+                  <GridItem spacing="5" p="5">
+                    <Text fontSize="30px">
                       or if someone shared a key with you, enter it below.
                     </Text>
                     <InputGroup mb="5" size="sm">
                       {/* <InputLeftAddon children="https://bobik808-droom.herokuapp.com/room/" /> */}
                       <Input placeholder="your code" />
                     </InputGroup>
-                  </Box>
+                  </GridItem>
+
+                  <GridItem spacing="5" p="5">
+
+                    <Button mr={10} onClick={onClose}>
+                      <Link to={`/room/${newIdHyphenated}`}>Start new</Link>
+                    </Button>
+
+                  </GridItem>
+
+                  <GridItem spacing="5" p="5">
+                    <Button className="session-link-btn" onClick={copyToClipboard} >
+                      Use code
+                    </Button>
+                  </GridItem>
 
 
-                </HStack>
-
-                <Flex>
-                  <Button mr={10} onClick={onClose}>
-                    <Link to={`/room/${newIdHyphenated}`}>Start new</Link>
-                  </Button>
-
-                  <Spacer />
-
-                  <Button className="session-link-btn" onClick={copyToClipboard} >
-                    Use code
-                </Button>
-
-                </Flex>
-
+                </Grid>
               </ModalBody>
 
-
-
-
-              <Center m={5}>
-                {copySuccess}
-              </Center>
 
               {/* </ModalFooter> */}
             </ModalContent>
