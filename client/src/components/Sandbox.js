@@ -5,23 +5,16 @@ import { Drums } from './Drums'
 import { SVGLogo } from './SVGLogo'
 import { Synth } from './Synth'
 
-
-
-
 export default function Sandbox () {
-
   const { roomId } = useParams();
-
+  
   useEffect(() => {
     socket.emit('join-room', 'SomeUser', roomId);
   }, []);
 
-
-
   return (
     <div className="app-container">
       <SVGLogo />
-
       <SocketAPIContextProvider value={roomId}>
         <section className="instrument-wrapper lead">
           <Synth instrument="lead" buttonColor="yellow" sideBar="keysModesList" />

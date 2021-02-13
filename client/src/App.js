@@ -27,17 +27,13 @@ import {
 
 
 function App () {
-
-
   const [roomId, setRoomId] = useState();
   const [copySuccess, setCopySuccess] = useState('');
-
 
   useEffect(() => {
     return () => {
       socket.disconnect();
       return socket.emit('leave-room', roomId);
-
     }
   }, [])
 
@@ -67,11 +63,9 @@ function App () {
     },
   });
 
-
   return (
     <ChakraProvider theme={theme}>
       <Router>
-        <div className="session-link-btn">
           <Modal initialFocusRef={initialRef} w="800px" closeOnOverlayClick={false} onClose={onClose} size={'3xl'} isOpen={isOpen}>
             <ModalOverlay />
             <ModalContent fontFamily="Comfortaa" bg={'#C8C8C8'}>
@@ -105,7 +99,6 @@ function App () {
               </ModalBody>
             </ModalContent>
           </Modal>
-        </div>
         <Switch>
           <Route path="/room/:roomId">
             <Sandbox />
