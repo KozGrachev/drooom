@@ -1,13 +1,35 @@
-import { Button } from '@chakra-ui/react';
-import React, { useContext, useRef, useState } from 'react'
+import { Button, useDisclosure } from '@chakra-ui/react';
+import React, { useContext, useEffect, useRef, useState } from 'react'
 import SocketAPIContext from '../api';
 import '../style/sessionLink.scss'
 
+import {
+  ButtonGroup,
+  Modal,
+  ModalOverlay,
+  ModalContent,
+  ModalHeader,
+  ModalFooter,
+  ModalBody,
+  ModalCloseButton,
+} from "@chakra-ui/react"
+
+import { v4 } from 'uuid';
+import {
+  BrowserRouter as Router,
+  Switch, Route, Link
+} from 'react-router-dom';
 
 export function SessionLink () {
   const [copySuccess, setCopySuccess] = useState('');
   const textAreaRef = useRef(null);
   const roomId = useContext(SocketAPIContext);
+  const { isOpen, onOpen, onClose } = useDisclosure()
+
+
+  useEffect(() => {
+    onOpen()
+  }, []);
 
   function copyToClipboard () {
     textAreaRef.current.select();
@@ -15,19 +37,13 @@ export function SessionLink () {
     setCopySuccess('Copied!');
   };
 
+
+
   return (
-    <div className="session-link-container">
-      <Button className="session-link-btn" onClick={copyToClipboard} >
-        Get session link
-      </Button>
-      {copySuccess}
-      <form className="session-link">
-        <textarea
-          ref={textAreaRef}
-          value={roomId}
-          readOnly
-        />
-      </form>
-    </div>
+    <Router>
+
+      
+
+    </Router>
   )
 }
