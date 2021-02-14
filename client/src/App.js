@@ -66,7 +66,7 @@ function App () {
   return (
     <ChakraProvider theme={theme}>
       <Router>
-          <Modal initialFocusRef={initialRef} w="800px" closeOnOverlayClick={false} onClose={onClose} size={'3xl'} isOpen={isOpen}>
+          <Modal initialFocusRef={initialRef} w="800px"  onClose={onClose} size={'3xl'} isOpen={isOpen}>
             <ModalOverlay />
             <ModalContent fontFamily="Comfortaa" bg={'#C8C8C8'}>
               <ModalHeader fontSize="6xl">How would you like to drooom?</ModalHeader>
