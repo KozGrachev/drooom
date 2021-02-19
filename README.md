@@ -59,5 +59,8 @@ Scroll down past the lead to the bass sequencer. Like the lead, it will always s
   <img src="./client/src/assets/github/bass-demo.gif" width="500px"  />
 </div>
 <br />
+<br />
 
 
+## Patterns
+---
