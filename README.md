@@ -1,4 +1,6 @@
-# drooom
+<div align="center">
+  <img src="./client/src/assets/github/Drooom-logo4.svg" width="500px" alt="droom title logo" />
+</div>
 
 **A free real-time collaborative sketchpad for jamming out your ideas remotely.**
 
