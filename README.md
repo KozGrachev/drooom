@@ -1,6 +1,6 @@
 
 <div align="center">
-  <a href="http://drooom.herokuapp.com/">
+  <a href="http://drooom.studio/">
     <img src="./client/src/assets/github/Drooom-logo4.svg" width="500px" alt="droom title logo" />
   </a>
 </div>
@@ -16,7 +16,7 @@ Setting up a meeting is easy! You'll be given a code when you start a new sessio
 ## Getting started
 
 The easiest way to use the app is to visit the website:
-<a href="http://drooom.herokuapp.com/">**drooom.herokuapp.com**</a>
+<a href="http://drooom.studio/">**drooom.studio**</a>
 <br/>
 
 If you're after a local development instance, do the following
